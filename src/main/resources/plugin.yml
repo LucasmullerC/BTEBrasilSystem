@@ -1,0 +1,59 @@
+name: BTEBrasilSystem
+main: io.github.LucasMullerC.BTEBrasilSystem.BTEBrasilSystem
+version: 0.2.0
+author: LucasMullerC
+commands:
+  id:
+     description: Retorna o ID do jogador.
+     usage: /id
+  aplicar:
+     description: Aplicar em Algum time.
+     usage: /aplicar
+  link:
+     description: Linkar Discord.
+     usage: /link
+  continuar:
+     description: Continuar aplicacao.
+     usage: /continuar
+  completo:
+     description: Completar.
+     usage: /completo
+  addequipe:
+     description: add a equipe.
+     usage: /addequipe
+     permission: btebrasil.lider
+  removerequipe:
+     description: remover da equipe.
+     usage: /removerequipe
+     permission: btebrasil.lider
+  cancelar:
+     description: cancelar app.
+     usage: /cancelar
+  addplayer:
+     description: add um builder ao time.
+     usage: /addplayer
+     permission: btebrasil.lider
+  removerplayer:
+     description: remover um builder do time.
+     usage: /removerplayer
+     permission: btebrasil.lider
+  addzona:
+     description: add zona.
+     usage: /addzona
+     permission: btebrasil.lider
+  analisar:
+     description: analisar aplicacao.
+     usage: /analisar [confirmar|recusar] motivo
+     permission: btebrasil.lider
+  time:
+     description: link do time.
+     usage: /time
+  perfil:
+     description: perfil.
+     usage: /perfil
+  salvar:
+     description: salvar.
+     usage: /salvar
+  tag:
+     description: add tag.
+     usage: /tag
