@@ -1,7 +1,5 @@
 package io.github.LucasMullerC.Objetos;
 
-import java.time.LocalDate;
-
 public class Aplicantes implements Comparable<Aplicantes> {
 	private String UUID, Discord, Time, Seccao, Zona, deadline;
 
@@ -44,6 +42,7 @@ public class Aplicantes implements Comparable<Aplicantes> {
 	public String getSeccao() {
 		return this.Seccao;
 	}
+
 	public void setDeadline(String Dead) {
 		this.deadline = Dead;
 	}
@@ -54,7 +53,7 @@ public class Aplicantes implements Comparable<Aplicantes> {
 
 	@Override
 	public String toString() {
-		return "A Sua aplicação ainda está em andamento...";
+		return "A sua aplicacao ainda esta em andamento...";
 	}
 
 	@Override

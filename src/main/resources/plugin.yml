@@ -1,59 +1,55 @@
 name: BTEBrasilSystem
 main: io.github.LucasMullerC.BTEBrasilSystem.BTEBrasilSystem
-version: 0.2.0
+version: 0.3.0
 author: LucasMullerC
+depend: [DiscordSRV,WorldGuard]
 commands:
-  id:
-     description: Retorna o ID do jogador.
-     usage: /id
-  aplicar:
-     description: Aplicar em Algum time.
-     usage: /aplicar
-  link:
-     description: Linkar Discord.
-     usage: /link
+  aplicacao:
+     description: Iniciar Aplicação.
+     usage: /aplicacao
+  proximo:
+     description: Passa para proxima zona.
+     usage: /proximo
+  anterior:
+     description: Voltar para a zona anterior.
+     usage: /anterior
   continuar:
-     description: Continuar aplicacao.
+     description: Continuar Aplicação.
      usage: /continuar
+  time:
+     description: Link de Aplicação do seu Time.
+     usage: /time
   completo:
-     description: Completar.
+     description: Enviar sua Aplicação.
      usage: /completo
+  tag:
+     description: Modificar sua tag.
+     usage: /tag
+  analisar:
+     description: Analisar uma Aplicacao.
+     usage: /analisar
+     permission: btebrasil.lider
+  cancelar:
+     description: Cancelar uma Aplicacao.
+     usage: /cancelar
   addequipe:
-     description: add a equipe.
+     description: Adicionar Equipe.
      usage: /addequipe
      permission: btebrasil.lider
   removerequipe:
-     description: remover da equipe.
+     description: Remove Equipe.
      usage: /removerequipe
      permission: btebrasil.lider
-  cancelar:
-     description: cancelar app.
-     usage: /cancelar
-  addplayer:
-     description: add um builder ao time.
-     usage: /addplayer
-     permission: btebrasil.lider
-  removerplayer:
-     description: remover um builder do time.
-     usage: /removerplayer
-     permission: btebrasil.lider
-  addzona:
-     description: add zona.
-     usage: /addzona
-     permission: btebrasil.lider
-  analisar:
-     description: analisar aplicacao.
-     usage: /analisar [confirmar|recusar] motivo
-     permission: btebrasil.lider
-  time:
-     description: link do time.
-     usage: /time
-  perfil:
-     description: perfil.
-     usage: /perfil
   salvar:
-     description: salvar.
+     description: Salvar Plugin.
      usage: /salvar
-  tag:
-     description: add tag.
-     usage: /tag
+     permission: btebrasil.lider
+  link:
+     description: Linkar sua conta do Discord.
+     usage: /link
+  deslink:
+     description: Deslinkar sua conta do Discord.
+     usage: /deslink
+  perfil:
+     description: Seu Perfil.
+     usage: /perfil
