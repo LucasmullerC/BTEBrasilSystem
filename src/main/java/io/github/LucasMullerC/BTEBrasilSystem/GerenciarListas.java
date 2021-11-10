@@ -31,7 +31,7 @@ public class GerenciarListas {
     static Zonas Zn;
 
     // APLICANTE
-    public static Aplicantes addAplicante(String UUID, String Time, String Discord) {
+    public static Aplicantes addAplicante(String UUID, String Time, String Discord, String Zona) {
         if (getAplicantePos(UUID) != null) {
             return getAplicantePos(UUID);
         } else {
@@ -39,7 +39,7 @@ public class GerenciarListas {
             A.setDiscord(Discord);
             A.setTime(Time);
             A.setSeccao("a");
-            A.setZona("1");
+            A.setZona(Zona);
             LocalDate deadline = LocalDate.now().plusDays(3); // x = 10
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd LLLL yyyy");
             String data = deadline.format(formatter);
@@ -177,7 +177,7 @@ public class GerenciarListas {
         zonas.add(zn);
         zonas.save();
         Sistemas.AddPermissao(player, zn.getZona());
-        addAplicante(player.getUniqueId().toString(), Time, Discord);
+        addAplicante(player.getUniqueId().toString(), Time, Discord,zn.getZona());
         player.teleport(L);
     }
 
