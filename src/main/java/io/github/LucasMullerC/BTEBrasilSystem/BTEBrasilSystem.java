@@ -82,7 +82,7 @@ public final class BTEBrasilSystem extends JavaPlugin implements Listener {
 				Sistemas.DetectarDeadLine();
 			}
 
-		}, 90L);
+		}, 500L);
 	}
 
 	// Listener para quando alguém entrar no servidor
