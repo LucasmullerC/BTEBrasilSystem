@@ -71,22 +71,22 @@ public class GerenciarListas {
         int cont = 0;
         for (Aplicantes d : aplicante.getValues()) {
             if (d.getDeadLine() != null && d.getDeadLine().contains(data)) {
-                Zn = GerenciarListas.getZona(A.getZona());
+                Zn = GerenciarListas.getZona(d.getZona());
                 // Remove regiões
-                regions.removeRegion("apply" + A.getZona() + "d");
-                regions.removeRegion("apply" + A.getZona() + "c");
-                regions.removeRegion("apply" + A.getZona() + "b");
-                regions.removeRegion("apply" + A.getZona() + "a");
+                regions.removeRegion("apply" + d.getZona() + "d");
+                regions.removeRegion("apply" + d.getZona() + "c");
+                regions.removeRegion("apply" + d.getZona() + "b");
+                regions.removeRegion("apply" + d.getZona() + "a");
                 // Remove Listas
-                GerenciarListas.RemoverAplicante(A.getUUID());
+                GerenciarListas.RemoverAplicante(d.getUUID());
                 GerenciarListas.RemoverZona(Zn);
-                if (GerenciarListas.getPendentebyName(A.getUUID()) != null) {
-                    AP = GerenciarListas.getPendentebyName(A.getUUID());
+                if (GerenciarListas.getPendentebyName(d.getUUID()) != null) {
+                    AP = GerenciarListas.getPendentebyName(d.getUUID());
                     GerenciarListas.RemoverPendente(AP);
                 }
                 // Remover Zona
                 Sistemas.removeRegion(w, Zn);
-                DiscordPonte.sendMessage(A.getDiscord(), Mensagens.TimesUp);
+                DiscordPonte.sendMessage(d.getDiscord(), Mensagens.TimesUp);
                 cont++;
             }
         }
