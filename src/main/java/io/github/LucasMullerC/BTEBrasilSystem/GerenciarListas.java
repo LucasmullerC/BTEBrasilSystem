@@ -59,6 +59,7 @@ public class GerenciarListas {
 
     public static void DeletarDeadLines() {
         Aplicantes AP;
+        BTEBrasilSystem plugin = BTEBrasilSystem.getPlugin();
         // get data
         LocalDate deadline = LocalDate.now(); // x = 10
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd LLLL yyyy");
@@ -71,6 +72,10 @@ public class GerenciarListas {
         int cont = 0;
         for (Aplicantes d : aplicante.getValues()) {
             if (d.getDeadLine() != null && d.getDeadLine().contains(data)) {
+                if (Bukkit.getOnlinePlayers().size() == 0){
+                    plugin.aps=true;
+                }
+                else{
                 Zn = GerenciarListas.getZona(d.getZona());
                 // Remove regiões
                 regions.removeRegion("apply" + d.getZona() + "d");
@@ -88,6 +93,7 @@ public class GerenciarListas {
                 Sistemas.removeRegion(w, Zn);
                 DiscordPonte.sendMessage(d.getDiscord(), Mensagens.TimesUp);
                 cont++;
+                }
             }
         }
         if (cont > 0) {

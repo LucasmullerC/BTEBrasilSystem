@@ -39,6 +39,7 @@ import io.github.LucasMullerC.Util.Mensagens;
 public final class BTEBrasilSystem extends JavaPlugin implements Listener {
 	private static BTEBrasilSystem instance;
 	GerenciarListas GL;
+	public static boolean aps = false;
 
 	@Override
 	public void onEnable() {
@@ -157,6 +158,10 @@ public final class BTEBrasilSystem extends JavaPlugin implements Listener {
 				}
 			}
 		}, 30L);
+		if(aps == true){
+			GerenciarListas.DeletarDeadLines();
+			aps = false;
+		}
 	}
 
 	@Override

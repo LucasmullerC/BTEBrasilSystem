@@ -25,7 +25,7 @@ public class completo implements CommandExecutor {
         if (GerenciarListas.getPendentebyName(A.getUUID()) == null) {
             if (A.getSeccao().equals("d")) {
                 GerenciarListas.addPendente(id.toString());
-                DiscordPonte.AnalisarReserva(A.getTime());
+                DiscordPonte.AnalisarReserva(A.getTime(),A.getDiscord());
                 Sistemas.RemovePermissao(player, A.getZona());
                 player.sendMessage(ChatColor.GOLD + Mensagens.AppEnviada);
                 return true;

@@ -35,7 +35,7 @@ public class Mensagens {
     public static String AppRemind = "Lembre-se de seguir as instruções dos videos!";
     public static String AppEnviada = "Sua aplicação foi enviada para o Time que você escolheu e logo será analisada!";
     public static String AnalisePend = "Você já tem uma analise pendente!";
-    public static String PendenteMsg = "Existem aplicações para serem analisadas, Se estiver disponivel entre na network e digite **/analisar**";
+    public static String PendenteMsg = "Uma nova aplicação foi enviada! Se estiver disponivel entre na network e digite **/analisar**";
     public static String NotCompleto = "Você ainda não terminou a Aplicação! Digite /proximo para passar para a próxima zona.";
     public static String Tagadd = "Tag adicionada!";
     public static String TagRemove = "Tag removida!";

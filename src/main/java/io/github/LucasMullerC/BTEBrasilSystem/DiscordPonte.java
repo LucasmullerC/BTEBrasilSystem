@@ -53,21 +53,28 @@ public class DiscordPonte {
         return user.getName();
     }
 
-    public static void AnalisarReserva(String time) {
+    public static void AnalisarReserva(String time,String Discord) {
         if (time.equals("b_ne")) {
             chatne.sendMessage("<@&812638293061271582> " + Mensagens.PendenteMsg).queue();
+            chatne.sendMessage("Usuário: " + GetDiscordName(Discord)).queue();
         } else if (time.equals("b_sp")) {
             chatsp.sendMessage("<@&725444191445975050> " + Mensagens.PendenteMsg).queue();
+            chatsp.sendMessage("Usuário: " + GetDiscordName(Discord)).queue();
         } else if (time.equals("b_sul")) {
             chatsul.sendMessage("<@&782653746747539506> " + Mensagens.PendenteMsg).queue();
+            chatsul.sendMessage("Usuário: " + GetDiscordName(Discord)).queue();
         } else if (time.equals("b_co")) {
             chatco.sendMessage("<@&796455369777872937> " + Mensagens.PendenteMsg).queue();
+            chatco.sendMessage("Usuário: " + GetDiscordName(Discord)).queue();
         } else if (time.equals("b_mg")) {
             chatmg.sendMessage("<@&812707020993462293> " + Mensagens.PendenteMsg).queue();
+            chatmg.sendMessage("Usuário: " + GetDiscordName(Discord)).queue();
         } else if (time.equals("b_es")) {
             chates.sendMessage("<@&801622384460955679> " + Mensagens.PendenteMsg).queue();
+            chates.sendMessage("Usuário: " + GetDiscordName(Discord)).queue();
         } else if (time.equals("b_rj")) {
             chatrj.sendMessage("<@&822515371528814632> " + Mensagens.PendenteMsg).queue();
+            chatrj.sendMessage("Usuário: " + GetDiscordName(Discord)).queue();
         }
     }
 
