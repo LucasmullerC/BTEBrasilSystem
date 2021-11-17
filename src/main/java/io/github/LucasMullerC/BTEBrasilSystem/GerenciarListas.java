@@ -151,10 +151,10 @@ public class GerenciarListas {
             if (pos == 6 || pos == 11 || pos == 16 || pos == 21 || pos == 26 || pos == 31 || pos == 36) {
                 Integer posterior = pos - 5;
                 zonaold = getZonaPos(posterior.toString());
-                L = new Location(w, zonaold.getla().getX() - 90, zonaold.getla().getY(), zonaold.getla().getZ());
-                lb = new Location(w, zonaold.getlb().getX() - 90, zonaold.getlb().getY(), zonaold.getlb().getZ());
-                lc = new Location(w, zonaold.getlc().getX() - 90, zonaold.getlc().getY(), zonaold.getlc().getZ());
-                ld = new Location(w, zonaold.getld().getX() - 90, zonaold.getld().getY(), zonaold.getld().getZ());
+                L = new Location(w, zonaold.getla().getX() + 90, zonaold.getla().getY(), zonaold.getla().getZ());
+                lb = new Location(w, zonaold.getlb().getX() + 90, zonaold.getlb().getY(), zonaold.getlb().getZ());
+                lc = new Location(w, zonaold.getlc().getX() + 90, zonaold.getlc().getY(), zonaold.getlc().getZ());
+                ld = new Location(w, zonaold.getld().getX() + 90, zonaold.getld().getY(), zonaold.getld().getZ());
                 // worldguard
                 Regioes.CreateRegion(pos, player, true);
             } else {

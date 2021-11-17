@@ -158,19 +158,19 @@ public class Regioes {
                         members = regiond.getMembers();
                         members.addPlayer(player.getUniqueId());
                 } else {
-                        Integer zonapost = zona - 1;
-                        ProtectedRegion regionposta = regions.getRegion("apply" + zonapost.toString() + "a");
-                        ProtectedRegion regionpostb = regions.getRegion("apply" + zonapost.toString() + "b");
-                        ProtectedRegion regionpostc = regions.getRegion("apply" + zonapost.toString() + "c");
-                        ProtectedRegion regionpostd = regions.getRegion("apply" + zonapost.toString() + "d");
                         if (sobe == true) {
+                                Integer zonapost = zona - 5;
+                                ProtectedRegion regionposta = regions.getRegion("apply" + zonapost.toString() + "a");
+                                ProtectedRegion regionpostb = regions.getRegion("apply" + zonapost.toString() + "b");
+                                ProtectedRegion regionpostc = regions.getRegion("apply" + zonapost.toString() + "c");
+                                ProtectedRegion regionpostd = regions.getRegion("apply" + zonapost.toString() + "d");
                                 // a
                                 ProtectedPolygonalRegion polygona = (ProtectedPolygonalRegion) regionposta;
                                 List<BlockVector2D> pointsaold = polygona.getPoints();
                                 List<BlockVector2D> pointsanew = Lists.newArrayList(); // Call from Guava
                                 for (int i = 0; i < pointsaold.size(); i++) {
                                         pointsaold.get(i).getBlockX();
-                                        pointsanew.add(new BlockVector2D(pointsaold.get(i).getBlockX() - 90,
+                                        pointsanew.add(new BlockVector2D(pointsaold.get(i).getBlockX() + 90,
                                                         pointsaold.get(i).getBlockZ()));
                                 }
                                 int minY = 31;
@@ -186,7 +186,7 @@ public class Regioes {
                                 List<BlockVector2D> pointsbnew = Lists.newArrayList(); // Call from Guava
                                 for (int i = 0; i < pointsbold.size(); i++) {
                                         pointsbold.get(i).getBlockX();
-                                        pointsbnew.add(new BlockVector2D(pointsbold.get(i).getBlockX() - 90,
+                                        pointsbnew.add(new BlockVector2D(pointsbold.get(i).getBlockX() + 90,
                                                         pointsbold.get(i).getBlockZ()));
                                 }
                                 minY = 31;
@@ -202,7 +202,7 @@ public class Regioes {
                                 List<BlockVector2D> pointscnew = Lists.newArrayList(); // Call from Guava
                                 for (int i = 0; i < pointscold.size(); i++) {
                                         pointscold.get(i).getBlockX();
-                                        pointscnew.add(new BlockVector2D(pointscold.get(i).getBlockX() - 90,
+                                        pointscnew.add(new BlockVector2D(pointscold.get(i).getBlockX() + 90,
                                                         pointscold.get(i).getBlockZ()));
                                 }
                                 minY = 30;
@@ -229,6 +229,11 @@ public class Regioes {
                                 members = regiond.getMembers();
                                 members.addPlayer(player.getUniqueId());
                         } else { // desce
+                                Integer zonapost = zona - 1;
+                                ProtectedRegion regionposta = regions.getRegion("apply" + zonapost.toString() + "a");
+                                ProtectedRegion regionpostb = regions.getRegion("apply" + zonapost.toString() + "b");
+                                ProtectedRegion regionpostc = regions.getRegion("apply" + zonapost.toString() + "c");
+                                ProtectedRegion regionpostd = regions.getRegion("apply" + zonapost.toString() + "d");
                                  // a
                                 ProtectedPolygonalRegion polygona = (ProtectedPolygonalRegion) regionposta;
                                 List<BlockVector2D> pointsaold = polygona.getPoints();
