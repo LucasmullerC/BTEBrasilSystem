@@ -59,6 +59,7 @@ public class GerenciarListas {
 
     public static void DeletarDeadLines() {
         Aplicantes AP;
+        ArrayList<Aplicantes> ParaRemover = new ArrayList<Aplicantes>();
         BTEBrasilSystem plugin = BTEBrasilSystem.getPlugin();
         // get data
         LocalDate deadline = LocalDate.now(); // x = 10
@@ -83,7 +84,8 @@ public class GerenciarListas {
                 regions.removeRegion("apply" + d.getZona() + "b");
                 regions.removeRegion("apply" + d.getZona() + "a");
                 // Remove Listas
-                GerenciarListas.RemoverAplicante(d.getUUID());
+                ParaRemover.add(d);
+                //GerenciarListas.RemoverAplicante(d.getUUID());
                 GerenciarListas.RemoverZona(Zn);
                 if (GerenciarListas.getPendentebyName(d.getUUID()) != null) {
                     AP = GerenciarListas.getPendentebyName(d.getUUID());
@@ -97,6 +99,9 @@ public class GerenciarListas {
             }
         }
         if (cont > 0) {
+            for(Aplicantes b : ParaRemover){
+                GerenciarListas.RemoverAplicante(b.getUUID());
+            }
             DiscordPonte.TimesUpMsg(cont);
         }
     }
