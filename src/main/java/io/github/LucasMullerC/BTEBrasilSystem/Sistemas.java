@@ -136,7 +136,8 @@ public class Sistemas {
     public static void DetectarDeadLine() {
         TimerTask repeatedTask = new TimerTask() {
             public void run() {
-                GerenciarListas.DeletarDeadLines();
+                World w = Bukkit.getServer().getWorld("TerraPreGenerated");
+                GerenciarListas.DeletarDeadLines(w);
             }
         };
         Timer timer = new Timer("Timer");

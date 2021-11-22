@@ -75,15 +75,7 @@ public final class BTEBrasilSystem extends JavaPlugin implements Listener {
 		GL.zonas.load();
 		// Inicializou sem problemas.
 		getLogger().info("BTEBrasilSystem Ativado!");
-		BukkitScheduler scheduler = Bukkit.getServer().getScheduler();
-		scheduler.scheduleSyncDelayedTask(this.instance, new Runnable() {
-
-			@Override
-			public void run() {
-				Sistemas.DetectarDeadLine();
-			}
-
-		}, 500L);
+		Sistemas.DetectarDeadLine();
 	}
 
 	// Listener para quando alguém entrar no servidor
@@ -159,8 +151,14 @@ public final class BTEBrasilSystem extends JavaPlugin implements Listener {
 			}
 		}, 30L);
 		if(aps == true){
-			GerenciarListas.DeletarDeadLines();
-			aps = false;
+			scheduler.scheduleSyncDelayedTask(this.instance, new Runnable() {
+
+				@Override
+				public void run() {
+					GerenciarListas.DeletarDeadLines(event.getPlayer().getWorld());
+					aps = false;
+				}
+			}, 30L);
 		}
 	}
 

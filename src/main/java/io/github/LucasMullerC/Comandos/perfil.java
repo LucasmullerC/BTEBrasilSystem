@@ -41,7 +41,7 @@ public class perfil implements CommandExecutor {
             } else if (E.getTime().equals("b_sul")) {
                 player.sendMessage(ChatColor.RED + "EQUIPE - " + ChatColor.GOLD + "Time Sul");
             } else if (E.getTime().equals("b_co")) {
-                player.sendMessage(ChatColor.RED + "EQUIPE - " + ChatColor.GOLD + "Time Centro-Oeste");
+                player.sendMessage(ChatColor.RED + "EQUIPE - " + ChatColor.GOLD + "Time Centro-Oeste e Norte");
             }
         }
         if (DiscordSRV.getPlugin().getAccountLinkManager().getDiscordId(player.getUniqueId()) != null) {
@@ -63,7 +63,7 @@ public class perfil implements CommandExecutor {
                 } else if (d.getKey() != null && d.getKey().contains("group.b_sul")) {
                     motivo += "Time Sul,";
                 } else if (d.getKey() != null && d.getKey().contains("group.b_co")) {
-                    motivo += "Time Centro-Oeste,";
+                    motivo += "Time Centro-Oeste e Norte,";
                 }
             }
             motivo = motivo.trim();

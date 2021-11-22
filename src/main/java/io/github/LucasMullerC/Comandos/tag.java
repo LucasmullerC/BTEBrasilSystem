@@ -48,7 +48,7 @@ public class tag implements CommandExecutor {
         user.data().remove(Node.builder("prefix.0.&9Construtor_MG").build());
         user.data().remove(Node.builder("prefix.0.&9Construtor_SUL").build());
         user.data().remove(Node.builder("prefix.0.&9Construtor_NE").build());
-        user.data().remove(Node.builder("prefix.0.&9Construtor_CO").build());
+        user.data().remove(Node.builder("prefix.0.&9Construtor_CO_N").build());
         user.data().add(Node.builder(permission).build());
         api.getUserManager().saveUser(user);
     }
@@ -61,7 +61,7 @@ public class tag implements CommandExecutor {
         user.data().remove(Node.builder("prefix.0.&9Construtor_MG").build());
         user.data().remove(Node.builder("prefix.0.&9Construtor_SUL").build());
         user.data().remove(Node.builder("prefix.0.&9Construtor_NE").build());
-        user.data().remove(Node.builder("prefix.0.&9Construtor_CO").build());
+        user.data().remove(Node.builder("prefix.0.&9Construtor_CO_N").build());
         api.getUserManager().saveUser(user);
     }
 }

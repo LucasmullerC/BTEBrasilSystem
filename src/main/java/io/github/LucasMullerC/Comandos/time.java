@@ -22,42 +22,9 @@ public class time implements CommandExecutor {
         if (command.getName().equalsIgnoreCase("time")) {
             A = GerenciarListas.getAplicante(id.toString());
             if (A != null) {
-                if (A.getTime().equals("b_ne")) {
-                    String txt = "https://buildtheearth.net/buildteams/217/join";
+                String txt = "https://buildtheearth.net/buildteams/239/join";
                     player.sendMessage(ChatColor.BLUE + txt);
                     DiscordPonte.sendMessage(A.getDiscord(), txt);
-                    return true;
-                } else if (A.getTime().equals("b_sp")) {
-                    String txt = "https://buildtheearth.net/buildteams/45/join";
-                    player.sendMessage(ChatColor.BLUE + txt);
-                    DiscordPonte.sendMessage(A.getDiscord(), txt);
-                    return true;
-                } else if (A.getTime().equals("b_sul")) {
-                    String txt = "https://buildtheearth.net/buildteams/233/join";
-                    player.sendMessage(ChatColor.BLUE + txt);
-                    DiscordPonte.sendMessage(A.getDiscord(), txt);
-                    return true;
-                } else if (A.getTime().equals("b_co")) {
-                    String txt = "https://buildtheearth.net/buildteams/239/join";
-                    player.sendMessage(ChatColor.BLUE + txt);
-                    DiscordPonte.sendMessage(A.getDiscord(), txt);
-                    return true;
-                } else if (A.getTime().equals("b_mg")) {
-                    String txt = "https://buildtheearth.net/buildteams/140/join";
-                    player.sendMessage(ChatColor.BLUE + txt);
-                    DiscordPonte.sendMessage(A.getDiscord(), txt);
-                    return true;
-                } else if (A.getTime().equals("b_es")) {
-                    String txt = "https://buildtheearth.net/buildteams/246/join";
-                    player.sendMessage(ChatColor.BLUE + txt);
-                    DiscordPonte.sendMessage(A.getDiscord(), txt);
-                    return true;
-                } else if (A.getTime().equals("b_rj")) {
-                    String txt = "https://buildtheearth.net/buildteams/228/join";
-                    player.sendMessage(ChatColor.BLUE + txt);
-                    DiscordPonte.sendMessage(A.getDiscord(), txt);
-                    return true;
-                }
             } else {
                 player.sendMessage(ChatColor.RED + "Você não está em aplicação!");
                 return true;

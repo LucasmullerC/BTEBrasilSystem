@@ -57,7 +57,7 @@ public class GerenciarListas {
         aplicante.save();
     }
 
-    public static void DeletarDeadLines() {
+    public static void DeletarDeadLines(World w) {
         Aplicantes AP;
         ArrayList<Aplicantes> ParaRemover = new ArrayList<Aplicantes>();
         BTEBrasilSystem plugin = BTEBrasilSystem.getPlugin();
@@ -66,7 +66,7 @@ public class GerenciarListas {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd LLLL yyyy");
         String data = deadline.format(formatter);
         // WorldGuard
-        World w = Bukkit.getWorld("TerraPreGenerated");
+        //World w = Bukkit.getServer().getWorld("TerraPreGenerated");
         WorldGuardPlugin WGplugin = WGBukkit.getPlugin();
         RegionContainer container = WGplugin.getRegionContainer();
         RegionManager regions = container.get(w);
@@ -93,7 +93,7 @@ public class GerenciarListas {
                 }
                 // Remover Zona
                 Sistemas.removeRegion(w, Zn);
-                DiscordPonte.sendMessage(d.getDiscord(), Mensagens.TimesUp);
+               // DiscordPonte.sendMessage(d.getDiscord(), Mensagens.TimesUp);
                 cont++;
                 }
             }
