@@ -44,7 +44,7 @@ public class tag implements CommandExecutor {
         User user = api.getPlayerAdapter(Player.class).getUser(player);
         user.data().remove(Node.builder("prefix.0.&9Construtor_SP").build());
         user.data().remove(Node.builder("prefix.0.&9Construtor_ES").build());
-        user.data().remove(Node.builder("prefix.0.&9Construtor_RJ").build());
+        user.data().remove(Node.builder("prefix.0.&9Construtor_RJ_ES").build());
         user.data().remove(Node.builder("prefix.0.&9Construtor_MG").build());
         user.data().remove(Node.builder("prefix.0.&9Construtor_SUL").build());
         user.data().remove(Node.builder("prefix.0.&9Construtor_NE").build());
@@ -57,7 +57,7 @@ public class tag implements CommandExecutor {
         User user = api.getPlayerAdapter(Player.class).getUser(player);
         user.data().remove(Node.builder("prefix.0.&9Construtor_SP").build());
         user.data().remove(Node.builder("prefix.0.&9Construtor_ES").build());
-        user.data().remove(Node.builder("prefix.0.&9Construtor_RJ").build());
+        user.data().remove(Node.builder("prefix.0.&9Construtor_RJ_ES").build());
         user.data().remove(Node.builder("prefix.0.&9Construtor_MG").build());
         user.data().remove(Node.builder("prefix.0.&9Construtor_SUL").build());
         user.data().remove(Node.builder("prefix.0.&9Construtor_NE").build());

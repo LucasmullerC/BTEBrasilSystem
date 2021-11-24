@@ -218,8 +218,8 @@ public class Regioes {
                                 List<BlockVector2D> pointsdnew = Lists.newArrayList(); // Call from Guava
                                 for (int i = 0; i < pointsdold.size(); i++) {
                                         pointsdold.get(i).getBlockX();
-                                        pointsdnew.add(new BlockVector2D(pointsdold.get(i).getBlockX(),
-                                                        pointsdold.get(i).getBlockZ() + 90));
+                                        pointsdnew.add(new BlockVector2D(pointsdold.get(i).getBlockX()+ 90,
+                                                        pointsdold.get(i).getBlockZ()));
                                 }
                                 minY = 31;
                                 maxY = 42;

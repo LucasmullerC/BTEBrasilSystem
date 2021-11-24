@@ -59,7 +59,7 @@ public class perfil implements CommandExecutor {
                 } else if (d.getKey() != null && d.getKey().contains("group.b_es")) {
                     motivo += "Time Espírito Santo,";
                 } else if (d.getKey() != null && d.getKey().contains("group.b_rj")) {
-                    motivo += "Time Rio de Janeiro,";
+                    motivo += "Time Rio de Janeiro e Espirito Santo,";
                 } else if (d.getKey() != null && d.getKey().contains("group.b_sul")) {
                     motivo += "Time Sul,";
                 } else if (d.getKey() != null && d.getKey().contains("group.b_co")) {
