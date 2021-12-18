@@ -1,55 +1,55 @@
 name: BTEBrasilSystem
 main: io.github.LucasMullerC.BTEBrasilSystem.BTEBrasilSystem
-version: 0.3.0
+version: 0.3.9
 author: LucasMullerC
-depend: [DiscordSRV,WorldGuard]
+depend: [DiscordSRV, WorldGuard]
 commands:
   aplicacao:
-     description: Iniciar Aplicação.
-     usage: /aplicacao
+    description: Iniciar Aplicação.
+    usage: /aplicacao
   proximo:
-     description: Passa para proxima zona.
-     usage: /proximo
+    description: Passa para proxima zona.
+    usage: /proximo
   anterior:
-     description: Voltar para a zona anterior.
-     usage: /anterior
+    description: Voltar para a zona anterior.
+    usage: /anterior
   continuar:
-     description: Continuar Aplicação.
-     usage: /continuar
+    description: Continuar Aplicação.
+    usage: /continuar
   time:
-     description: Link de Aplicação do seu Time.
-     usage: /time
+    description: Link de Aplicação do seu Time.
+    usage: /time
   completo:
-     description: Enviar sua Aplicação.
-     usage: /completo
+    description: Enviar sua Aplicação.
+    usage: /completo
   tag:
-     description: Modificar sua tag.
-     usage: /tag
+    description: Modificar sua tag.
+    usage: /tag
   analisar:
-     description: Analisar uma Aplicacao.
-     usage: /analisar
-     permission: btebrasil.lider
+    description: Analisar uma Aplicacao.
+    usage: /analisar
+    permission: btebrasil.lider
   cancelar:
-     description: Cancelar uma Aplicacao.
-     usage: /cancelar
+    description: Cancelar uma Aplicacao.
+    usage: /cancelar
   addequipe:
-     description: Adicionar Equipe.
-     usage: /addequipe
-     permission: btebrasil.lider
+    description: Adicionar Equipe.
+    usage: /addequipe
+    permission: btebrasil.lider
   removerequipe:
-     description: Remove Equipe.
-     usage: /removerequipe
-     permission: btebrasil.lider
+    description: Remove Equipe.
+    usage: /removerequipe
+    permission: btebrasil.lider
   salvar:
-     description: Salvar Plugin.
-     usage: /salvar
-     permission: btebrasil.lider
+    description: Salvar Plugin.
+    usage: /salvar
+    permission: btebrasil.lider
   link:
-     description: Linkar sua conta do Discord.
-     usage: /link
+    description: Linkar sua conta do Discord.
+    usage: /link
   deslink:
-     description: Deslinkar sua conta do Discord.
-     usage: /deslink
+    description: Deslinkar sua conta do Discord.
+    usage: /deslink
   perfil:
-     description: Seu Perfil.
-     usage: /perfil
+    description: Seu Perfil.
+    usage: /perfil

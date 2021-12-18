@@ -17,6 +17,7 @@ public class DiscordPonte {
     static TextChannel chatrj = DiscordUtil.getTextChannelById("781654144108331038");
     static TextChannel chates = DiscordUtil.getTextChannelById("801625498026377226");
     static TextChannel chatbr = DiscordUtil.getTextChannelById("717528858777354272");
+    static TextChannel chatbrlog = DiscordUtil.getTextChannelById("921811170086776942");
 
     public static boolean CheckDiscord(String id, String Server) {
         Guild guild = DiscordUtil.getJda().getGuildById(Server); // ID do discord do time
@@ -54,28 +55,24 @@ public class DiscordPonte {
     }
 
     public static void AnalisarReserva(String time,String Discord) {
+        String Equipe = "";
         if (time.equals("b_ne")) {
-            chatne.sendMessage("<@&812638293061271582> " + Mensagens.PendenteMsg).queue();
-            chatne.sendMessage("Usuário: " + GetDiscordName(Discord)).queue();
+            Equipe = "921809374819799181";
         } else if (time.equals("b_sp")) {
-            chatsp.sendMessage("<@&725444191445975050> " + Mensagens.PendenteMsg).queue();
-            chatsp.sendMessage("Usuário: " + GetDiscordName(Discord)).queue();
+            Equipe = "921809921492787230";
         } else if (time.equals("b_sul")) {
-            chatsul.sendMessage("<@&782653746747539506> " + Mensagens.PendenteMsg).queue();
-            chatsul.sendMessage("Usuário: " + GetDiscordName(Discord)).queue();
+            Equipe = "921810096131043418";
         } else if (time.equals("b_co")) {
-            chatco.sendMessage("<@&796455369777872937> " + Mensagens.PendenteMsg).queue();
-            chatco.sendMessage("Usuário: " + GetDiscordName(Discord)).queue();
+            Equipe = "921810711364120576";
         } else if (time.equals("b_mg")) {
-            chatmg.sendMessage("<@&812707020993462293> " + Mensagens.PendenteMsg).queue();
-            chatmg.sendMessage("Usuário: " + GetDiscordName(Discord)).queue();
+            Equipe = "921810239735595021";
         } else if (time.equals("b_es")) {
-            chates.sendMessage("<@&801622384460955679> " + Mensagens.PendenteMsg).queue();
-            chates.sendMessage("Usuário: " + GetDiscordName(Discord)).queue();
+            Equipe = "921810397391110184";
         } else if (time.equals("b_rj")) {
-            chatrj.sendMessage("<@&822515371528814632> " + Mensagens.PendenteMsg).queue();
-            chatrj.sendMessage("Usuário: " + GetDiscordName(Discord)).queue();
+            Equipe = "921810397391110184";
         }
+        chatbrlog.sendMessage("<@&"+Equipe+"> " + Mensagens.PendenteMsg).queue();
+        chatbrlog.sendMessage("Usuário: " + GetDiscordName(Discord)).queue();
     }
 
     public static void addCargo(String UUID, String time, String Discord) {
