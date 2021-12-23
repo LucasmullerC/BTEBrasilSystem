@@ -213,7 +213,10 @@ public class GerenciarListas {
     private static Zonas getZonaPos(String search) {
         for (Zonas d : zonas.getValues()) {
             if (d.getZona() != null && d.getZona().contains(search)) {
-                return d;
+                if(d.getZona().equals(search)){
+                    return d;
+                }
+                
             }
         }
         return null;
