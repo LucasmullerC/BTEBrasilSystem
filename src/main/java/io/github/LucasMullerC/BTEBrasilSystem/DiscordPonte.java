@@ -1,11 +1,24 @@
 package io.github.LucasMullerC.BTEBrasilSystem;
 
+import java.util.UUID;
+
+import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
+import org.bukkit.entity.Player;
+
 import github.scarsz.discordsrv.dependencies.jda.api.entities.Guild;
 import github.scarsz.discordsrv.dependencies.jda.api.entities.Member;
+import github.scarsz.discordsrv.dependencies.jda.api.entities.MessageEmbed;
 import github.scarsz.discordsrv.dependencies.jda.api.entities.Role;
 import github.scarsz.discordsrv.dependencies.jda.api.entities.TextChannel;
 import github.scarsz.discordsrv.dependencies.jda.api.entities.User;
+import github.scarsz.discordsrv.dependencies.jda.api.entities.MessageEmbed.AuthorInfo;
+import github.scarsz.discordsrv.dependencies.jda.api.entities.MessageEmbed.Footer;
+import github.scarsz.discordsrv.dependencies.jda.api.entities.MessageEmbed.ImageInfo;
+import github.scarsz.discordsrv.dependencies.jda.api.entities.MessageEmbed.Thumbnail;
 import github.scarsz.discordsrv.util.DiscordUtil;
+import io.github.LucasMullerC.Objetos.Areas;
+import io.github.LucasMullerC.Objetos.Conquistas;
 import io.github.LucasMullerC.Util.Mensagens;
 
 public class DiscordPonte {
@@ -46,7 +59,44 @@ public class DiscordPonte {
     }
 
     public static void TimesUpMsg(Integer cont) {
-        chatbr.sendMessage(cont.toString() + Mensagens.TimesUpAdm).queue();
+        chatbrlog.sendMessage(cont.toString() + Mensagens.TimesUpAdm).queue();
+    }
+    public static void EditarMsg(Areas A) {
+        chatbrlog.sendMessage(Mensagens.OClaim+"**"+A.getClaim()+"**"+Mensagens.ClaimEditarDiscord+"**"+A.getBuilds()+"**").queue();
+    }
+    public static void ImgAdicionada(Areas A,String Link) {
+        chatbrlog.sendMessage(Mensagens.NovaImgMsg(A.getClaim(), Link)).queue();
+    }
+
+    public static void NextLevel(String rank,String Discord,Player player) {
+        TextChannel teste = DiscordUtil.getTextChannelById("804113824281133056");
+
+        Thumbnail thumb = new Thumbnail("https://i.imgur.com/M5E4LHt.png", null, 100, 100); // thumb
+        AuthorInfo auth = new AuthorInfo(player.getDisplayName(), null,
+                "https://crafatar.com/avatars/"+player.getUniqueId().toString(), null);
+        Footer ft = new Footer("Build The Earth: Brasil", null, null);
+        MessageEmbed emb2 = new MessageEmbed(null, Mensagens.Parabens,
+                Mensagens.NextLevelDiscord(rank), null, null, 52224, thumb, null, auth, null, ft,
+                null, null);
+        //MUDAR CHAT DE BOTS BTE BR OU PRIVADO        
+        teste.sendMessage("<@"+Discord+">").queue();
+        teste.sendMessage(emb2).queue();
+    }
+    public static void Awards(Conquistas C,String Discord,String uid) {
+        TextChannel teste = DiscordUtil.getTextChannelById("804113824281133056");
+
+        OfflinePlayer player = Bukkit.getOfflinePlayer(UUID.fromString(uid));
+        Thumbnail thumb = new Thumbnail("https://i.imgur.com/M5E4LHt.png", null, 100, 100); // thumb
+        AuthorInfo auth = new AuthorInfo(player.getName(), null,
+                "https://crafatar.com/avatars/"+player.getUniqueId().toString(), null);
+        Footer ft = new Footer("Build The Earth: Brasil", null, null);
+        ImageInfo img = new ImageInfo(C.getURL(), null, 105, 30); //Award talvez?
+        MessageEmbed emb2 = new MessageEmbed(null, Mensagens.Parabens,
+                Mensagens.ConquistaDiscord(String.valueOf(C.getPontos()),C.getNome(),C.getID()), null, null, 52224, thumb, null, auth, null, ft,
+                img, null);
+        //MUDAR CHAT DE BOTS BTE BR OU PRIVADO        
+        teste.sendMessage("<@"+Discord+">").queue();
+        teste.sendMessage(emb2).queue();
     }
 
     public static String GetDiscordName(String id) {
@@ -54,7 +104,7 @@ public class DiscordPonte {
         return user.getName();
     }
 
-    public static void AnalisarReserva(String time,String Discord) {
+    public static void AnalisarReserva(String time, String Discord) {
         String Equipe = "";
         if (time.equals("b_ne")) {
             Equipe = "921809374819799181";
@@ -71,8 +121,14 @@ public class DiscordPonte {
         } else if (time.equals("b_rj")) {
             Equipe = "921810397391110184";
         }
-        chatbrlog.sendMessage("<@&"+Equipe+"> " + Mensagens.PendenteMsg).queue();
+        chatbrlog.sendMessage("<@&" + Equipe + "> " + Mensagens.PendenteMsg).queue();
         chatbrlog.sendMessage("Usuário: " + GetDiscordName(Discord)).queue();
+    }
+
+    public static void AnalisarClaim(String area, String Discord) {
+        // MUDAR PARA chatbrlog
+        chatbr.sendMessage("<@&826599049297264640> O usuário: **" + GetDiscordName(Discord) + "**"
+                + Mensagens.PendenteMsgClaim1 + "**" + area + "**" + Mensagens.PendenteMsgClaim2).queue();
     }
 
     public static void addCargo(String UUID, String time, String Discord) {

@@ -10,7 +10,7 @@ import org.bukkit.entity.Player;
 
 import io.github.LucasMullerC.BTEBrasilSystem.DiscordPonte;
 import io.github.LucasMullerC.BTEBrasilSystem.GerenciarListas;
-import io.github.LucasMullerC.BTEBrasilSystem.Sistemas;
+import io.github.LucasMullerC.BTEBrasilSystem.Regioes;
 import io.github.LucasMullerC.Objetos.Aplicantes;
 import io.github.LucasMullerC.Util.Mensagens;
 
@@ -22,11 +22,11 @@ public class completo implements CommandExecutor {
         Player player = (Player) sender;
         UUID id = player.getUniqueId();
         A = GerenciarListas.getAplicante(id.toString());
-        if (GerenciarListas.getPendentebyName(A.getUUID()) == null) {
+        if (GerenciarListas.getPendentebyNameAplicacao(A.getUUID()) == null) {
             if (A.getSeccao().equals("d")) {
-                GerenciarListas.addPendente(id.toString());
+                GerenciarListas.addPendenteAplicacao(A.getUUID());
                 DiscordPonte.AnalisarReserva(A.getTime(),A.getDiscord());
-                Sistemas.RemovePermissao(player, A.getZona());
+                Regioes.RemovePermissao(player, A.getZona());
                 player.sendMessage(ChatColor.GOLD + Mensagens.AppEnviada);
                 return true;
             } else {

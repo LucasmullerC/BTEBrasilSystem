@@ -1,6 +1,6 @@
 name: BTEBrasilSystem
 main: io.github.LucasMullerC.BTEBrasilSystem.BTEBrasilSystem
-version: 0.3.10
+version: 0.4.0
 author: LucasMullerC
 depend: [DiscordSRV, WorldGuard]
 commands:
@@ -32,18 +32,10 @@ commands:
   cancelar:
     description: Cancelar uma Aplicacao.
     usage: /cancelar
-  addequipe:
-    description: Adicionar Equipe.
-    usage: /addequipe
-    permission: btebrasil.lider
-  removerequipe:
-    description: Remove Equipe.
-    usage: /removerequipe
-    permission: btebrasil.lider
   salvar:
     description: Salvar Plugin.
     usage: /salvar
-    permission: btebrasil.lider
+    permission: btebrasil.adm
   link:
     description: Linkar sua conta do Discord.
     usage: /link
@@ -53,3 +45,10 @@ commands:
   perfil:
     description: Seu Perfil.
     usage: /perfil
+  status:
+    description: Seu Status.
+    usage: /status
+  claim:
+    description: Operações com claims.
+    usage: /claim [add|abandonar|completo|equipe]
+    permission: btebrasil.builder

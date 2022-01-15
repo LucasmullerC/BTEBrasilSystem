@@ -20,13 +20,15 @@ import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.potion.PotionEffectType;
 
 import io.github.LucasMullerC.BTEBrasilSystem.GerenciarListas;
-import io.github.LucasMullerC.BTEBrasilSystem.Sistemas;
+import io.github.LucasMullerC.BTEBrasilSystem.Regioes;
 import io.github.LucasMullerC.Objetos.Aplicantes;
+import io.github.LucasMullerC.Objetos.Pendentes;
 import io.github.LucasMullerC.Objetos.Zonas;
 import io.github.LucasMullerC.Util.Mensagens;
 
 public class cancelar implements CommandExecutor {
-    Aplicantes A, AP;
+    Aplicantes A;
+    Pendentes AP;
     Zonas Zn;
 
     @Override
@@ -53,13 +55,12 @@ public class cancelar implements CommandExecutor {
                 // Remove Listas
                 GerenciarListas.RemoverAplicante(A.getUUID());
                 GerenciarListas.RemoverZona(Zn);
-                if (GerenciarListas.getPendentebyName(A.getUUID()) != null) {
-                    AP = GerenciarListas.getPendentebyName(A.getUUID());
-                    GerenciarListas.RemoverPendente(AP);
+                if (GerenciarListas.getPendentebyNameAplicacao(A.getUUID()) != null) {
+                    GerenciarListas.RemoverPendenteAplicacao(A.getUUID());
                 }
                 // Remover Zona
                 player.sendMessage(ChatColor.RED + Mensagens.ZonaDel);
-                Sistemas.removeRegion(w, Zn);
+                Regioes.removeRegion(w, Zn);
                 player.sendMessage(ChatColor.GREEN + Mensagens.ZonaDel1);
                 // Teleporta Player
                 Location l = new Location(w, -1163, 80, 300);
@@ -67,7 +68,7 @@ public class cancelar implements CommandExecutor {
                 player.removePotionEffect(PotionEffectType.NIGHT_VISION);
                 PlayerInventory inventory = player.getInventory();
                 inventory.clear();
-                Sistemas.RemovePermissao(player, A.getZona());
+                Regioes.RemovePermissao(player, A.getZona());
                 return true;
             }
         } else if (args[0] != null) {
@@ -89,13 +90,12 @@ public class cancelar implements CommandExecutor {
                     // Remove Listas
                     GerenciarListas.RemoverAplicante(A.getUUID());
                     GerenciarListas.RemoverZona(Zn);
-                    if (GerenciarListas.getPendentebyName(A.getUUID()) != null) {
-                        AP = GerenciarListas.getPendentebyName(A.getUUID());
-                        GerenciarListas.RemoverPendente(AP);
+                    if (GerenciarListas.getPendentebyNameAplicacao(A.getUUID()) != null) {
+                        GerenciarListas.RemoverPendenteAplicacao(A.getTime());
                     }
                     // Remover Zona
                     player.sendMessage(ChatColor.RED + Mensagens.ZonaDel);
-                    Sistemas.removeRegion(w, Zn);
+                    Regioes.removeRegion(w, Zn);
                     player.sendMessage(ChatColor.GREEN + Mensagens.ZonaDel1);
                     // Teleporta Player
                     Location l = new Location(w, -1163, 80, 300);
@@ -107,7 +107,7 @@ public class cancelar implements CommandExecutor {
                         PlayerInventory inventory = app.getInventory();
                         inventory.clear();
                         app.teleport(l);
-                        Sistemas.RemovePermissao(app, A.getZona());
+                        Regioes.RemovePermissao(app, A.getZona());
                     }
                     return true;
                 }
