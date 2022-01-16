@@ -191,7 +191,7 @@ public class Regioes {
             }
         }
         ConsoleCommandSender console = Bukkit.getServer().getConsoleSender();  
-        if(A.getStatus() =="T"){
+        if(A.getStatus().equals("T")){
             Bukkit.dispatchCommand(console, "region flag "+Id+" -w TerraPreGenerated greeting-title &a"+A.getNome());
         }
         else{
