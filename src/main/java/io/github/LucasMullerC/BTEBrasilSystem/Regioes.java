@@ -100,7 +100,7 @@ public class Regioes {
                             else {
                                 // Verifica se a coordenada está contida na região
                                 if (region.contains(xp, 0, zp)) {
-                                    if (xp - x >= 5 && zp - z >= 5)
+                                    if (xp - x >= 20 && zp - z >= 20)
                                         return "1"; // 1 = Região intersecciona outra região
                                 }
                             }
