@@ -51,10 +51,16 @@ public class DiscordSrvListener {
             case "!ranks":
                 new ranks(msg);
                 break;
+            case "!rank":
+                new ranks(msg);
+                break;
             case "!lb":
                 new lb(msg);
                 break;
             case "!conquistas":
+                new conquistas(msg);
+                break;
+            case "!conquista":
                 new conquistas(msg);
                 break;
         }

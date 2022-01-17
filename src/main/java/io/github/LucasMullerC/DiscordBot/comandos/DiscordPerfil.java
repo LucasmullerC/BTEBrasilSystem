@@ -67,9 +67,11 @@ public class DiscordPerfil {
             img = new ImageInfo(C.getURL(), null, 105, 30);
             desc = true;
         }
+        String pts = String.valueOf(B.getPontos());
+        pts = pts.substring(0, pts.indexOf(".")+2);
         MessageEmbed emb2 = new MessageEmbed(null, Mensagens.PerfilDiscordTitle(u.getName()),
                 Mensagens.PerfilDiscordBody(String.valueOf(B.getTier()), String.valueOf(B.getBuilds()), qtdAreas,
-                        qtdCompletos, String.valueOf(B.getPontos()),desc,NextLvl),
+                        qtdCompletos, pts,desc,NextLvl),
                 null, null, 52224, thumb, null, null, null, ft,
                 img, null);
 

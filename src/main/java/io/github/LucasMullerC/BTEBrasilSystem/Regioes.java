@@ -161,24 +161,6 @@ public class Regioes {
         AddFlags(Id);
         addLuckPerms(Id, player.getUniqueId());
     }
-    public static void AddClaimCompleto(String coords, String Id, Player player) {
-        WorldGuardPlugin WGplugin = WGBukkit.getPlugin();
-        World w = player.getWorld();
-        RegionContainer container = WGplugin.getRegionContainer();
-        RegionManager regions = container.get(w);
-        String[] ary = coords.split(",");
-        List<BlockVector2D> points = Lists.newArrayList();
-        for (int i = 0; i < (ary.length - 1); i += 2) {
-            points.add(new BlockVector2D(Integer.parseInt(ary[i].split("\\.")[0]),
-                    Integer.parseInt(ary[i + 1].split("\\.")[0])));
-        }
-        int minY = -100;
-        int maxY = 3500;
-        ProtectedRegion regiona = new ProtectedPolygonalRegion(Id, points, minY, maxY);  
-        regiona.setPriority(1);
-        regions.addRegion(regiona);
-        AddFlags(Id);
-    }
     public static void AddFlags(String Id){
         Areas A = GerenciarListas.getArea(Id);
         OfflinePlayer lider = Bukkit.getOfflinePlayer(UUID.fromString(A.getPlayer()));

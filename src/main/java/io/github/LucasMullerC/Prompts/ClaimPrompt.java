@@ -27,7 +27,7 @@ public class ClaimPrompt {
     OfflinePlayer Amigo;
     String pontos, Builds, Uid, Claimid;
     String[] participante;
-    Areas A;
+    static Areas A;
     int size, cont = 0;
 
     public ClaimPrompt(Player player, String pontos, String Uid) {
@@ -224,15 +224,24 @@ public class ClaimPrompt {
                     // Verifica se o participante é construtor
                     if (Sistemas.VerificarBuilder(convite) == true) {
                         GerenciarListas.addBuilder(id.toString(), discordId);
-                        participante = A.getParticipantes().split(",");
-                        if (!Arrays.stream(participante).anyMatch(id::equals)) {
+                        String pp = A.getParticipantes();
+                        if(pp.equals("nulo")){
                             GerenciarListas.setParticipante(A.getClaim(), id);
                             Regioes.addPermissaoWG(A.getClaim(), convite, convite.getUniqueId());
                             context.getForWhom().sendRawMessage(ChatColor.GREEN + Mensagens.Equipe1);
                             return END_OF_CONVERSATION;
-                        } else {
-                            context.getForWhom().sendRawMessage(ChatColor.RED + Mensagens.Equipe2);
-                            return END_OF_CONVERSATION;
+                        }
+                        else{
+                            participante =pp.split(",");
+                            if (!Arrays.stream(participante).anyMatch(id::equals)) {
+                                GerenciarListas.setParticipante(A.getClaim(), id);
+                                Regioes.addPermissaoWG(A.getClaim(), convite, convite.getUniqueId());
+                                context.getForWhom().sendRawMessage(ChatColor.GREEN + Mensagens.Equipe1);
+                                return END_OF_CONVERSATION;
+                            } else {
+                                context.getForWhom().sendRawMessage(ChatColor.RED + Mensagens.Equipe2);
+                                return END_OF_CONVERSATION;
+                            }
                         }
                     } else {
                         context.getForWhom().sendRawMessage(ChatColor.RED + Mensagens.EquipeNotBuilder);
@@ -463,7 +472,7 @@ public class ClaimPrompt {
                     A = GerenciarListas.getArea(input);
                     return nome2;
                 }
-                else if (VefClaim(player, context, input, false) == true) {
+                else if (VefClaim(player, context, input, true) == true) {
                     A = GerenciarListas.getArea(input);
                     return nome2;
                 } else {
@@ -505,7 +514,7 @@ public class ClaimPrompt {
             } while (GerenciarListas.getArea(id) != null);
             // Adiciona na lista
             GerenciarListas.addArea(input, id, pontos, Uid);
-            Regioes.AddClaimCompleto(pontos, id, player);
+            Regioes.AddClaimGuard(pontos, id, player);
             Claimid = id;
             return addcompleto3;
         }
@@ -575,8 +584,68 @@ public class ClaimPrompt {
         }
     };
 
+        // ADD CONSTRUCAO (ADMINS ONLY)
+        public Prompt addconstrucao = new StringPrompt() {
+            @Override
+            public String getPromptText(ConversationContext context) {
+                return ChatColor.BOLD + "Nome do local: (Nome da cidade,Bairro ou Ponto de referencia)";
+            }
+    
+            @Override
+            public Prompt acceptInput(ConversationContext context, String input) {
+                // Gera o ID da região
+                String id;
+                Integer cont = 0;
+                do {
+                    cont++;
+                    id = input.replaceAll(" ", "") + cont.toString();
+                    id = id.toLowerCase();
+                } while (GerenciarListas.getArea(id) != null);
+                // Adiciona na lista
+                GerenciarListas.addArea(input, id, pontos, Uid);
+                Regioes.AddClaimGuard(pontos, id, player);
+                Claimid = id;
+                return addconstrucao2;
+            }
+        };
+        // ADD CONSTRUCAO (ADMINS ONLY) 2
+        public Prompt addconstrucao2 = new StringPrompt() {
+            @Override
+            public String getPromptText(ConversationContext context) {
+                return ChatColor.BOLD
+                        + "Digite o UUID de algum participante deste claim: (Digite 0 para parar) (Site:" + ChatColor.BLUE
+                        + "https://mcuuid.net/)";
+            }
+    
+            @Override
+            public Prompt acceptInput(ConversationContext context, String input) {
+                if (input.equals("0")) {
+                    // Avisos
+                    context.getForWhom().sendRawMessage(ChatColor.GOLD + Mensagens.AddAreas1 + ChatColor.GREEN + Claimid);
+                    context.getForWhom().sendRawMessage(ChatColor.GOLD + Mensagens.AddAreas2);
+                    return END_OF_CONVERSATION;
+                } else if (UUID.fromString(input) != null) {
+                    A = GerenciarListas.getArea(Claimid);
+                    participante = A.getParticipantes().split(",");
+                    if (!Arrays.stream(participante).anyMatch(Claimid::equals)) {
+                        GerenciarListas.addBuilder(input, "nulo");
+                        GerenciarListas.setParticipante(A.getClaim(), input);
+                        Uid = input;
+                        context.getForWhom().sendRawMessage(ChatColor.GREEN + Mensagens.Equipe1);
+                        return addconstrucao2;
+                    } else {
+                        context.getForWhom().sendRawMessage(ChatColor.RED + Mensagens.Equipe2);
+                        return addconstrucao2;
+                    }
+                } else {
+                    context.getForWhom().sendRawMessage(ChatColor.RED + Mensagens.InfUUID2);
+                    return addconstrucao2;
+                }
+            }
+        };
+
     private static boolean VefClaim(Player player, ConversationContext context, String input, Boolean edit) {
-        Areas A = GerenciarListas.getArea(input);
+        A = GerenciarListas.getArea(input);
         UUID id = player.getUniqueId();
         // Se o Claim existir
         if (A != null) {

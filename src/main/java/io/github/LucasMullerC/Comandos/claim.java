@@ -140,7 +140,38 @@ public class claim implements CommandExecutor {
             }
         } else if (args[0].equalsIgnoreCase("addcompleto")) {
             if (player.hasPermission("btebrasil.addcompleto")) {
-                if (args.length == 0) {
+                if (args.length == 1) {
+                    player.sendMessage(ChatColor.RED + Mensagens.InfUUID);
+                } else {
+                    String pontos = Regioes.getSelection(player, 0);
+                    if (pontos.length() == 1) {
+                        switch (pontos) {
+                            case "1":
+                                player.sendMessage(ChatColor.RED + Mensagens.AreasIntersec);
+                                player.sendMessage(ChatColor.GOLD + Mensagens.LinkMapa);
+                                return true;
+                            case "2":
+                                player.sendMessage(ChatColor.RED + Mensagens.AreasLimite3);
+                                player.sendMessage(ChatColor.GOLD + Mensagens.AreasLimite2);
+                                return true;
+                            case "3":
+                                player.sendMessage(ChatColor.RED + Mensagens.AreasSelecao);
+                                return true;
+                        }
+                    } else {
+                        GerenciarListas.addBuilder(args[1], "nulo");
+                        Conversation conv = cf.withFirstPrompt(new ClaimPrompt(player, pontos, args[1]).addcompleto)
+                                .withLocalEcho(true)
+                                .buildConversation(player);
+                        conv.begin();
+                        return true;
+                    }
+                }
+            }
+            return true;
+        }else if (args[0].equalsIgnoreCase("addconstrucao")) {
+            if (player.hasPermission("btebrasil.addcompleto")) {
+                if (args.length == 1) {
                     player.sendMessage(ChatColor.RED + Mensagens.InfUUID);
                 } else {
                     String pontos = Regioes.getSelection(player, 0);

@@ -127,6 +127,7 @@ public class Mensagens {
     public static String PerfilNotBuilderDiscord = "Você não é um construtor em nosso time!\r\n Siga o tutorial para participar: https://www.youtube.com/watch?v=Z5p07nhtYxw";
     public static String giveconquista = "**!giveconquista id_discord id_conquista**";
     public static String addconquista = "**!addconquista id_conquista pontos url nome**";
+    public static String addpontos = "**!addpontos id_discord pontos**";
     public static String destaque = "**!destacar id_conquista**";
     public static String conquistaNotFound = "Conquista não encontrada!";
     public static String conquistaAlreadyExist = "Essa conquista já existe!";
@@ -137,6 +138,7 @@ public class Mensagens {
     public static String conquistaList = "Você ainda não tem nenhuma conquista. :(";
     public static String RanksTitulo = "Lista de Ranks | BTE Brasil";
     public static String NomeClaim = "O Nome foi editado com sucesso!";
+    public static String Sucesso = "A operação foi feita com sucesso!";
 
     public static String NovaImgMsg(String ID,String link){
         return "Foi adicionada uma nova imagem no claim **"+ID+"** Link: "+link;

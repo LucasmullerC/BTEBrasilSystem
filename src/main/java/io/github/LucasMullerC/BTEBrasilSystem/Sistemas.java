@@ -160,8 +160,10 @@ public class Sistemas {
             } else {
                 lb += "**#" + cont + " ->** <@" + entry.getKey() + ">\r\n";
             }
+            String pts = String.valueOf(B.getPontos());
+            pts = pts.substring(0, pts.indexOf(".")+2);
             lb += ":medal: Tier `" + B.getTier().toString() + "`\r\n :chart_with_upwards_trend: Pontos `"
-                    + String.valueOf(B.getPontos()) + "`\r\n\r\n";
+                    + pts+ "`\r\n\r\n";
             if (cont == 10) {
                 break;
             }
