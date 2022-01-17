@@ -191,7 +191,7 @@ public class claim implements CommandExecutor {
                         }
                     } else {
                         GerenciarListas.addBuilder(args[1], "nulo");
-                        Conversation conv = cf.withFirstPrompt(new ClaimPrompt(player, pontos, args[1]).addcompleto)
+                        Conversation conv = cf.withFirstPrompt(new ClaimPrompt(player, pontos, args[1]).addconstrucao)
                                 .withLocalEcho(true)
                                 .buildConversation(player);
                         conv.begin();
