@@ -117,11 +117,12 @@ public class Sistemas {
         Builders B = GerenciarListas.getBuilder(uid);
         int Tier = B.getTier();
         double NextLvl;
-        if (Prem == true) {
+        NextLvl = (Tier * 150) * 2.25;
+        /*if (Prem == true) {
             NextLvl = (Tier * 100) * 2.25;
         } else {
             NextLvl = (Tier * 150) * 2.25;
-        }
+        }*/
         return String.valueOf(NextLvl);
 
     }
@@ -199,11 +200,12 @@ public class Sistemas {
             if (B != null) {
                 int tier = B.getTier();
                 double NextLvl;
-                if (player.hasPermission("group.apoiador")) {
+                NextLvl = (tier * 150) * 2.25;
+                /*if (player.hasPermission("group.apoiador")) {
                     NextLvl = (tier * 100) * 2.25;
                 } else {
                     NextLvl = (tier * 150) * 2.25;
-                }
+                }*/
                 if (B.getPontos() >= NextLvl) {
                     Integer newtier = tier + 1;
                     GerenciarListas.setTier(newtier, id);
