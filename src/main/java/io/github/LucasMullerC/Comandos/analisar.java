@@ -30,6 +30,7 @@ import io.github.LucasMullerC.BTEBrasilSystem.Regioes;
 import io.github.LucasMullerC.BTEBrasilSystem.Sistemas;
 import io.github.LucasMullerC.Objetos.Aplicantes;
 import io.github.LucasMullerC.Objetos.Areas;
+import io.github.LucasMullerC.Objetos.Builders;
 import io.github.LucasMullerC.Objetos.Pendentes;
 import io.github.LucasMullerC.Objetos.Zonas;
 import io.github.LucasMullerC.Prompts.AnalisarPrompt;
@@ -66,8 +67,8 @@ public class analisar implements CommandExecutor {
         World w = player.getWorld();
         if (P != null) {
             Areas Ar = GerenciarListas.getArea(P.getArea());
-            String discordId = DiscordSRV.getPlugin().getAccountLinkManager()
-                    .getDiscordId(UUID.fromString(Ar.getPlayer()));
+            Builders B = GerenciarListas.getBuilder(Ar.getPlayer());
+            String discordId = B.getDiscord();
             OfflinePlayer Dono = Bukkit.getOfflinePlayer(UUID.fromString(Ar.getPlayer()));
 
             String msg = "";
