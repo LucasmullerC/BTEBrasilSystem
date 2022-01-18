@@ -159,7 +159,9 @@ public class AnalisarPrompt{
                         Sistemas.CheckAwardBuilds(participante[i-1]);
                     }          
                     totalbuilds = Integer.parseInt(build[i]) + totalbuilds;
-                    DiscordPonte.sendMessage(discordId, Mensagens.ClaimAprovadoDiscord1+"**"+A.getClaim()+"**"+Mensagens.ClaimAprovadoDiscord2+Mensagens.Seta+build[i]+Mensagens.ClaimAprovadoDiscord3+Mensagens.Seta+String.valueOf(ptotal)+Mensagens.ClaimAprovadoDiscord4);
+                    if(!discordId.equals("nulo")){
+                        DiscordPonte.sendMessage(discordId, Mensagens.ClaimAprovadoDiscord1+"**"+A.getClaim()+"**"+Mensagens.ClaimAprovadoDiscord2+Mensagens.Seta+build[i]+Mensagens.ClaimAprovadoDiscord3+Mensagens.Seta+String.valueOf(ptotal)+Mensagens.ClaimAprovadoDiscord4);
+                    }
                 }
                 GerenciarListas.setBuilds(A.getClaim(), totalbuilds);
                 GerenciarListas.CompletarArea(A.getClaim());

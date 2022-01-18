@@ -326,7 +326,7 @@ public class GerenciarListas {
     public static Pendentes getPendenteClaimAnalisar(String UUID) {
         for (Pendentes d : pendente.getValues()) {
             if (d.getArea() != null && !d.getUUID().equals(UUID)) {
-                if (d.getArea() != "nulo") {
+                if (!d.getArea().equals("nulo")) {
                     return d;
                 }
             }

@@ -98,9 +98,11 @@ public class analisar implements CommandExecutor {
                     String[] parts = Ar.getParticipantes().split(",");
                     for (int i = 0; i < parts.length; i++) {
                         Regioes.addPermissaoWG(Ar.getClaim(), player, UUID.fromString(parts[i]));
-                        DiscordPonte.sendMessage(GerenciarListas.getBuilder(parts[i]).getDiscord(),
+                        if(!GerenciarListas.getBuilder(parts[i]).getDiscord().equals("nulo")){
+                            DiscordPonte.sendMessage(GerenciarListas.getBuilder(parts[i]).getDiscord(),
                                 Mensagens.ClaimRecusada1 + Ar.getClaim() + Mensagens.ClaimRecusada2 + motivo
                                         + Mensagens.ClaimRecusada3);
+                        }
                     }
                 }
                 GerenciarListas.RemoverPendenteClaim(Ar.getClaim());

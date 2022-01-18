@@ -10,6 +10,7 @@ import github.scarsz.discordsrv.dependencies.jda.api.entities.Message;
 import github.scarsz.discordsrv.util.DiscordUtil;
 import io.github.LucasMullerC.DiscordBot.comandos.DiscordPerfil;
 import io.github.LucasMullerC.DiscordBot.comandos.addconquista;
+import io.github.LucasMullerC.DiscordBot.comandos.addpontos;
 import io.github.LucasMullerC.DiscordBot.comandos.conquistas;
 import io.github.LucasMullerC.DiscordBot.comandos.destacar;
 import io.github.LucasMullerC.DiscordBot.comandos.giveconquista;
@@ -62,6 +63,9 @@ public class DiscordSrvListener {
                 break;
             case "!conquista":
                 new conquistas(msg);
+                break;
+            case "!addpontos":
+                new addpontos(msg);
                 break;
         }
     }
