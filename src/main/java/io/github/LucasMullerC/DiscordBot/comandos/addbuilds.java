@@ -10,8 +10,8 @@ import io.github.LucasMullerC.BTEBrasilSystem.GerenciarListas;
 import io.github.LucasMullerC.Objetos.Builders;
 import io.github.LucasMullerC.Util.Mensagens;
 
-public class addpontos {
-    public addpontos(Message msg) {
+public class addbuilds {
+    public addbuilds(Message msg){
         MessageChannel channel = msg.getChannel();
         String[] cmd = msg.getContentRaw().split("\\s+");
         Member M = msg.getMember();
@@ -33,7 +33,7 @@ public class addpontos {
                     channel.sendMessage(Mensagens.EquipeNotBuilder).queue();
                 } else {
                     if (isNumeric(cmd[2]) == true) {
-                        GerenciarListas.setPontos(B.getUUID(), Double.parseDouble(cmd[2]));
+                        GerenciarListas.setBuildsBuilder(B.getUUID(), Integer.valueOf(cmd[2]));
                         channel.sendMessage(Mensagens.Sucesso).queue();
                     } else {
                         channel.sendMessage(Mensagens.MustBeNumber).queue();

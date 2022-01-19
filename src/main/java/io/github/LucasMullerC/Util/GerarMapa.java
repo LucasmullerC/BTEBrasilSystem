@@ -32,6 +32,8 @@ public class GerarMapa {
     }
 
     public void save() {
+        String stats = "T";
+
         try {
             FileWriter stream = new FileWriter(this.storageFile);
             BufferedWriter out = new BufferedWriter(stream);
@@ -41,49 +43,66 @@ public class GerarMapa {
                 out.write(doc[i]);
                 out.newLine();
             }
-            for (Areas value : this.values) {
-                out.write("<Placemark>");
+            do {
+                out.write("<Folder>");
                 out.newLine();
-                out.write("<name>" + value.getNome() + "</name>");
-                out.newLine();
-                String parts = getParticipantes(value);
-                String estado = "";
-                if (value.getStatus().equals("T")) {
-                    out.write("<styleUrl>#poly-0F9D58-2401-128-nodesc</styleUrl>");
-                    estado = "Contruído ";
+                if (stats.equals("T")) {
+                    out.write("<name>Claims em Construção</name>");
+                    out.newLine();
+                    stats = "F";
                 } else {
-                    out.write("<styleUrl>#poly-0288D1-2601-112-nodesc</styleUrl>");
-                    estado = "Em Contrução ";
+                    out.write("<name>Claims Completos</name>");
+                    out.newLine();
+                    stats = "T";
                 }
-                out.newLine();
-                String img=getImgs(value);
-                out.write("<description><![CDATA["+img+" ID: " + value.getClaim() + "\r\n Construções: " + value.getBuilds() + "\r\n "
-                        + estado + " por: " + parts + "]]></description>");
-                out.newLine();
-                out.write("<Polygon>");
-                out.newLine();
-                out.write("<tessellate>1</tessellate>");
-                out.newLine();
-                out.write("<outerBoundaryIs>");
-                out.newLine();
-                out.write("<LinearRing>");
-                out.newLine();
-                out.write("<coordinates>");
-                out.newLine();
-                String pontos = GerarCoordenadas(value);
-                out.write(pontos);
-                out.newLine();
-                out.write("</coordinates>");
-                out.newLine();
-                out.write("</LinearRing>");
-                out.newLine();
-                out.write("</outerBoundaryIs>");
-                out.newLine();
-                out.write("</Polygon>");
-                out.newLine();
-                out.write("</Placemark>");
-                out.newLine();
-            }
+                for (Areas value : this.values) {
+                    if (value.getStatus().equals(stats)) {
+                        out.write("<Placemark>");
+                        out.newLine();
+                        out.write("<name>" + value.getNome() + "</name>");
+                        out.newLine();
+                        String parts = getParticipantes(value);
+                        String estado = "";
+                        if (value.getStatus().equals("T")) {
+                            out.write("<styleUrl>#poly-0F9D58-2401-128-nodesc</styleUrl>");
+                            estado = "Contruído ";
+                        } else {
+                            out.write("<styleUrl>#poly-0288D1-2601-112-nodesc</styleUrl>");
+                            estado = "Em Contrução ";
+                        }
+                        out.newLine();
+                        String img = getImgs(value);
+                        out.write("<description><![CDATA[" + img + " ID: " + value.getClaim() + "\r\n Construções: "
+                                + value.getBuilds() + "\r\n "
+                                + estado + " por: " + parts + "]]></description>");
+                        out.newLine();
+                        out.write("<Polygon>");
+                        out.newLine();
+                        out.write("<tessellate>1</tessellate>");
+                        out.newLine();
+                        out.write("<outerBoundaryIs>");
+                        out.newLine();
+                        out.write("<LinearRing>");
+                        out.newLine();
+                        out.write("<coordinates>");
+                        out.newLine();
+                        String pontos = GerarCoordenadas(value);
+                        out.write(pontos);
+                        out.newLine();
+                        out.write("</coordinates>");
+                        out.newLine();
+                        out.write("</LinearRing>");
+                        out.newLine();
+                        out.write("</outerBoundaryIs>");
+                        out.newLine();
+                        out.write("</Polygon>");
+                        out.newLine();
+                        out.write("</Placemark>");
+                        out.newLine();
+                    }
+                }
+                out.write("</Folder>");
+            } while (stats.equals("F"));
             out.write("</Document>");
             out.newLine();
             out.write("</kml>");
@@ -93,30 +112,29 @@ public class GerarMapa {
             e.printStackTrace();
         }
     }
-    private static String getImgs(Areas A){
+
+    private static String getImgs(Areas A) {
         if (A.getImgs().equals("nulo")) {
             return "";
-        }
-        else{
+        } else {
             String[] Parts = A.getImgs().split(",");
             String imgs = "nulo";
             for (int i = 0; i < Parts.length; i++) {
-                if(i == 0){
-                    imgs = "<img src='"+Parts[i]+" height='200' width='auto' />";
-                }
-                else{
-                    imgs += "<br><img src='"+Parts[i]+" height='200' width='auto' />";
+                if (i == 0) {
+                    imgs = "<img src='" + Parts[i] + " height='200' width='auto' />";
+                } else {
+                    imgs += "<br><img src='" + Parts[i] + " height='200' width='auto' />";
                 }
             }
             return imgs;
         }
     }
+
     private static String getParticipantes(Areas A) {
         if (A.getParticipantes().equals("nulo")) {
             OfflinePlayer pt = Bukkit.getOfflinePlayer(UUID.fromString(A.getPlayer()));
             return pt.getName();
-        }
-        else{
+        } else {
             OfflinePlayer lider = Bukkit.getOfflinePlayer(UUID.fromString(A.getPlayer()));
             String[] Parts = A.getParticipantes().split(",");
             String Participantes = lider.getName();

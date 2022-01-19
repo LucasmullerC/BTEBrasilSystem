@@ -22,7 +22,6 @@ import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
-import github.scarsz.discordsrv.DiscordSRV;
 import io.github.LucasMullerC.BTEBrasilSystem.BTEBrasilSystem;
 import io.github.LucasMullerC.BTEBrasilSystem.DiscordPonte;
 import io.github.LucasMullerC.BTEBrasilSystem.GerenciarListas;
