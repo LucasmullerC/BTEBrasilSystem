@@ -68,6 +68,7 @@ public class Regioes {
                 Polygonal2DSelection polygon = (Polygonal2DSelection) selection;
                 List<BlockVector2D> points = polygon.getNativePoints();
                 Map<String, ProtectedRegion> rgs = WorldGuardPlugin.inst().getRegionManager(world).getRegions();
+                /*
                 // For passando por cada Ponto da seleção
                 for (int c = 1; c < points.size(); c++) {
                     // Atual
@@ -108,6 +109,7 @@ public class Regioes {
                         }
                     } while (x != xp && z != zp);
                 }
+                */
                 String pontos = points.toString().replaceAll("[\\[\\](){}]", "");
                 return pontos.replaceAll(" ", "");
             } else {

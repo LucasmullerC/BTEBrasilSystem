@@ -55,6 +55,7 @@ public class ClaimPrompt {
                 id = Normalizer.normalize(input, Normalizer.Form.NFD);
                 id = id.replaceAll("[\\p{InCombiningDiacriticalMarks}]", "");
                 id = id.replaceAll(" ", "") + cont.toString();
+                id = id.replaceAll("[\\[\\](){}]","");
                 id = id.toLowerCase();
             } while (GerenciarListas.getArea(id) != null);
             // Adiciona na lista
@@ -509,7 +510,10 @@ public class ClaimPrompt {
             Integer cont = 0;
             do {
                 cont++;
-                id = input.replaceAll(" ", "") + cont.toString();
+                id = Normalizer.normalize(input, Normalizer.Form.NFD);
+                id = id.replaceAll("[\\p{InCombiningDiacriticalMarks}]", "");
+                id = id.replaceAll(" ", "") + cont.toString();
+                id = id.replaceAll("[\\[\\](){}]","");
                 id = id.toLowerCase();
             } while (GerenciarListas.getArea(id) != null);
             // Adiciona na lista
@@ -598,7 +602,10 @@ public class ClaimPrompt {
                 Integer cont = 0;
                 do {
                     cont++;
-                    id = input.replaceAll(" ", "") + cont.toString();
+                    id = Normalizer.normalize(input, Normalizer.Form.NFD);
+                    id = id.replaceAll("[\\p{InCombiningDiacriticalMarks}]", "");
+                    id = id.replaceAll(" ", "") + cont.toString();
+                    id = id.replaceAll("[\\[\\](){}]","");
                     id = id.toLowerCase();
                 } while (GerenciarListas.getArea(id) != null);
                 // Adiciona na lista

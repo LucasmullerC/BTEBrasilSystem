@@ -215,7 +215,9 @@ public class Sistemas {
                     CheckRank(id);
                 } else {
                     double resto = NextLvl - B.getPontos();
-                    player.sendMessage(Mensagens.Level1 + ChatColor.GOLD + ChatColor.BOLD + String.valueOf(resto)
+                    String Sresto = String.valueOf(resto);
+                    Sresto = Sresto.substring(0, Sresto.indexOf(".")+2);
+                    player.sendMessage(Mensagens.Level1 + ChatColor.GOLD + ChatColor.BOLD + Sresto
                             + ChatColor.RESET + Mensagens.Level2);
                 }
             }
