@@ -52,8 +52,8 @@ public class AnalisarPrompt{
         public Prompt acceptInput(ConversationContext context, String input) {
             if(isNumeric(input) == true){
                 Integer num = Integer.parseInt(input);
-                //Verifica se num é maior q 0
-                if(num > 0){               
+                //Verifica se num é maior ou igual q 0
+                if(num >= 0){               
                     build[cont] = input;
                     cont++;
                     if(cont < size){

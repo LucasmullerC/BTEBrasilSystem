@@ -2,7 +2,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>io.github.LucasMullerC</groupId>
     <artifactId>BTEBrasilSystem</artifactId>
-    <version>0.4.3</version>
+    <version>0.4.4</version>
     <build>
         <plugins>
             <plugin>
