@@ -183,6 +183,7 @@ public class Regioes {
             Bukkit.dispatchCommand(console, "region flag "+Id+" -w TerraPreGenerated greeting-title &9"+A.getNome());
         }
         Bukkit.dispatchCommand(console, "region flag "+Id+" -w TerraPreGenerated greeting-subtitle &6"+Participantes);
+        Bukkit.dispatchCommand(console, "region flag "+Id+" worldedit -w TerraPreGenerated allow");
     }
     public static void RemoveClaim(Areas A, Player player) {
         World w = player.getWorld();
