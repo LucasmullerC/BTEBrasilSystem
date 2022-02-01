@@ -183,8 +183,7 @@ public class Regioes {
             Bukkit.dispatchCommand(console, "region flag "+Id+" -w TerraPreGenerated greeting-title &9"+A.getNome());
         }
         Bukkit.dispatchCommand(console, "region flag "+Id+" -w TerraPreGenerated greeting-subtitle &6"+Participantes);
-        Bukkit.dispatchCommand(console, "region flag "+Id+" worldedit -w TerraPreGenerated allow");
-        Bukkit.dispatchCommand(console, "region flag "+Id+" worldedit -w TerraPreGenerated -g nonmembers deny");
+        Bukkit.dispatchCommand(console, "region flag "+Id+" worldedit -w TerraPreGenerated -g members allow");
     }
     public static void RemoveClaim(Areas A, Player player) {
         World w = player.getWorld();
@@ -382,8 +381,7 @@ public class Regioes {
         user.data().add(noded);
         api.getUserManager().saveUser(user);
         ConsoleCommandSender console = Bukkit.getServer().getConsoleSender();  
-        Bukkit.dispatchCommand(console, "region flag "+Zona+" worldedit -w TerraPreGenerated allow");
-        Bukkit.dispatchCommand(console, "region flag "+Zona+" worldedit -w TerraPreGenerated -g nonmembers deny");
+        Bukkit.dispatchCommand(console, "region flag "+Zona+" worldedit -w TerraPreGenerated -g members allow");
     }
 
     public static void RemovePermissao(Player player, String Zona) {
