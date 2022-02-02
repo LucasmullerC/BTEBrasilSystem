@@ -58,10 +58,9 @@ public class Regioes {
             Integer largura = selection.getWidth();
             Integer leng = selection.getLength();
             int Limite = 212;
-            if(player.hasPermission("btebrasil.addcompleto")){
+            if (player.hasPermission("btebrasil.addcompleto")) {
                 Limite = 99999;
-            }
-            else{
+            } else {
                 Limite = getLimiteSelection(Tier);
             }
             if (largura <= Limite && leng <= Limite && largura >= 20 && leng >= 20) {
@@ -69,47 +68,48 @@ public class Regioes {
                 List<BlockVector2D> points = polygon.getNativePoints();
                 Map<String, ProtectedRegion> rgs = WorldGuardPlugin.inst().getRegionManager(world).getRegions();
                 /*
-                // For passando por cada Ponto da seleção
-                for (int c = 1; c < points.size(); c++) {
-                    // Atual
-                    int x = points.get(c).getBlockX();
-                    int z = points.get(c).getBlockZ();
-                    // Anterior
-                    int xp = points.get(c - 1).getBlockX();
-                    int zp = points.get(c - 1).getBlockZ();
-                    // Do While fazendo o caminho de um ponto para outro
-                    do {
-                        if (xp > x) {
-                            xp = xp - 1;
-                        } else if (xp < x) {
-                            xp = xp + 1;
-                        }
-                        if (zp > z) {
-                            zp = zp - 1;
-                        } else if (zp < z) {
-                            zp = zp + 1;
-                        }
-                        // For passando por todas as regiões
-                        for (ProtectedRegion region : rgs.values()) {
-                            // Ingora regiões dos times e global
-                            if (region.getId().equals("timenordeste") || region.getId().equals("timesul")
-                                    || region.getId().equals("timesp") || region.getId().equals("timeminasgerais")
-                                    || region.getId().equals("timerj") || region.getId().equals("timeconorte")
-                                    || region.getId().equals("__global__")) {
-                            }
-                            // Se for um claim
-                            else {
-                                // Verifica se a coordenada está contida na região
-                                if (region.contains(xp, 0, zp)) {
-                                    if (xp - x >= 20 && zp - z >= 20){
-                                        return "1"; // 1 = Região intersecciona outra região
-                                    }
-                                }
-                            }
-                        }
-                    } while (x != xp && z != zp);
-                }
-                */
+                 * // For passando por cada Ponto da seleção
+                 * for (int c = 1; c < points.size(); c++) {
+                 * // Atual
+                 * int x = points.get(c).getBlockX();
+                 * int z = points.get(c).getBlockZ();
+                 * // Anterior
+                 * int xp = points.get(c - 1).getBlockX();
+                 * int zp = points.get(c - 1).getBlockZ();
+                 * // Do While fazendo o caminho de um ponto para outro
+                 * do {
+                 * if (xp > x) {
+                 * xp = xp - 1;
+                 * } else if (xp < x) {
+                 * xp = xp + 1;
+                 * }
+                 * if (zp > z) {
+                 * zp = zp - 1;
+                 * } else if (zp < z) {
+                 * zp = zp + 1;
+                 * }
+                 * // For passando por todas as regiões
+                 * for (ProtectedRegion region : rgs.values()) {
+                 * // Ingora regiões dos times e global
+                 * if (region.getId().equals("timenordeste") || region.getId().equals("timesul")
+                 * || region.getId().equals("timesp") ||
+                 * region.getId().equals("timeminasgerais")
+                 * || region.getId().equals("timerj") || region.getId().equals("timeconorte")
+                 * || region.getId().equals("__global__")) {
+                 * }
+                 * // Se for um claim
+                 * else {
+                 * // Verifica se a coordenada está contida na região
+                 * if (region.contains(xp, 0, zp)) {
+                 * if (xp - x >= 20 && zp - z >= 20){
+                 * return "1"; // 1 = Região intersecciona outra região
+                 * }
+                 * }
+                 * }
+                 * }
+                 * } while (x != xp && z != zp);
+                 * }
+                 */
                 String pontos = points.toString().replaceAll("[\\[\\](){}]", "");
                 return pontos.replaceAll(" ", "");
             } else {
@@ -121,22 +121,17 @@ public class Regioes {
     }
 
     public static int getLimiteSelection(int Tier) {
-        if(Tier >=1 && Tier <= 3){
+        if (Tier >= 1 && Tier <= 3) {
             return 212;
-        }
-        else if(Tier >=4 && Tier <= 6){
+        } else if (Tier >= 4 && Tier <= 6) {
             return 312;
-        }
-        else if(Tier >=7 && Tier <= 9){
+        } else if (Tier >= 7 && Tier <= 9) {
             return 412;
-        }
-        else if(Tier >=10 && Tier <= 12){
+        } else if (Tier >= 10 && Tier <= 12) {
             return 512;
-        }
-        else if(Tier >=13 && Tier <= 15){
+        } else if (Tier >= 13 && Tier <= 15) {
             return 612;
-        }
-        else{
+        } else {
             return 712;
         }
     }
@@ -164,7 +159,8 @@ public class Regioes {
         AddFlags(Id);
         addLuckPerms(Id, player.getUniqueId());
     }
-    public static void AddFlags(String Id){
+
+    public static void AddFlags(String Id) {
         Areas A = GerenciarListas.getArea(Id);
         OfflinePlayer lider = Bukkit.getOfflinePlayer(UUID.fromString(A.getPlayer()));
         String Participantes = lider.getName();
@@ -175,16 +171,19 @@ public class Regioes {
                 Participantes += "," + pt.getName();
             }
         }
-        ConsoleCommandSender console = Bukkit.getServer().getConsoleSender();  
-        if(A.getStatus().equals("T")){
-            Bukkit.dispatchCommand(console, "region flag "+Id+" -w TerraPreGenerated greeting-title &a"+A.getNome());
+        ConsoleCommandSender console = Bukkit.getServer().getConsoleSender();
+        if (A.getStatus().equals("T")) {
+            Bukkit.dispatchCommand(console,
+                    "region flag " + Id + " -w TerraPreGenerated greeting-title &a" + A.getNome());
+        } else {
+            Bukkit.dispatchCommand(console,
+                    "region flag " + Id + " -w TerraPreGenerated greeting-title &9" + A.getNome());
         }
-        else{
-            Bukkit.dispatchCommand(console, "region flag "+Id+" -w TerraPreGenerated greeting-title &9"+A.getNome());
-        }
-        Bukkit.dispatchCommand(console, "region flag "+Id+" -w TerraPreGenerated greeting-subtitle &6"+Participantes);
-        Bukkit.dispatchCommand(console, "region flag "+Id+" worldedit -w TerraPreGenerated -g members allow");
+        Bukkit.dispatchCommand(console,
+                "region flag " + Id + " -w TerraPreGenerated greeting-subtitle &6" + Participantes);
+        Bukkit.dispatchCommand(console, "region flag " + Id + " worldedit -w TerraPreGenerated -g members allow");
     }
+
     public static void RemoveClaim(Areas A, Player player) {
         World w = player.getWorld();
         WorldGuardPlugin WGplugin = WGBukkit.getPlugin();
@@ -216,7 +215,7 @@ public class Regioes {
         ProtectedRegion regiona = regions.getRegion(ID);
         DefaultDomain members = regiona.getMembers();
 
-        //Só deleta os participantes
+        // Só deleta os participantes
         if (!Participantes.equals("nulo")) {
             String[] Parts = Participantes.split(",");
             for (int i = 0; i < Parts.length; i++) {
@@ -226,26 +225,30 @@ public class Regioes {
             }
         }
 
-        /*members.removeAll();  //DELETA TODOS OS MEMBROS
-
-        if (!Participantes.equals("nulo")) {
-            LuckPerms api = LuckPermsProvider.get();
-            User user = api.getPlayerAdapter(Player.class).getUser(player);
-            Node nodea = Node.builder("worldedit.*").value(true).withContext("worldguard:region", ID)
-                    .build();
-            Node nodeb = Node.builder("worldguard.region.select.member." + ID).value(true).build();
-            user.data().remove(nodea);
-            user.data().remove(nodeb);
-            api.getUserManager().saveUser(user);
-        } else {
-            removeLuckPerms(ID, player.getUniqueId());
-            String[] Parts = Participantes.split(",");
-            for (int i = 0; i < Parts.length; i++) {
-                OfflinePlayer convite = Bukkit.getOfflinePlayer(Parts[i]);
-                members.removePlayer(convite.getUniqueId());
-                removeLuckPerms(ID, convite.getUniqueId());
-            }
-        }*/
+        /*
+         * members.removeAll(); //DELETA TODOS OS MEMBROS
+         * 
+         * if (!Participantes.equals("nulo")) {
+         * LuckPerms api = LuckPermsProvider.get();
+         * User user = api.getPlayerAdapter(Player.class).getUser(player);
+         * Node nodea =
+         * Node.builder("worldedit.*").value(true).withContext("worldguard:region", ID)
+         * .build();
+         * Node nodeb = Node.builder("worldguard.region.select.member." +
+         * ID).value(true).build();
+         * user.data().remove(nodea);
+         * user.data().remove(nodeb);
+         * api.getUserManager().saveUser(user);
+         * } else {
+         * removeLuckPerms(ID, player.getUniqueId());
+         * String[] Parts = Participantes.split(",");
+         * for (int i = 0; i < Parts.length; i++) {
+         * OfflinePlayer convite = Bukkit.getOfflinePlayer(Parts[i]);
+         * members.removePlayer(convite.getUniqueId());
+         * removeLuckPerms(ID, convite.getUniqueId());
+         * }
+         * }
+         */
     }
 
     public static void addPermissaoWG(String ID, Player player, UUID uid) {
@@ -302,7 +305,7 @@ public class Regioes {
             user = userFuture.get();
             Node nodea = Node.builder("worldedit.*").value(true).withContext("worldguard:region", ID)
                     .build();
-                    Node nodeb = Node.builder("worldguard.region.select.member." + ID).value(true).build();
+            Node nodeb = Node.builder("worldguard.region.select.member." + ID).value(true).build();
             user.data().add(nodea);
             user.data().add(nodeb);
             api.getUserManager().saveUser(user);
@@ -364,24 +367,36 @@ public class Regioes {
     }
 
     public static void AddPermissao(Player player, String Zona) {
+        ConsoleCommandSender console = Bukkit.getServer().getConsoleSender();
         LuckPerms api = LuckPermsProvider.get();
         User user = api.getPlayerAdapter(Player.class).getUser(player);
+
         Node nodea = Node.builder("worldedit.*").value(true).withContext("worldguard:region", "apply" + Zona + "a")
                 .build();
+        Bukkit.dispatchCommand(console,
+                "region flag apply" + Zona + "a worldedit -w TerraPreGenerated -g members allow");
+
         Node nodeb = Node.builder("worldedit.*").value(true).withContext("worldguard:region", "apply" + Zona + "b")
                 .build();
+        Bukkit.dispatchCommand(console,
+                "region flag apply" + Zona + "b worldedit -w TerraPreGenerated -g members allow");
+
         Node nodec = Node.builder("worldedit.*").value(true).withContext("worldguard:region", "apply" + Zona + "c")
                 .build();
+        Bukkit.dispatchCommand(console,
+                "region flag apply" + Zona + "c worldedit -w TerraPreGenerated -g members allow");
+
         Node noded = Node.builder("worldedit.*").value(true).withContext("worldguard:region", "apply" + Zona + "d")
                 .build();
+        Bukkit.dispatchCommand(console,
+                "region flag apply" + Zona + "d worldedit -w TerraPreGenerated -g members allow");
+
         user.data().add(nodea);
         user.data().add(nodeb);
         user.data().add(nodec);
         user.data().add(noded);
         user.data().add(noded);
         api.getUserManager().saveUser(user);
-        ConsoleCommandSender console = Bukkit.getServer().getConsoleSender();  
-        Bukkit.dispatchCommand(console, "region flag "+Zona+" worldedit -w TerraPreGenerated -g members allow");
     }
 
     public static void RemovePermissao(Player player, String Zona) {
