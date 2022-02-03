@@ -159,7 +159,7 @@ public class ClaimPrompt {
             if (isNumeric(input) == true) {
                 Integer num = Integer.parseInt(input);
                 // Verifica se num é maior q 0
-                if (num > 0) {
+                if (num >= 0) {
                     Builds += "," + input;
                     cont++;
                     if (cont < size) {
