@@ -17,6 +17,8 @@ import io.github.LucasMullerC.DiscordBot.comandos.destacar;
 import io.github.LucasMullerC.DiscordBot.comandos.giveconquista;
 import io.github.LucasMullerC.DiscordBot.comandos.lb;
 import io.github.LucasMullerC.DiscordBot.comandos.ranks;
+import io.github.LucasMullerC.DiscordBot.comandos.removerbuilds;
+import io.github.LucasMullerC.DiscordBot.comandos.removerpontos;
 
 public class DiscordSrvListener {
     private final Plugin plugin;
@@ -70,6 +72,12 @@ public class DiscordSrvListener {
                 break;
             case "!addbuilds":
                 new addbuilds(msg);
+                break;
+            case "!removepontos":
+                new removerpontos(msg);
+                break;
+            case "!removebuilds":
+                new removerbuilds(msg);
                 break;
         }
     }

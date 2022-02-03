@@ -375,6 +375,12 @@ public class GerenciarListas {
         B.setBuilds(qtd + builds);
         builder.save();
     }
+    public static void removeBuildsBuilder(String UUID, int qtd) {
+        B = getBuilderPos(UUID);
+        Integer builds = B.getBuilds();
+        B.setBuilds(builds - qtd);
+        builder.save();
+    }
 
     public static void setPontos(String UUID, double qtd) {
         B = getBuilderPos(UUID);
@@ -382,6 +388,13 @@ public class GerenciarListas {
         B.setPontos(qtd + pontos);
         builder.save();
     }
+        public static void removePontos(String UUID, double qtd) {
+        B = getBuilderPos(UUID);
+        double pontos = B.getPontos();
+        B.setPontos(pontos - qtd);
+        builder.save();
+    }
+
 
     public static void setTier(int Tier, String UUID) {
         B = getBuilderPos(UUID);
