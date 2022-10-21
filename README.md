@@ -24,7 +24,7 @@ Veja o vídeo a seguir:
 
 Criando um claim:
 
-![Criação de um claim](https://media1.giphy.com/media/2egnSyHUNLObIkDTVh/giphy.gif?cid=790b7611c7bc43cfce707bd8669a3defa3cc1ac1e69dd78e&rid=giphy.gif&ct=g "Criando um claim")
+![Criação de um claim](https://raw.githubusercontent.com/LucasmullerC/BTEBrasilSystem/main/img/claim.gif "Criando um claim")
 
 ## 🛠 Tecnologias
 
