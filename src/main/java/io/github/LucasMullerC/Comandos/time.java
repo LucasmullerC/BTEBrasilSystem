@@ -9,7 +9,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import io.github.LucasMullerC.BTEBrasilSystem.DiscordPonte;
-import io.github.LucasMullerC.BTEBrasilSystem.GerenciarListas;
+import io.github.LucasMullerC.Gerencia.Aplicar;
 import io.github.LucasMullerC.Objetos.Aplicantes;
 
 public class time implements CommandExecutor {
@@ -20,11 +20,12 @@ public class time implements CommandExecutor {
         Player player = (Player) sender;
         UUID id = player.getUniqueId();
         if (command.getName().equalsIgnoreCase("time")) {
-            A = GerenciarListas.getAplicante(id.toString());
+            Aplicar aplicar = new Aplicar();
+            A = aplicar.getAplicante(id.toString());
             if (A != null) {
                 String txt = "https://buildtheearth.net/buildteams/239/join";
-                    player.sendMessage(ChatColor.BLUE + txt);
-                    DiscordPonte.sendMessage(A.getDiscord(), txt);
+                player.sendMessage(ChatColor.BLUE + txt);
+                DiscordPonte.sendMessage(A.getDiscord(), txt);
             } else {
                 player.sendMessage(ChatColor.RED + "Você não está em aplicação!");
                 return true;

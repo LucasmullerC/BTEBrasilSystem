@@ -1,4 +1,5 @@
 package io.github.LucasMullerC.Util;
+
 public class Mensagens {
     public static String Link1 = "Sua conta não está linkada ao Discord, Siga os passos abaixo:";
     public static String Link2 = "1 - Entre em nosso Discord: ";
@@ -21,7 +22,7 @@ public class Mensagens {
     public static String NenhumaAplicacaoPlayer = "Player não tem nenhuma aplicação em andamento";
     public static String AplicacaoAndamento2 = "Digite /cancelar para cancelar sua aplicação pendente ou /continuar para continuar o processo.";
     public static String invalido = "Inválido";
-    public static String NotDiscord = "Você precisa entrar no Discord do time que deseja participar para continuar a aplicação.";
+    public static String NotDiscord = "Entre no nosso Discord para continuar a aplicação: https://discord.gg/F6EQM8VbRy";
     public static String AppInit = "Aplicação iniciada!";
     public static String AppSec1 = "Assista o vídeo e siga as instruções: https://youtu.be/KEvtqOYDatE";
     public static String AppSec2 = "Assista o video e siga as instruções: https://www.youtube.com/watch?v=CMHG-txFpEc";
@@ -75,7 +76,7 @@ public class Mensagens {
     public static String LinkDiscord = "Digite aqui o código enviado no chat do Minecraft.";
     public static String PerfilNotBuilder = "Você não é um construtor no nosso time :(, Porque não se junta á nós?";
     public static String Atencao = "ATENÇÃO!";
-    public static String SeuTime1 = "Seu time tem (";
+    public static String SeuTime1 = "Existem (";
     public static String SeuTime2 = ") aplicações pendentes, Digite";
     public static String analisar = "/analisar";
     public static String Bnovamente = "Bem-vindo novamente ";
@@ -140,9 +141,10 @@ public class Mensagens {
     public static String NomeClaim = "O Nome foi editado com sucesso!";
     public static String Sucesso = "A operação foi feita com sucesso!";
 
-    public static String NovaImgMsg(String ID,String link){
-        return "Foi adicionada uma nova imagem no claim **"+ID+"** Link: "+link;
+    public static String NovaImgMsg(String ID, String link) {
+        return "Foi adicionada uma nova imagem no claim **" + ID + "** Link: " + link;
     }
+
     public static String ListaRanks() {
         return "**Apoiador**:\r\n" +
                 "-25% pontos para passar de rank**\r\n" +

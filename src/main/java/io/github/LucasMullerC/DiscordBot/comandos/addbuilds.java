@@ -6,17 +6,18 @@ import github.scarsz.discordsrv.dependencies.jda.api.entities.Member;
 import github.scarsz.discordsrv.dependencies.jda.api.entities.Message;
 import github.scarsz.discordsrv.dependencies.jda.api.entities.MessageChannel;
 import github.scarsz.discordsrv.dependencies.jda.api.entities.Role;
-import io.github.LucasMullerC.BTEBrasilSystem.GerenciarListas;
+import io.github.LucasMullerC.Gerencia.Builder;
 import io.github.LucasMullerC.Objetos.Builders;
 import io.github.LucasMullerC.Util.Mensagens;
 
 public class addbuilds {
-    public addbuilds(Message msg){
+    public addbuilds(Message msg) {
         MessageChannel channel = msg.getChannel();
         String[] cmd = msg.getContentRaw().split("\\s+");
         Member M = msg.getMember();
         List<Role> roles = M.getRoles();
         Boolean Vef = false;
+        Builder builder = new Builder();
         for (int i = 0; i < roles.size(); i++) {
             Role r = roles.get(i);
             if (r.getId().equals("716735505840209950")) {
@@ -28,12 +29,12 @@ public class addbuilds {
             if (cmd.length < 3) {
                 channel.sendMessage(Mensagens.addpontos).queue();
             } else {
-                Builders B = GerenciarListas.getBuilderDiscord(cmd[1]);
+                Builders B = builder.getBuilderDiscord(cmd[1]);
                 if (B == null) {
                     channel.sendMessage(Mensagens.EquipeNotBuilder).queue();
                 } else {
                     if (isNumeric(cmd[2]) == true) {
-                        GerenciarListas.setBuildsBuilder(B.getUUID(), Integer.valueOf(cmd[2]));
+                        builder.setBuildsBuilder(B.getUUID(), Integer.valueOf(cmd[2]));
                         channel.sendMessage(Mensagens.Sucesso).queue();
                     } else {
                         channel.sendMessage(Mensagens.MustBeNumber).queue();

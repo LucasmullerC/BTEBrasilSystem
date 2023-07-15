@@ -12,8 +12,9 @@ import github.scarsz.discordsrv.dependencies.jda.api.entities.MessageEmbed.Foote
 import github.scarsz.discordsrv.dependencies.jda.api.entities.MessageEmbed.ImageInfo;
 import github.scarsz.discordsrv.dependencies.jda.api.entities.MessageEmbed.Thumbnail;
 import github.scarsz.discordsrv.util.DiscordUtil;
-import io.github.LucasMullerC.BTEBrasilSystem.GerenciarListas;
 import io.github.LucasMullerC.BTEBrasilSystem.Sistemas;
+import io.github.LucasMullerC.Gerencia.Builder;
+import io.github.LucasMullerC.Gerencia.Claim;
 import io.github.LucasMullerC.Objetos.Builders;
 import io.github.LucasMullerC.Objetos.Conquistas;
 import io.github.LucasMullerC.Util.Mensagens;
@@ -26,56 +27,56 @@ public class DiscordPerfil {
         String[] cmd = msg.getContentRaw().split("\\s+");
         Builders B = null;
         User u = null;
-        if(Ulist.size() >0){
+        Builder builder = new Builder();
+        Claim claim = new Claim();
+        Sistemas sistemas = new Sistemas();
+        if (Ulist.size() > 0) {
             u = Ulist.get(0);
-            B = GerenciarListas.getBuilderDiscord(u.getId());
-        }
-        else if(cmd.length > 1){
+            B = builder.getBuilderDiscord(u.getId());
+        } else if (cmd.length > 1) {
             u = DiscordUtil.getUserById(cmd[1]);
-            if(u != null){
-                B = GerenciarListas.getBuilderDiscord(cmd[1]);
+            if (u != null) {
+                B = builder.getBuilderDiscord(cmd[1]);
             }
-        }
-        else{
+        } else {
             u = msg.getAuthor();
-            B = GerenciarListas.getBuilderDiscord(msg.getAuthor().getId());
+            B = builder.getBuilderDiscord(msg.getAuthor().getId());
         }
-        if(B == null){
+        if (B == null) {
             channel.sendMessage(Mensagens.PerfilNotBuilderDiscord).queue();
-        }
-        else{
+        } else {
             Member M = msg.getMember();
             List<Role> roles = M.getRoles();
             Boolean Vef = false;
-            for(int i = 0;i<roles.size();i++){
-                Role r =roles.get(i);
-                if(r.getId().equals("716735505840209950")){
+            for (int i = 0; i < roles.size(); i++) {
+                Role r = roles.get(i);
+                if (r.getId().equals("716735505840209950")) {
                     Vef = true;
                     break;
                 }
             }
-        String qtdAreas = String.valueOf(GerenciarListas.getAreaQtdByPlayerNum(B.getUUID()));
-        String qtdCompletos = String.valueOf(GerenciarListas.getAreaCompletaQtdByPlayerNum(B.getUUID()));
-        String NextLvl = Sistemas.ForNextLvl(B.getUUID(), Vef);
+            String qtdAreas = String.valueOf(claim.getAreaQtdByPlayerNum(B.getUUID()));
+            String qtdCompletos = String.valueOf(claim.getAreaCompletaQtdByPlayerNum(B.getUUID()));
+            String NextLvl = sistemas.ForNextLvl(B.getUUID(), Vef);
 
-        Thumbnail thumb = new Thumbnail(u.getAvatarUrl(), null, 100, 100); // thumb
-        Footer ft = new Footer("!conquistas Para ver todas suas conquistas.", null, null);
-        ImageInfo img = null;
-        Boolean desc = false;
-        if(!B.getDestaque().equals("nulo")){
-            Conquistas C = GerenciarListas.getConquistaPos(B.getDestaque());
-            img = new ImageInfo(C.getURL(), null, 105, 30);
-            desc = true;
-        }
-        String pts = String.valueOf(B.getPontos());
-        pts = pts.substring(0, pts.indexOf(".")+2);
-        MessageEmbed emb2 = new MessageEmbed(null, Mensagens.PerfilDiscordTitle(u.getName()),
-                Mensagens.PerfilDiscordBody(String.valueOf(B.getTier()), String.valueOf(B.getBuilds()), qtdAreas,
-                        qtdCompletos, pts,desc,NextLvl),
-                null, null, 52224, thumb, null, null, null, ft,
-                img, null);
+            Thumbnail thumb = new Thumbnail(u.getAvatarUrl(), null, 100, 100); // thumb
+            Footer ft = new Footer("!conquistas Para ver todas suas conquistas.", null, null);
+            ImageInfo img = null;
+            Boolean desc = false;
+            if (!B.getDestaque().equals("nulo")) {
+                Conquistas C = builder.getConquistaPos(B.getDestaque());
+                img = new ImageInfo(C.getURL(), null, 105, 30);
+                desc = true;
+            }
+            String pts = String.valueOf(B.getPontos());
+            pts = pts.substring(0, pts.indexOf(".") + 2);
+            MessageEmbed emb2 = new MessageEmbed(null, Mensagens.PerfilDiscordTitle(u.getName()),
+                    Mensagens.PerfilDiscordBody(String.valueOf(B.getTier()), String.valueOf(B.getBuilds()), qtdAreas,
+                            qtdCompletos, pts, desc, NextLvl),
+                    null, null, 52224, thumb, null, null, null, ft,
+                    img, null);
 
-        channel.sendMessage(emb2).queue();
+            channel.sendMessage(emb2).queue();
         }
     }
 }

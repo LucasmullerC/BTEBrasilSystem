@@ -1,7 +1,7 @@
 package io.github.LucasMullerC.Objetos;
 
 public class Aplicantes implements Comparable<Aplicantes> {
-	private String UUID, Discord, Time, Seccao, Zona, deadline;
+	private String UUID, Discord, Seccao, Zona, deadline;
 
 	public Aplicantes(String U) {
 		this.UUID = U;
@@ -9,14 +9,6 @@ public class Aplicantes implements Comparable<Aplicantes> {
 
 	public String getUUID() {
 		return this.UUID;
-	}
-
-	public void setTime(String T) {
-		this.Time = T;
-	}
-
-	public String getTime() {
-		return this.Time;
 	}
 
 	public void setDiscord(String Disc) {

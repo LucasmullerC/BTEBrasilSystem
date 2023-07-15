@@ -1,12 +1,12 @@
 package io.github.LucasMullerC.Objetos;
 
-public class Pendentes implements Comparable<Pendentes>{
-    String UUID, Area, Time,Builds;
+public class Pendentes implements Comparable<Pendentes> {
+    String UUID, Area, Builds;
     Boolean App;
 
     public Pendentes(String U) {
-		this.UUID = U;
-	}
+        this.UUID = U;
+    }
 
     public String getUUID() {
         return UUID;
@@ -24,14 +24,6 @@ public class Pendentes implements Comparable<Pendentes>{
         Area = area;
     }
 
-    public String getTime() {
-        return Time;
-    }
-
-    public void setTime(String time) {
-        Time = time;
-    }
-
     public Boolean getApp() {
         return App;
     }
@@ -39,6 +31,7 @@ public class Pendentes implements Comparable<Pendentes>{
     public void setApp(Boolean app) {
         App = app;
     }
+
     public String getBuilds() {
         return Builds;
     }
@@ -46,9 +39,9 @@ public class Pendentes implements Comparable<Pendentes>{
     public void setBuilds(String builds) {
         Builds = builds;
     }
-    
+
     @Override
-	public int compareTo(Pendentes G) {
-		return this.UUID.compareTo(G.getUUID());
-	}
+    public int compareTo(Pendentes G) {
+        return this.UUID.compareTo(G.getUUID());
+    }
 }

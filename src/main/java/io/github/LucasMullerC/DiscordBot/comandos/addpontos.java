@@ -6,7 +6,7 @@ import github.scarsz.discordsrv.dependencies.jda.api.entities.Member;
 import github.scarsz.discordsrv.dependencies.jda.api.entities.Message;
 import github.scarsz.discordsrv.dependencies.jda.api.entities.MessageChannel;
 import github.scarsz.discordsrv.dependencies.jda.api.entities.Role;
-import io.github.LucasMullerC.BTEBrasilSystem.GerenciarListas;
+import io.github.LucasMullerC.Gerencia.Builder;
 import io.github.LucasMullerC.Objetos.Builders;
 import io.github.LucasMullerC.Util.Mensagens;
 
@@ -28,12 +28,13 @@ public class addpontos {
             if (cmd.length < 3) {
                 channel.sendMessage(Mensagens.addpontos).queue();
             } else {
-                Builders B = GerenciarListas.getBuilderDiscord(cmd[1]);
+                Builder builder = new Builder();
+                Builders B = builder.getBuilderDiscord(cmd[1]);
                 if (B == null) {
                     channel.sendMessage(Mensagens.EquipeNotBuilder).queue();
                 } else {
                     if (isNumeric(cmd[2]) == true) {
-                        GerenciarListas.setPontos(B.getUUID(), Double.parseDouble(cmd[2]));
+                        builder.setPontos(B.getUUID(), Double.parseDouble(cmd[2]));
                         channel.sendMessage(Mensagens.Sucesso).queue();
                     } else {
                         channel.sendMessage(Mensagens.MustBeNumber).queue();

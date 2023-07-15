@@ -9,12 +9,13 @@ import io.github.LucasMullerC.BTEBrasilSystem.Sistemas;
 
 public class lb {
     public lb(Message msg) {
-
+        Sistemas sistemas = new Sistemas();
         MessageChannel channel = msg.getChannel();
 
         Thumbnail thumb = new Thumbnail("https://i.imgur.com/M5E4LHt.png", null, 100, 100); // thumb
         Footer ft = new Footer("Build The Earth: Brasil", null, null);
-        MessageEmbed emb2 = new MessageEmbed(null, "Leaderboard", Sistemas.FormLb(), null, null, 52224, thumb, null, null, null, ft, null,
+        MessageEmbed emb2 = new MessageEmbed(null, "Leaderboard", sistemas.FormLb(), null, null, 52224, thumb, null,
+                null, null, ft, null,
                 null);
         channel.sendMessage(emb2).queue();
     }

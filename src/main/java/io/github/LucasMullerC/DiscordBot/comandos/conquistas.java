@@ -10,47 +10,46 @@ import github.scarsz.discordsrv.dependencies.jda.api.entities.MessageEmbed.Foote
 import github.scarsz.discordsrv.dependencies.jda.api.entities.MessageEmbed.ImageInfo;
 import github.scarsz.discordsrv.dependencies.jda.api.entities.MessageEmbed.Thumbnail;
 import github.scarsz.discordsrv.util.DiscordUtil;
-import io.github.LucasMullerC.BTEBrasilSystem.GerenciarListas;
 import io.github.LucasMullerC.BTEBrasilSystem.Sistemas;
+import io.github.LucasMullerC.Gerencia.Builder;
 import io.github.LucasMullerC.Objetos.Builders;
 import io.github.LucasMullerC.Objetos.Conquistas;
 import io.github.LucasMullerC.Util.Mensagens;
 
 public class conquistas {
-    public conquistas(Message msg){
+    public conquistas(Message msg) {
 
         MessageChannel channel = msg.getChannel();
         List<User> Ulist = msg.getMentionedUsers();
         String[] cmd = msg.getContentRaw().split("\\s+");
         Builders B = null;
         User u = null;
-        if(Ulist.size() >0){
+        Builder builder = new Builder();
+        if (Ulist.size() > 0) {
             u = Ulist.get(0);
-            B = GerenciarListas.getBuilderDiscord(u.getId());
-        }
-        else if(cmd.length > 1){
+            B = builder.getBuilderDiscord(u.getId());
+        } else if (cmd.length > 1) {
             u = DiscordUtil.getUserById(cmd[1]);
-            if(u != null){
-                B = GerenciarListas.getBuilderDiscord(cmd[1]);
+            if (u != null) {
+                B = builder.getBuilderDiscord(cmd[1]);
             }
-        }
-        else{
+        } else {
             u = msg.getAuthor();
-            B = GerenciarListas.getBuilderDiscord(msg.getAuthor().getId());
+            B = builder.getBuilderDiscord(msg.getAuthor().getId());
         }
-        if(B == null){
+        if (B == null) {
             channel.sendMessage(Mensagens.PerfilNotBuilderDiscord).queue();
-        }
-        else{
+        } else {
             ImageInfo img = null;
-            if(!B.getDestaque().equals("nulo")){
-                Conquistas C = GerenciarListas.getConquistaPos(B.getDestaque());
+            if (!B.getDestaque().equals("nulo")) {
+                Conquistas C = builder.getConquistaPos(B.getDestaque());
                 img = new ImageInfo(C.getURL(), null, 105, 30);
             }
-            
+            Sistemas sistemas = new Sistemas();
             Thumbnail thumb = new Thumbnail(u.getAvatarUrl(), null, 100, 100); // thumb
             Footer ft = new Footer("Acesse https://bit.ly/31TXIfQ Para ver todas as conquistas.", null, null);
-            MessageEmbed emb2 = new MessageEmbed(null, "Conquistas - "+u.getName(), Sistemas.ListConquistas(B), null, null, 52224, thumb, null, null, null, ft, img,
+            MessageEmbed emb2 = new MessageEmbed(null, "Conquistas - " + u.getName(), sistemas.ListConquistas(B), null,
+                    null, 52224, thumb, null, null, null, ft, img,
                     null);
             channel.sendMessage(emb2).queue();
         }

@@ -9,8 +9,8 @@ import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 
-import io.github.LucasMullerC.BTEBrasilSystem.GerenciarListas;
 import io.github.LucasMullerC.BTEBrasilSystem.Sistemas;
+import io.github.LucasMullerC.Gerencia.Claim;
 import io.github.LucasMullerC.Objetos.Areas;
 import java.util.ArrayList;
 import java.io.File;
@@ -21,7 +21,8 @@ public class GerarMapa {
 
     public GerarMapa(final File file) {
         this.storageFile = file;
-        this.values = GerenciarListas.areas.getValues();
+        Claim claim = new Claim();
+        this.values = claim.areas.getValues();
         if (!this.storageFile.exists()) {
             try {
                 this.storageFile.createNewFile();
@@ -149,8 +150,9 @@ public class GerarMapa {
     private static String GerarCoordenadas(Areas A) {
         String[] ary = A.getPontos().split(",");
         String pontos = "";
+        Sistemas sistemas = new Sistemas();
         for (int i = 0; i < (ary.length - 1); i += 2) {
-            double[] coords = Sistemas.toGeo(Integer.parseInt(ary[i].split("\\.")[0]),
+            double[] coords = sistemas.toGeo(Integer.parseInt(ary[i].split("\\.")[0]),
                     Integer.parseInt(ary[i + 1].split("\\.")[0]));
             pontos += String.valueOf(coords[0]) + "," + String.valueOf(coords[1]) + ",0 ";
         }

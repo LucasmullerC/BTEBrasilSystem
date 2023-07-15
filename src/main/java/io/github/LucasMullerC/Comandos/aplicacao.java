@@ -15,7 +15,7 @@ import org.bukkit.potion.PotionEffectType;
 
 import github.scarsz.discordsrv.DiscordSRV;
 import io.github.LucasMullerC.BTEBrasilSystem.DiscordPonte;
-import io.github.LucasMullerC.BTEBrasilSystem.GerenciarListas;
+import io.github.LucasMullerC.Gerencia.Aplicar;
 import io.github.LucasMullerC.Util.Mensagens;
 
 public class aplicacao implements CommandExecutor {
@@ -25,6 +25,7 @@ public class aplicacao implements CommandExecutor {
         Player player = (Player) sender;
         UUID id = player.getUniqueId();
         String discordId = DiscordSRV.getPlugin().getAccountLinkManager().getDiscordId(player.getUniqueId());
+        Aplicar aplicar = new Aplicar();
         if (args.length == 0) { // Se /aplicacao somente
             sender.sendMessage(ChatColor.GOLD + Mensagens.invalido);
             return true;
@@ -33,7 +34,7 @@ public class aplicacao implements CommandExecutor {
                 player.sendMessage(ChatColor.RED + Mensagens.Isconstrutor);
                 return true;
             } else { // Se ele não for construtor no time
-                if (GerenciarListas.getAplicante(id.toString()) != null) { // Se ele já for Aplicante
+                if (aplicar.getAplicante(id.toString()) != null) { // Se ele já for Aplicante
                     player.sendMessage(ChatColor.RED + Mensagens.AplicacaoAndamento);
                     player.sendMessage(ChatColor.GOLD + Mensagens.AplicacaoAndamento2);
                     return true;
@@ -46,8 +47,8 @@ public class aplicacao implements CommandExecutor {
                                 + ChatColor.YELLOW + Mensagens.Link5);
                         return true;
                     } else {
-                        if (DiscordPonte.CheckDiscord(discordId, getTimes().get(args[0]).toString()) == true) {
-                            IniciarAplicacao(player, args[0], discordId); // Aplicacão Iniciada
+                        if (DiscordPonte.CheckDiscord(discordId) == true) {
+                            IniciarAplicacao(player, args[0], discordId, aplicar); // Aplicacão Iniciada
                             return true;
 
                         } else {// Se ele não estiver no Discor do time
@@ -66,25 +67,13 @@ public class aplicacao implements CommandExecutor {
         }
     }
 
-    public void IniciarAplicacao(Player player, String Time, String Discord) {
-        GerenciarListas.addZonas(player, Time, Discord);
+    public void IniciarAplicacao(Player player, String Time, String Discord, Aplicar aplicar) {
+        aplicar.addZonas(player, Time, Discord);
         player.addPotionEffect(new PotionEffect(PotionEffectType.NIGHT_VISION, Integer.MAX_VALUE, 0));
         player.getInventory().addItem(new ItemStack(Material.getMaterial("WOOD_AXE"), 1));
         player.sendMessage(ChatColor.GREEN + Mensagens.AppInit);
         player.sendMessage(ChatColor.GOLD + Mensagens.AppSec1);
         DiscordPonte.sendMessage(Discord, Mensagens.AppSec1);
-    }
-
-    public HashMap<String, String> getTimes() {
-        HashMap<String, String> times = new HashMap<String, String>();
-        times.put("b_sp", "695813656490803223");
-        times.put("b_ne", "735561960254341121");
-        times.put("b_rj", "738444755330924625");
-        times.put("b_sul", "782652814831779850");
-        times.put("b_mg", "701801798154846298");
-        times.put("b_es", "801618489600901161");
-        times.put("b_co", "796238091207180338");
-        return times;
     }
 
 }

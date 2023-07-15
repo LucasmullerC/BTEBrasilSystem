@@ -1,4 +1,5 @@
 package io.github.LucasMullerC.Util;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.DataInputStream;
@@ -12,11 +13,11 @@ import java.util.ArrayList;
 import io.github.LucasMullerC.Objetos.Pendentes;
 
 public class ListaPendentes {
-    private File storageFile;
+	private File storageFile;
 	private ArrayList<Pendentes> values;
 	private Pendentes G;
 
-    public ListaPendentes(File file) {
+	public ListaPendentes(File file) {
 		this.storageFile = file;
 		this.values = new ArrayList<Pendentes>();
 		if (this.storageFile.exists() == false) {
@@ -35,12 +36,11 @@ public class ListaPendentes {
 			String line;
 			while ((line = reader.readLine()) != null) {
 				if (this.Contains(new Pendentes(line)) == false) {
-                    String[] Oarea = line.split(";");
-                    G = new Pendentes(Oarea[0]);
-                    G.setArea(Oarea[1]);
-                    G.setTime(Oarea[2]);
-                    G.setApp(Boolean.parseBoolean(Oarea[3]));
-					G.setBuilds(Oarea[4]);
+					String[] Oarea = line.split(";");
+					G = new Pendentes(Oarea[0]);
+					G.setArea(Oarea[1]);
+					G.setApp(Boolean.parseBoolean(Oarea[2]));
+					G.setBuilds(Oarea[3]);
 					values.add(G);
 				}
 			}
@@ -57,8 +57,9 @@ public class ListaPendentes {
 			FileWriter stream = new FileWriter(this.storageFile);
 			BufferedWriter out = new BufferedWriter(stream);
 			for (Pendentes value : this.values) {
-                out.write(value.getUUID()+";"+value.getArea()+";"+value.getTime()+";"+String.valueOf(value.getApp())+";"+value.getBuilds());
-                out.newLine();
+				out.write(value.getUUID() + ";" + value.getArea() + ";" + String.valueOf(value.getApp()) + ";"
+						+ value.getBuilds());
+				out.newLine();
 			}
 			out.close();
 			stream.close();

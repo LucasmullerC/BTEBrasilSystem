@@ -13,7 +13,7 @@ import org.bukkit.scheduler.BukkitScheduler;
 
 import io.github.LucasMullerC.BTEBrasilSystem.BTEBrasilSystem;
 import io.github.LucasMullerC.BTEBrasilSystem.DiscordPonte;
-import io.github.LucasMullerC.BTEBrasilSystem.GerenciarListas;
+import io.github.LucasMullerC.Gerencia.Aplicar;
 import io.github.LucasMullerC.Objetos.Aplicantes;
 import io.github.LucasMullerC.Objetos.Zonas;
 import io.github.LucasMullerC.Util.Mensagens;
@@ -29,12 +29,13 @@ public class proximo implements CommandExecutor {
         BukkitScheduler scheduler = Bukkit.getServer().getScheduler();
         Player player = (Player) sender;
         UUID id = player.getUniqueId();
-        if (GerenciarListas.getAplicante(id.toString()) == null) {
+        Aplicar aplicar = new Aplicar();
+        if (aplicar.getAplicante(id.toString()) == null) {
             player.sendMessage(ChatColor.GOLD + Mensagens.AppProx);
             return true;
         } else {
-            A = GerenciarListas.getAplicante(id.toString());
-            Zn = GerenciarListas.getZona(A.getZona());
+            A = aplicar.getAplicante(id.toString());
+            Zn = aplicar.getZona(A.getZona());
             if (A.getSeccao().equals("a")) {
                 A.setSeccao("b");
                 Zn.seta(false);

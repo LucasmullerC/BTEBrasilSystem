@@ -13,8 +13,9 @@ import org.bukkit.entity.Player;
 
 import github.scarsz.discordsrv.DiscordSRV;
 import io.github.LucasMullerC.BTEBrasilSystem.BTEBrasilSystem;
-import io.github.LucasMullerC.BTEBrasilSystem.GerenciarListas;
 import io.github.LucasMullerC.BTEBrasilSystem.Regioes;
+import io.github.LucasMullerC.Gerencia.Builder;
+import io.github.LucasMullerC.Gerencia.Claim;
 import io.github.LucasMullerC.Objetos.Builders;
 import io.github.LucasMullerC.Prompts.ClaimPrompt;
 import io.github.LucasMullerC.Util.Mensagens;
@@ -25,9 +26,11 @@ public class claim implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+        Builder builder = new Builder();
+        Regioes regioes = new Regioes();
         if (args.length == 0) {
             if (sender instanceof ConsoleCommandSender) {
-                GerenciarListas.MontarMapa();
+                builder.MontarMapa();
                 System.out.println("Mapa Gerado!");
                 return true;
             } else {
@@ -42,11 +45,11 @@ public class claim implements CommandExecutor {
         BTEBrasilSystem plugin = BTEBrasilSystem.getPlugin();
         ConversationFactory cf = new ConversationFactory(plugin);
         // Verifica se o Builder já está na lista
-        GerenciarListas.addBuilder(id.toString(), discordId);
+        builder.addBuilder(id.toString(), discordId);
         if (args[0].equalsIgnoreCase("add")) {
-            B = GerenciarListas.getBuilder(id.toString());
+            B = builder.getBuilder(id.toString());
             if (CalcLimite(B.getTier(), player) == false) {
-                String pontos = Regioes.getSelection(player, B.getTier());
+                String pontos = regioes.getSelection(player, B.getTier());
                 if (pontos.length() == 1) {
                     switch (pontos) {
                         case "1":
@@ -143,7 +146,7 @@ public class claim implements CommandExecutor {
                 if (args.length == 1) {
                     player.sendMessage(ChatColor.RED + Mensagens.InfUUID);
                 } else {
-                    String pontos = Regioes.getSelection(player, 0);
+                    String pontos = regioes.getSelection(player, 0);
                     if (pontos.length() == 1) {
                         switch (pontos) {
                             case "1":
@@ -159,7 +162,7 @@ public class claim implements CommandExecutor {
                                 return true;
                         }
                     } else {
-                        GerenciarListas.addBuilder(args[1], "nulo");
+                        builder.addBuilder(args[1], "nulo");
                         Conversation conv = cf.withFirstPrompt(new ClaimPrompt(player, pontos, args[1]).addcompleto)
                                 .withLocalEcho(true)
                                 .buildConversation(player);
@@ -169,12 +172,12 @@ public class claim implements CommandExecutor {
                 }
             }
             return true;
-        }else if (args[0].equalsIgnoreCase("addconstrucao")) {
+        } else if (args[0].equalsIgnoreCase("addconstrucao")) {
             if (player.hasPermission("btebrasil.addcompleto")) {
                 if (args.length == 1) {
                     player.sendMessage(ChatColor.RED + Mensagens.InfUUID);
                 } else {
-                    String pontos = Regioes.getSelection(player, 0);
+                    String pontos = regioes.getSelection(player, 0);
                     if (pontos.length() == 1) {
                         switch (pontos) {
                             case "1":
@@ -190,7 +193,7 @@ public class claim implements CommandExecutor {
                                 return true;
                         }
                     } else {
-                        GerenciarListas.addBuilder(args[1], "nulo");
+                        builder.addBuilder(args[1], "nulo");
                         Conversation conv = cf.withFirstPrompt(new ClaimPrompt(player, pontos, args[1]).addconstrucao)
                                 .withLocalEcho(true)
                                 .buildConversation(player);
@@ -207,6 +210,7 @@ public class claim implements CommandExecutor {
     private boolean CalcLimite(int Tier, Player player) {
         UUID id = player.getUniqueId();
         int Limite = 3;
+        Claim claim = new Claim();
 
         if (Tier >= 1 && Tier <= 3) {
             Limite = 3;
@@ -225,7 +229,7 @@ public class claim implements CommandExecutor {
         if (player.hasPermission("group.apoiador")) {
             Limite = Limite + 10;
         }
-        return GerenciarListas.getAreaQtdByPlayer(id.toString(), Limite);
+        return claim.getAreaQtdByPlayer(id.toString(), Limite);
 
     }
 

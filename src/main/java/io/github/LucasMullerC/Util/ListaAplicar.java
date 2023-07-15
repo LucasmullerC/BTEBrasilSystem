@@ -38,34 +38,30 @@ public class ListaAplicar {
 			while ((line = reader.readLine()) != null) {
 				if (this.Contains(new Aplicantes(line)) == false) {
 					switch (cont) {
-					case 0:
-						G = new Aplicantes(line);
-						cont++;
-						break;
-					case 1:
-						G.setTime(line);
-						cont++;
-						break;
-					case 2:
-						G.setDiscord(line);
-						cont++;
-						break;
-					case 3:
-						G.setZona(line);
-						cont++;
-						break;
-					case 4:
-						G.setSeccao(line);
-						cont++;
-						break;
-					case 5:
-						G.setDeadline(line);
-						cont++;
-						values.add(G);
-						cont = 0;
-						break;
-					default:
-						break;
+						case 0:
+							G = new Aplicantes(line);
+							cont++;
+							break;
+						case 1:
+							G.setDiscord(line);
+							cont++;
+							break;
+						case 2:
+							G.setZona(line);
+							cont++;
+							break;
+						case 3:
+							G.setSeccao(line);
+							cont++;
+							break;
+						case 4:
+							G.setDeadline(line);
+							cont++;
+							values.add(G);
+							cont = 0;
+							break;
+						default:
+							break;
 					}
 				}
 			}
@@ -83,8 +79,6 @@ public class ListaAplicar {
 			BufferedWriter out = new BufferedWriter(stream);
 			for (Aplicantes value : this.values) {
 				out.write(value.getUUID());
-				out.newLine();
-				out.write(value.getTime());
 				out.newLine();
 				out.write(String.valueOf(value.getDiscord()));
 				out.newLine();

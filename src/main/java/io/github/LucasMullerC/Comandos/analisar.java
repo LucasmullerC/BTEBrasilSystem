@@ -24,9 +24,11 @@ import org.bukkit.potion.PotionEffectType;
 
 import io.github.LucasMullerC.BTEBrasilSystem.BTEBrasilSystem;
 import io.github.LucasMullerC.BTEBrasilSystem.DiscordPonte;
-import io.github.LucasMullerC.BTEBrasilSystem.GerenciarListas;
 import io.github.LucasMullerC.BTEBrasilSystem.Regioes;
 import io.github.LucasMullerC.BTEBrasilSystem.Sistemas;
+import io.github.LucasMullerC.Gerencia.Aplicar;
+import io.github.LucasMullerC.Gerencia.Builder;
+import io.github.LucasMullerC.Gerencia.Claim;
 import io.github.LucasMullerC.Objetos.Aplicantes;
 import io.github.LucasMullerC.Objetos.Areas;
 import io.github.LucasMullerC.Objetos.Builders;
@@ -44,15 +46,15 @@ public class analisar implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         Player player = (Player) sender;
+        Builder builder = new Builder();
         if (args.length == 0) {
             sender.sendMessage(ChatColor.GOLD + "/analisar [app|claim]");
             return true;
         } else if (args[0].equalsIgnoreCase("claim") && player.hasPermission("group.reviewer")) {
-            ConfirmarClaim(args, player);
+            ConfirmarClaim(args, player, builder);
             return true;
         } else if (args[0].equalsIgnoreCase("app")) {
-            String time = Sistemas.VerificarEquipe(player);
-            ConfirmarAplicacao(args, player, time);
+            ConfirmarAplicacao(args, player, builder);
             return true;
         } else {
             player.sendMessage(ChatColor.GOLD + Mensagens.Analisar404);
@@ -61,12 +63,14 @@ public class analisar implements CommandExecutor {
         }
     }
 
-    private static void ConfirmarClaim(String[] comando, Player player) {
-        Pendentes P = GerenciarListas.getPendenteClaimAnalisar(player.getUniqueId().toString());
+    private void ConfirmarClaim(String[] comando, Player player, Builder builder) {
+        Claim claim = new Claim();
+        Pendentes P = claim.getPendenteClaimAnalisar(player.getUniqueId().toString());
         World w = player.getWorld();
+
         if (P != null) {
-            Areas Ar = GerenciarListas.getArea(P.getArea());
-            Builders B = GerenciarListas.getBuilder(Ar.getPlayer());
+            Areas Ar = claim.getArea(P.getArea());
+            Builders B = builder.getBuilder(Ar.getPlayer());
             String discordId = B.getDiscord();
             OfflinePlayer Dono = Bukkit.getOfflinePlayer(UUID.fromString(Ar.getPlayer()));
 
@@ -82,59 +86,59 @@ public class analisar implements CommandExecutor {
                 Conversation conv = cf.withFirstPrompt(new AnalisarPrompt(Ar, Dono, P, player.getWorld()).Builds)
                         .withLocalEcho(true).buildConversation(player);
                 conv.begin();
-                
+
             } else if (arrayValores[0].equalsIgnoreCase("recusar")) {
+                Regioes regioes = new Regioes();
                 String motivo = "";
                 for (int i = 1; i < arrayValores.length; i++) {
                     motivo += arrayValores[i] + " ";
                 }
                 motivo = motivo.trim();
-                //Regioes.addPermissaoWG(Ar.getClaim(), player, player.getUniqueId()); Adiciona permissões novamente
-                DiscordPonte.sendMessage(GerenciarListas.getBuilder(Dono.getUniqueId().toString()).getDiscord(),
+                // Regioes.addPermissaoWG(Ar.getClaim(), player, player.getUniqueId()); Adiciona
+                // permissões novamente
+                DiscordPonte.sendMessage(builder.getBuilder(Dono.getUniqueId().toString()).getDiscord(),
                         Mensagens.ClaimRecusada1 + Ar.getClaim() + Mensagens.ClaimRecusada2 + motivo
                                 + Mensagens.ClaimRecusada3);
                 if (!Ar.getParticipantes().equals("nulo")) {
                     String[] parts = Ar.getParticipantes().split(",");
                     for (int i = 0; i < parts.length; i++) {
-                        Regioes.addPermissaoWG(Ar.getClaim(), player, UUID.fromString(parts[i]));
-                        if(!GerenciarListas.getBuilder(parts[i]).getDiscord().equals("nulo")){
-                            DiscordPonte.sendMessage(GerenciarListas.getBuilder(parts[i]).getDiscord(),
-                                Mensagens.ClaimRecusada1 + Ar.getClaim() + Mensagens.ClaimRecusada2 + motivo
-                                        + Mensagens.ClaimRecusada3);
+                        regioes.addPermissaoWG(Ar.getClaim(), player, UUID.fromString(parts[i]));
+                        if (!builder.getBuilder(parts[i]).getDiscord().equals("nulo")) {
+                            DiscordPonte.sendMessage(builder.getBuilder(parts[i]).getDiscord(),
+                                    Mensagens.ClaimRecusada1 + Ar.getClaim() + Mensagens.ClaimRecusada2 + motivo
+                                            + Mensagens.ClaimRecusada3);
                         }
                     }
                 }
-                GerenciarListas.RemoverPendenteClaim(Ar.getClaim());
+                claim.RemoverPendenteClaim(Ar.getClaim());
                 player.sendMessage(ChatColor.GOLD + Mensagens.ClaimRecusada4);
 
             } else {
-                player.chat("/region select "+Ar.getClaim());
+                Sistemas sistemas = new Sistemas();
+                player.chat("/region select " + Ar.getClaim());
                 player.sendMessage(Mensagens.AnaliseClaim1 + P.getArea() + Mensagens.VoceAnalisa2
                         + DiscordPonte.GetDiscordName(discordId));
-                Location L = Sistemas.getLocation(Ar.getPontos(), w);
+                Location L = sistemas.getLocation(Ar.getPontos(), w);
                 player.teleport(L);
                 player.sendMessage(ChatColor.GOLD + Mensagens.Analisar1);
                 player.sendMessage(ChatColor.GOLD + Mensagens.Analisar2);
             }
-            
+
         } else {
             player.sendMessage(ChatColor.GOLD + Mensagens.NotClaim);
         }
     }
 
-    private void ConfirmarAplicacao(String[] comando, Player player, String time) {
+    private void ConfirmarAplicacao(String[] comando, Player player, Builder builder) {
         World w = player.getWorld();
         Boolean pass = false;
-        String[] times = time.split(",");
+        Aplicar aplicar = new Aplicar();
+        Regioes regioes = new Regioes();
         // Verifica se existe Aplicações
-        for (int b = 0; b < times.length; b++) {
-            if (GerenciarListas.getPendenteAplicacao(times[b]) != null) {
-                pass = true;
-                time = times[b];
-                break;
-            } else {
-                pass = false;
-            }
+        if (aplicar.getPendenteAplicacao() != null) {
+            pass = true;
+        } else {
+            pass = false;
         }
 
         // Analisar Aplicações
@@ -143,12 +147,12 @@ public class analisar implements CommandExecutor {
             RegionContainer container = WGplugin.getRegionContainer();
             RegionManager regions = container.get(w);
 
-            P = GerenciarListas.getPendenteAplicacao(time);
-            A = GerenciarListas.getAplicante(P.getUUID());
+            P = aplicar.getPendenteAplicacao();
+            A = aplicar.getAplicante(P.getUUID());
             OfflinePlayer pa = Bukkit.getOfflinePlayer(UUID.fromString(A.getUUID()));
             player.sendMessage(Mensagens.VoceAnalisa + pa.getName() + Mensagens.VoceAnalisa2
                     + DiscordPonte.GetDiscordName(A.getDiscord()));
-            Zn = GerenciarListas.getZona(A.getZona());
+            Zn = aplicar.getZona(A.getZona());
             String msg = "";
             for (int i = 1; i < comando.length; i++) {
                 msg += comando[i] + " ";
@@ -162,16 +166,16 @@ public class analisar implements CommandExecutor {
                 regions.removeRegion("apply" + A.getZona() + "b");
                 regions.removeRegion("apply" + A.getZona() + "a");
                 // Remove Listas
-                Zn = GerenciarListas.getZona(A.getZona());
-                GerenciarListas.RemoverAplicante(A.getUUID());
-                GerenciarListas.RemoverPendenteAplicacao(A.getUUID());
-                GerenciarListas.RemoverZona(Zn);
+                Zn = aplicar.getZona(A.getZona());
+                aplicar.RemoverAplicante(A.getUUID());
+                aplicar.RemoverPendenteAplicacao(A.getUUID());
+                aplicar.RemoverZona(Zn);
                 // Adiciona Cargo no Discord
-                DiscordPonte.addCargo(A.getUUID(), A.getTime(), A.getDiscord());
+                DiscordPonte.addCargo(A.getUUID(), A.getDiscord());
                 // Teleporta Aplicante para o Spawn
                 if (pa.isOnline() == true) {
                     Player app = Bukkit.getPlayer(UUID.fromString(A.getUUID()));
-                    Regioes.RemovePermissao(app, A.getZona());
+                    regioes.RemovePermissao(app, A.getZona());
                     Location l = new Location(w, -1163, 80, 300);
                     app.teleport(l);
                     app.removePotionEffect(PotionEffectType.NIGHT_VISION);
@@ -180,7 +184,7 @@ public class analisar implements CommandExecutor {
                 }
                 // Remover Zona
                 player.sendMessage(ChatColor.RED + Mensagens.ZonaDel);
-                Regioes.removeRegion(w, Zn);
+                regioes.removeRegion(w, Zn);
                 player.sendMessage(ChatColor.GREEN + Mensagens.ZonaDel1);
                 // Teleporta Aplicador
                 Location l = new Location(w, -1163, 80, 300);
@@ -193,17 +197,17 @@ public class analisar implements CommandExecutor {
                     motivo += arrayValores[i] + " ";
                 }
                 motivo = motivo.trim();
-                GerenciarListas.RemoverPendenteAplicacao(A.getUUID());
+                aplicar.RemoverPendenteAplicacao(A.getUUID());
                 DiscordPonte.sendMessage(A.getDiscord(), Mensagens.AppRecusada1 + motivo + Mensagens.AppRecusada2);
                 Location l = new Location(w, -1163, 80, 300);
                 if (pa.isOnline() == true) {
-                    Regioes.AddPermissao(pa.getPlayer(), A.getZona());
+                    regioes.AddPermissao(pa.getPlayer(), A.getZona());
                 }
                 player.teleport(l);
                 player.sendMessage(ChatColor.GOLD + Mensagens.AppRecusada3);
             } else {
 
-                Location l = GerenciarListas.getZona(A.getZona()).getld();
+                Location l = aplicar.getZona(A.getZona()).getld();
                 player.teleport(l);
                 player.setGameMode(GameMode.CREATIVE);
                 player.addPotionEffect(new PotionEffect(PotionEffectType.NIGHT_VISION, Integer.MAX_VALUE, 0));

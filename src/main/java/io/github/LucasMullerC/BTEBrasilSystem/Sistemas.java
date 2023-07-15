@@ -21,6 +21,7 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 
+import io.github.LucasMullerC.Gerencia.Builder;
 import io.github.LucasMullerC.Objetos.Builders;
 import io.github.LucasMullerC.Objetos.Conquistas;
 import io.github.LucasMullerC.Util.Mensagens;
@@ -37,14 +38,14 @@ public class Sistemas {
     private static final GeographicProjection uprightProj;
     private static final ScaleProjection scaleProj;
 
-    public static String getStringLocation(final Location l) {
+    public String getStringLocation(final Location l) {
         if (l == null) {
             return "";
         }
         return l.getWorld().getName() + ":" + l.getBlockX() + ":" + l.getBlockY() + ":" + l.getBlockZ();
     }
 
-    public static Location getLocationString(final String s) {
+    public Location getLocationString(final String s) {
         if (s == null || s.trim() == "") {
             return null;
         }
@@ -59,7 +60,7 @@ public class Sistemas {
         return null;
     }
 
-    public static void RemovePermissaoTimes(Player player) {
+    public void RemovePermissaoTimes(Player player) {
         LuckPerms api = LuckPermsProvider.get();
         User user = api.getPlayerAdapter(Player.class).getUser(player);
         user.data().remove(Node.builder("group.b_ne").build());
@@ -71,29 +72,7 @@ public class Sistemas {
         user.data().remove(Node.builder("group.b_sul").build());
     }
 
-    public static String VerificarEquipe(Player player) {
-        String times = "";
-        LuckPerms api = LuckPermsProvider.get();
-        User user = api.getPlayerAdapter(Player.class).getUser(player);
-        Set<String> groups = user.getNodes(NodeType.INHERITANCE).stream().map(InheritanceNode::getGroupName)
-                .collect(Collectors.toSet());
-        ArrayList<String> al = new ArrayList<String>();
-        al.add("c_ne");
-        al.add("c_sp");
-        al.add("c_rj");
-        al.add("c_mg");
-        al.add("c_co");
-        al.add("c_sul");
-        for (String time : al) {
-            if (groups.contains(time)) {
-                String resto = time.substring(1);
-                times += "b" + resto + ",";
-            }
-        }
-        return times;
-    }
-
-    public static Boolean VerificarBuilder(Player player) {
+    public Boolean VerificarBuilder(Player player) {
         LuckPerms api = LuckPermsProvider.get();
         User user = api.getPlayerAdapter(Player.class).getUser(player);
         Set<String> groups = user.getNodes(NodeType.INHERITANCE).stream().map(InheritanceNode::getGroupName)
@@ -113,22 +92,26 @@ public class Sistemas {
         return false;
     }
 
-    public static String ForNextLvl(String uid, Boolean Prem) {
-        Builders B = GerenciarListas.getBuilder(uid);
+    public String ForNextLvl(String uid, Boolean Prem) {
+        Builder builder = new Builder();
+        Builders B = builder.getBuilder(uid);
         int Tier = B.getTier();
         double NextLvl;
         NextLvl = (Tier * 150) * 2.25;
-        /*if (Prem == true) {
-            NextLvl = (Tier * 100) * 2.25;
-        } else {
-            NextLvl = (Tier * 150) * 2.25;
-        }*/
+        /*
+         * if (Prem == true) {
+         * NextLvl = (Tier * 100) * 2.25;
+         * } else {
+         * NextLvl = (Tier * 150) * 2.25;
+         * }
+         */
         return String.valueOf(NextLvl);
 
     }
 
-    public static String FormLb() {
-        Map<String, Double> unsortMap = GerenciarListas.GetPointsMap();
+    public String FormLb() {
+        Builder builder = new Builder();
+        Map<String, Double> unsortMap = builder.GetPointsMap();
         // 1. Convert Map to List of Map
         List<Map.Entry<String, Double>> list = new LinkedList<Map.Entry<String, Double>>(unsortMap.entrySet());
 
@@ -150,11 +133,12 @@ public class Sistemas {
         return printLb(sortedMap);
     }
 
-    public static <K, V> String printLb(Map<K, V> map) {
+    public <K, V> String printLb(Map<K, V> map) {
         String lb = "";
         int cont = 1;
+        Builder builder = new Builder();
         for (Map.Entry<K, V> entry : map.entrySet()) {
-            Builders B = GerenciarListas.getBuilderDiscord(entry.getKey().toString());
+            Builders B = builder.getBuilderDiscord(entry.getKey().toString());
             if (entry.getKey().equals("nulo")) {
                 OfflinePlayer pl = Bukkit.getOfflinePlayer(UUID.fromString(B.getUUID()));
                 lb += "**#" + cont + " ->** _" + pl.getName() + "_\r\n";
@@ -162,9 +146,9 @@ public class Sistemas {
                 lb += "**#" + cont + " ->** <@" + entry.getKey() + ">\r\n";
             }
             String pts = String.valueOf(B.getPontos());
-            pts = pts.substring(0, pts.indexOf(".")+2);
+            pts = pts.substring(0, pts.indexOf(".") + 2);
             lb += ":medal: Tier `" + B.getTier().toString() + "`\r\n :chart_with_upwards_trend: Pontos `"
-                    + pts+ "`\r\n\r\n";
+                    + pts + "`\r\n\r\n";
             if (cont == 10) {
                 break;
             }
@@ -173,14 +157,15 @@ public class Sistemas {
         return lb;
     }
 
-    public static String ListConquistas(Builders B) {
+    public String ListConquistas(Builders B) {
         String[] cq = B.getAwards().split(",");
         String Result = "";
+        Builder builder = new Builder();
         if (B.getAwards().equals("nulo")) {
             return Mensagens.conquistaList;
         } else {
             for (int i = 0; i < cq.length; i++) {
-                Conquistas C = GerenciarListas.getConquistaPos(cq[i]);
+                Conquistas C = builder.getConquistaPos(cq[i]);
                 Result += "● [" + C.getNome() + "](" + C.getURL() + ")\r\n";
             }
             if (Result.equals("")) {
@@ -192,23 +177,27 @@ public class Sistemas {
         }
     }
 
-    public static void CheckRank(String id) {
+    public void CheckRank(String id) {
         OfflinePlayer Offplayer = Bukkit.getOfflinePlayer(UUID.fromString(id));
+        Builder builder = new Builder();
         if (Offplayer.isOnline()) {
             Player player = Offplayer.getPlayer();
-            Builders B = GerenciarListas.getBuilder(id);
+            Builders B = builder.getBuilder(id);
             if (B != null) {
                 int tier = B.getTier();
                 double NextLvl;
                 NextLvl = (tier * 150) * 2.25;
-                /*if (player.hasPermission("group.apoiador")) {
-                    NextLvl = (tier * 100) * 2.25;
-                } else {
-                    NextLvl = (tier * 150) * 2.25;
-                }*/
+                /*
+                 * if (player.hasPermission("group.apoiador")) {
+                 * NextLvl = (tier * 100) * 2.25;
+                 * } else {
+                 * NextLvl = (tier * 150) * 2.25;
+                 * }
+                 */
                 if (B.getPontos() >= NextLvl) {
                     Integer newtier = tier + 1;
-                    GerenciarListas.setTier(newtier, id);
+                    builder.setTier(newtier, id);
+                    builder.saveBuilder();
                     player.sendMessage(ChatColor.GREEN + Mensagens.NextLevel1);
                     player.sendMessage(ChatColor.GOLD + Mensagens.NextLevel2);
                     DiscordPonte.NextLevel(newtier.toString(), B.getDiscord(), player);
@@ -216,7 +205,7 @@ public class Sistemas {
                 } else {
                     double resto = NextLvl - B.getPontos();
                     String Sresto = String.valueOf(resto);
-                    Sresto = Sresto.substring(0, Sresto.indexOf(".")+2);
+                    Sresto = Sresto.substring(0, Sresto.indexOf(".") + 2);
                     player.sendMessage(Mensagens.Level1 + ChatColor.GOLD + ChatColor.BOLD + Sresto
                             + ChatColor.RESET + Mensagens.Level2);
                 }
@@ -224,35 +213,37 @@ public class Sistemas {
         }
     }
 
-    public static void CheckAwardBuilds(String uuid) {
-        Builders B = GerenciarListas.getBuilder(uuid);
+    public void CheckAwardBuilds(String uuid) {
+        Builder builder = new Builder();
+        Builders B = builder.getBuilder(uuid);
         if (B.getBuilds() >= 1) {
-            GerenciarListas.setConquistas("1build", uuid);
+            builder.setConquistas("1build", uuid);
         }
         if (B.getBuilds() >= 10) {
-            GerenciarListas.setConquistas("10build", uuid);
+            builder.setConquistas("10build", uuid);
         }
         if (B.getBuilds() >= 30) {
-            GerenciarListas.setConquistas("30build", uuid);
+            builder.setConquistas("30build", uuid);
         }
         if (B.getBuilds() >= 50) {
-            GerenciarListas.setConquistas("50build", uuid);
+            builder.setConquistas("50build", uuid);
         }
         if (B.getBuilds() >= 100) {
-            GerenciarListas.setConquistas("100build", uuid);
+            builder.setConquistas("100build", uuid);
         }
         if (B.getBuilds() >= 300) {
-            GerenciarListas.setConquistas("300build", uuid);
+            builder.setConquistas("300build", uuid);
         }
         if (B.getBuilds() >= 500) {
-            GerenciarListas.setConquistas("500build", uuid);
+            builder.setConquistas("500build", uuid);
         }
         if (B.getBuilds() >= 500) {
-            GerenciarListas.setConquistas("1000build", uuid);
+            builder.setConquistas("1000build", uuid);
         }
+        builder.saveBuilder();
     }
 
-    public static Location getLocation(String coords, World w) {
+    public Location getLocation(String coords, World w) {
         String[] ary = coords.split(",");
 
         int spawnY = w.getHighestBlockYAt(Integer.parseInt(ary[0].split("\\.")[0]),
@@ -266,11 +257,11 @@ public class Sistemas {
 
     }
 
-    public static double[] toGeo(final double x, final double z) {
+    public double[] toGeo(final double x, final double z) {
         return Sistemas.scaleProj.toGeo(x, z);
     }
 
-    public static double[] fromGeo(final double lon, final double lat) {
+    public double[] fromGeo(final double lon, final double lat) {
         return Sistemas.scaleProj.fromGeo(lon, lat);
     }
 

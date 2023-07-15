@@ -37,6 +37,7 @@ import org.bukkit.World;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 
+import io.github.LucasMullerC.Gerencia.Claim;
 import io.github.LucasMullerC.Objetos.Areas;
 import io.github.LucasMullerC.Objetos.Zonas;
 import net.luckperms.api.LuckPerms;
@@ -49,7 +50,7 @@ public class Regioes {
 
     // CLAIMS
 
-    public static String getSelection(Player player, int Tier) {
+    public String getSelection(Player player, int Tier) {
         WorldEditPlugin worldEdit = (WorldEditPlugin) Bukkit.getServer().getPluginManager().getPlugin("WorldEdit");
         Selection selection = worldEdit.getSelection(player);
 
@@ -120,7 +121,7 @@ public class Regioes {
         }
     }
 
-    public static int getLimiteSelection(int Tier) {
+    public int getLimiteSelection(int Tier) {
         if (Tier >= 1 && Tier <= 2) {
             return 212;
         } else if (Tier >= 3 && Tier <= 4) {
@@ -136,7 +137,7 @@ public class Regioes {
         }
     }
 
-    public static void AddClaimGuard(String coords, String Id, Player player) {
+    public void AddClaimGuard(String coords, String Id, Player player) {
         WorldGuardPlugin WGplugin = WGBukkit.getPlugin();
         World w = player.getWorld();
         RegionContainer container = WGplugin.getRegionContainer();
@@ -160,8 +161,9 @@ public class Regioes {
         addLuckPerms(Id, player.getUniqueId());
     }
 
-    public static void AddFlags(String Id) {
-        Areas A = GerenciarListas.getArea(Id);
+    public void AddFlags(String Id) {
+        Claim claim = new Claim();
+        Areas A = claim.getArea(Id);
         OfflinePlayer lider = Bukkit.getOfflinePlayer(UUID.fromString(A.getPlayer()));
         String Participantes = lider.getName();
         if (!A.getParticipantes().equals("nulo")) {
@@ -184,15 +186,16 @@ public class Regioes {
         Bukkit.dispatchCommand(console, "region flag " + Id + " worldedit -w TerraPreGenerated -g members allow");
     }
 
-    public static void RemoveClaim(Areas A, Player player) {
+    public void RemoveClaim(Areas A, Player player) {
         World w = player.getWorld();
         WorldGuardPlugin WGplugin = WGBukkit.getPlugin();
         RegionContainer container = WGplugin.getRegionContainer();
         RegionManager regions = container.get(w);
+        Claim claim = new Claim();
         regions.removeRegion(A.getClaim());
-        GerenciarListas.RemoverArea(A.getClaim());
-        if (GerenciarListas.getPendenteClaim(A.getClaim()) != null) {
-            GerenciarListas.RemoverPendenteClaim(A.getClaim());
+        claim.RemoverArea(A.getClaim());
+        if (claim.getPendenteClaim(A.getClaim()) != null) {
+            claim.RemoverPendenteClaim(A.getClaim());
         }
         String Participantes = A.getParticipantes();
         if (Participantes.equals("nulo")) {
@@ -207,7 +210,7 @@ public class Regioes {
         }
     }
 
-    public static void CompleteClaim(String ID, Player player, String Participantes) {
+    public void CompleteClaim(String ID, Player player, String Participantes) {
         World w = player.getWorld();
         WorldGuardPlugin WGplugin = WGBukkit.getPlugin();
         RegionContainer container = WGplugin.getRegionContainer();
@@ -251,7 +254,7 @@ public class Regioes {
          */
     }
 
-    public static void addPermissaoWG(String ID, Player player, UUID uid) {
+    public void addPermissaoWG(String ID, Player player, UUID uid) {
         World w = player.getWorld();
         WorldGuardPlugin WGplugin = WGBukkit.getPlugin();
         RegionContainer container = WGplugin.getRegionContainer();
@@ -263,7 +266,7 @@ public class Regioes {
         addLuckPerms(ID, uid);
     }
 
-    public static void removePermissaoWG(String ID, Player player, UUID uid) {
+    public void removePermissaoWG(String ID, Player player, UUID uid) {
         World w = player.getWorld();
         WorldGuardPlugin WGplugin = WGBukkit.getPlugin();
         RegionContainer container = WGplugin.getRegionContainer();
@@ -275,7 +278,7 @@ public class Regioes {
         removeLuckPerms(ID, uid);
     }
 
-    public static void removeLuckPerms(String ID, UUID uid) {
+    public void removeLuckPerms(String ID, UUID uid) {
         // Remove permissão no luckyperms
         LuckPerms api = LuckPermsProvider.get();
         UserManager userManager = api.getUserManager();
@@ -295,7 +298,7 @@ public class Regioes {
         }
     }
 
-    public static void addLuckPerms(String ID, UUID uid) {
+    public void addLuckPerms(String ID, UUID uid) {
         // add permissão no luckyperms
         LuckPerms api = LuckPermsProvider.get();
         UserManager userManager = api.getUserManager();
@@ -314,7 +317,7 @@ public class Regioes {
         }
     }
 
-    public static double getDistancia(String id, World w, int peso) {
+    public double getDistancia(String id, World w, int peso) {
         WorldGuardPlugin WGplugin = WGBukkit.getPlugin();
         RegionContainer container = WGplugin.getRegionContainer();
         RegionManager regions = container.get(w);
@@ -333,7 +336,7 @@ public class Regioes {
     // APLICAÇÃO
 
     @SuppressWarnings("deprecation")
-    public static void loadSchematic(Player player, Location location) {
+    public void loadSchematic(Player player, Location location) {
 
         BTEBrasilSystem plugin = BTEBrasilSystem.getPlugin();
         EditSession editSession = new EditSession(new BukkitWorld(player.getLocation().getWorld()), Integer.MAX_VALUE);
@@ -351,7 +354,7 @@ public class Regioes {
     }
 
     @SuppressWarnings("deprecation")
-    public static void removeRegion(World w, Zonas z) {
+    public void removeRegion(World w, Zonas z) {
         Location meio = new Location(w, z.getla().getX() - 2, 45, z.getla().getZ() - 2);
         Vector loc1 = new Vector(meio.getX() - 45, 60, meio.getZ() - 45);
         Vector loc2 = new Vector(meio.getX() + 45, 25, meio.getZ() + 45);
@@ -366,7 +369,7 @@ public class Regioes {
 
     }
 
-    public static void AddPermissao(Player player, String Zona) {
+    public void AddPermissao(Player player, String Zona) {
         ConsoleCommandSender console = Bukkit.getServer().getConsoleSender();
         LuckPerms api = LuckPermsProvider.get();
         User user = api.getPlayerAdapter(Player.class).getUser(player);
@@ -399,7 +402,7 @@ public class Regioes {
         api.getUserManager().saveUser(user);
     }
 
-    public static void RemovePermissao(Player player, String Zona) {
+    public void RemovePermissao(Player player, String Zona) {
         LuckPerms api = LuckPermsProvider.get();
         User user = api.getPlayerAdapter(Player.class).getUser(player);
         Node nodea = Node.builder("worldedit.*").value(true).withContext("worldguard:region", "apply" + Zona + "a")
@@ -418,7 +421,7 @@ public class Regioes {
         api.getUserManager().saveUser(user);
     }
 
-    public static void CreateRegion(Integer zona, Player player, boolean sobe) {
+    public void CreateRegion(Integer zona, Player player, boolean sobe) {
         WorldGuardPlugin WGplugin = WGBukkit.getPlugin();
         World w = player.getWorld();
         RegionContainer container = WGplugin.getRegionContainer();

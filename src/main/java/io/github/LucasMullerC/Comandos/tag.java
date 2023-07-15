@@ -22,8 +22,8 @@ public class tag implements CommandExecutor {
             player.chat("/tagmenu");
             return true;
         }
-        //construtor
-        if(args[0].equalsIgnoreCase("construtor")){
+        // construtor
+        if (args[0].equalsIgnoreCase("construtor")) {
             if (args[1].equals("del")) {
                 removePermissionBuilder(player, api);
                 player.sendMessage(ChatColor.GREEN + Mensagens.TagRemove);
@@ -38,8 +38,7 @@ public class tag implements CommandExecutor {
                     return true;
                 }
             }
-        }
-        else if(args[0].equalsIgnoreCase("outros")){
+        } else if (args[0].equalsIgnoreCase("outros")) {
             if (args[1].equals("del")) {
                 removePermissionOutros(player, api);
                 player.sendMessage(ChatColor.GREEN + Mensagens.TagRemove);
@@ -56,8 +55,8 @@ public class tag implements CommandExecutor {
             }
         }
         return false;
-        
-        }  
+
+    }
 
     public void addPermissionBuilder(Player player, String permission, LuckPerms api) {
         User user = api.getPlayerAdapter(Player.class).getUser(player);
@@ -68,7 +67,7 @@ public class tag implements CommandExecutor {
 
     public void removePermissionBuilder(Player player, LuckPerms api) {
         User user = api.getPlayerAdapter(Player.class).getUser(player);
-        //TAGS ANTIGAS
+        // TAGS ANTIGAS
         user.data().remove(Node.builder("prefix.0.&9Construtor_SP").build());
         user.data().remove(Node.builder("prefix.0.&9Construtor_ES").build());
         user.data().remove(Node.builder("prefix.0.&9Construtor_RJ_ES").build());
@@ -76,15 +75,20 @@ public class tag implements CommandExecutor {
         user.data().remove(Node.builder("prefix.0.&9Construtor_SUL").build());
         user.data().remove(Node.builder("prefix.0.&9Construtor_NE").build());
         user.data().remove(Node.builder("prefix.0.&9Construtor_CO_N").build());
-        //TAGS NOVAS
+        // TAGS NOVAS
         user.data().remove(Node.builder("prefix.0.&9Construtor SP").build());
         user.data().remove(Node.builder("prefix.0.&9Construtor ES").build());
         user.data().remove(Node.builder("prefix.0.&9Construtor RJ & ES").build());
+        user.data().remove(Node.builder("prefix.0.&9Construtor RJ").build());
+        user.data().remove(Node.builder("prefix.0.&9Construtor ES").build());
         user.data().remove(Node.builder("prefix.0.&9Construtor MG").build());
         user.data().remove(Node.builder("prefix.0.&9Construtor SUL").build());
         user.data().remove(Node.builder("prefix.0.&9Construtor NE").build());
-        user.data().remove(Node.builder("prefix.0.&9Construtor C-O & N").build());
-        
+        user.data().remove(Node.builder("prefix.0.&9Construtor C-O").build());
+        user.data().remove(Node.builder("prefix.0.&9Construtor NORTE").build());
+        user.data().remove(Node.builder("prefix.0.&9Construtor BR").build());
+        user.data().remove(Node.builder("prefix.0.&9Construtor Brasil").build());
+
         api.getUserManager().saveUser(user);
     }
 
@@ -112,26 +116,14 @@ public class tag implements CommandExecutor {
         api.getUserManager().saveUser(user);
     }
 
-    public String convertPerm(String perm){
-        switch(perm){
+    public String convertPerm(String perm) {
+        switch (perm) {
             case "helper":
                 return "&eSuporte";
             case "apoiador":
                 return "&dApoiador";
             case "bte_staff":
                 return "&5BTE Staff";
-            case "c_sul":
-                return "&6Staff SUL";
-            case "c_sp":
-                return "&6Staff SP";
-            case "c_rj":
-                return "&6Staff RJ & ES";
-            case "c_ne":
-                return "&6Staff NE";
-            case "c_mg":
-                return "&6Staff MG";
-            case "c_co":
-                return "&6Staff CO & N";
             case "reviewer":
                 return "&bReviewer";
             case "moderator":
@@ -142,6 +134,5 @@ public class tag implements CommandExecutor {
         }
         return perm;
     }
-
 
 }

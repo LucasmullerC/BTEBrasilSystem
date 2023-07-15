@@ -17,6 +17,7 @@ public class ListaZonas {
 	private File storageFile;
 	private ArrayList<Zonas> values;
 	private Zonas G;
+	Sistemas sistemas = new Sistemas();
 
 	public ListaZonas(File file) {
 		this.storageFile = file;
@@ -39,54 +40,54 @@ public class ListaZonas {
 			while ((line = reader.readLine()) != null) {
 				if (this.Contains(new Zonas(line)) == false) {
 					switch (cont) {
-					case 0:
-						G = new Zonas(line);
-						cont++;
-						break;
-					case 1:
-						G.setNome(line);
-						cont++;
-						break;
-					case 2:
-						G.setOcupado(Boolean.parseBoolean(line));
-						cont++;
-						break;
-					case 3:
-						G.seta(Boolean.parseBoolean(line));
-						cont++;
-						break;
-					case 4:
-						G.setb(Boolean.parseBoolean(line));
-						cont++;
-						break;
-					case 5:
-						G.setc(Boolean.parseBoolean(line));
-						cont++;
-						break;
-					case 7:
-						G.setla(Sistemas.getLocationString(line));
-						cont++;
-						break;
-					case 8:
-						G.setlb(Sistemas.getLocationString(line));
-						cont++;
-						break;
-					case 9:
-						G.setlc(Sistemas.getLocationString(line));
-						cont++;
-						break;
-					case 10:
-						G.setld(Sistemas.getLocationString(line));
-						cont++;
-						values.add(G);
-						cont = 0;
-						break;
-					case 6:
-						G.setd(Boolean.parseBoolean(line));
-						cont++;
-						break;
-					default:
-						break;
+						case 0:
+							G = new Zonas(line);
+							cont++;
+							break;
+						case 1:
+							G.setNome(line);
+							cont++;
+							break;
+						case 2:
+							G.setOcupado(Boolean.parseBoolean(line));
+							cont++;
+							break;
+						case 3:
+							G.seta(Boolean.parseBoolean(line));
+							cont++;
+							break;
+						case 4:
+							G.setb(Boolean.parseBoolean(line));
+							cont++;
+							break;
+						case 5:
+							G.setc(Boolean.parseBoolean(line));
+							cont++;
+							break;
+						case 7:
+							G.setla(sistemas.getLocationString(line));
+							cont++;
+							break;
+						case 8:
+							G.setlb(sistemas.getLocationString(line));
+							cont++;
+							break;
+						case 9:
+							G.setlc(sistemas.getLocationString(line));
+							cont++;
+							break;
+						case 10:
+							G.setld(sistemas.getLocationString(line));
+							cont++;
+							values.add(G);
+							cont = 0;
+							break;
+						case 6:
+							G.setd(Boolean.parseBoolean(line));
+							cont++;
+							break;
+						default:
+							break;
 					}
 				}
 			}
@@ -117,13 +118,13 @@ public class ListaZonas {
 				out.newLine();
 				out.write(String.valueOf(value.getd()));
 				out.newLine();
-				out.write(Sistemas.getStringLocation(value.getla()));
+				out.write(sistemas.getStringLocation(value.getla()));
 				out.newLine();
-				out.write(Sistemas.getStringLocation(value.getlb()));
+				out.write(sistemas.getStringLocation(value.getlb()));
 				out.newLine();
-				out.write(Sistemas.getStringLocation(value.getlc()));
+				out.write(sistemas.getStringLocation(value.getlc()));
 				out.newLine();
-				out.write(Sistemas.getStringLocation(value.getld()));
+				out.write(sistemas.getStringLocation(value.getld()));
 				out.newLine();
 			}
 			out.close();

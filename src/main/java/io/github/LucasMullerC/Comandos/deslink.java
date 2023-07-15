@@ -30,7 +30,8 @@ public class deslink implements CommandExecutor {
                     player.sendMessage(ChatColor.RED + "Ocorreu um erro.");
 
                 } else {
-                    Sistemas.RemovePermissaoTimes(player);
+                    Sistemas sistemas = new Sistemas();
+                    sistemas.RemovePermissaoTimes(player);
 
                 }
             }
