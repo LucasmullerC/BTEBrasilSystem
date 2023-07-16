@@ -40,6 +40,7 @@ public class proximo implements CommandExecutor {
                 A.setSeccao("b");
                 Zn.seta(false);
                 Zn.setb(true);
+                aplicar.SaveAplicar();
                 Location l = Zn.getlb();
                 player.teleport(l);
                 scheduler.scheduleSyncDelayedTask(plugin, new Runnable() {
@@ -54,6 +55,7 @@ public class proximo implements CommandExecutor {
                 A.setSeccao("c");
                 Zn.setb(false);
                 Zn.setc(true);
+                aplicar.SaveAplicar();
                 Location l = Zn.getlc();
                 player.teleport(l);
                 scheduler.scheduleSyncDelayedTask(plugin, new Runnable() {
@@ -69,6 +71,7 @@ public class proximo implements CommandExecutor {
                 A.setSeccao("d");
                 Zn.setc(false);
                 Zn.setd(true);
+                aplicar.SaveAplicar();
                 Location l = Zn.getld();
                 player.teleport(l);
                 scheduler.scheduleSyncDelayedTask(plugin, new Runnable() {

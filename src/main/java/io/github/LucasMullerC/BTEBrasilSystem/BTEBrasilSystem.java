@@ -131,7 +131,7 @@ public final class BTEBrasilSystem extends JavaPlugin implements Listener {
 
 				@Override
 				public void run() {
-					aplicar.DeletarDeadLines(event.getPlayer().getWorld());
+					aplicar.DeletarDeadLines(event.getPlayer());
 				}
 			}, 30L);
 		}

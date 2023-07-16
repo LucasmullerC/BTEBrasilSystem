@@ -1,12 +1,10 @@
 package io.github.LucasMullerC.Comandos;
 
+import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-
-import io.github.LucasMullerC.BTEBrasilSystem.DiscordPonte;
-import io.github.LucasMullerC.Util.Mensagens;
 
 public class link implements CommandExecutor {
 
@@ -16,13 +14,15 @@ public class link implements CommandExecutor {
         if (args[0] == null) {
             return false;
         }
-        String msg = "";
-        for (int i = 0; i < args.length; ++i) {
-            msg = msg + args[i] + " ";
-        }
-        msg = msg.trim();
-        String Discord = DiscordPonte.getDiscordByName(msg);
-        DiscordPonte.sendMessage(Discord, Mensagens.LinkDiscord);
+        /*
+         * String msg = "";
+         * for (int i = 0; i < args.length; ++i) {
+         * msg = msg + args[i] + " ";
+         * }
+         * msg = msg.trim();
+         * String Discord = DiscordPonte.getDiscordByName(msg);
+         * DiscordPonte.sendMessage(Discord, Mensagens.LinkDiscord);
+         */
         player.chat("/discord link");
         return true;
 

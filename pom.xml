@@ -2,7 +2,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>io.github.LucasMullerC</groupId>
     <artifactId>BTEBrasilSystem</artifactId>
-    <version>0.4.8</version>
+    <version>0.5.0</version>
     <build>
         <plugins>
             <plugin>
@@ -41,6 +41,10 @@
         </resources>
     </build>
     <repositories>
+        <repository>
+        <id>papermc</id>
+        <url>https://repo.papermc.io/repository/maven-public/</url>
+    </repository>
         <!-- discordsrv -->
         <repository>
             <id>Scarsz-Nexus</id>
@@ -64,39 +68,60 @@
             <url>https://maven.enginehub.org/repo/</url>
         </repository>
     </repositories>
+    <dependencyManagement>
     <dependencies>
         <dependency>
-            <groupId>com.sk89q.worldedit</groupId>
-            <artifactId>worldedit-bukkit</artifactId>
-            <version>6.1.4-SNAPSHOT</version>
-            <scope>provided</scope>
+            <groupId>com.intellectualsites.bom</groupId>
+            <artifactId>bom-1.18.x</artifactId>
+            <version>1.28</version>
+            <scope>import</scope>
+            <type>pom</type>
         </dependency>
-        <dependency>
-            <groupId>com.sk89q.worldguard</groupId>
-            <artifactId>worldguard-legacy</artifactId>
-            <version>6.2</version>
-            <scope>provided</scope>
-        </dependency>
+    </dependencies>
+</dependencyManagement>
+    <dependencies>
+    <dependency>
+      <groupId>com.fastasyncworldedit</groupId>
+      <artifactId>FastAsyncWorldEdit-Core</artifactId>
+      <scope>provided</scope>
+    </dependency>
+
+    <dependency>
+        <groupId>com.fastasyncworldedit</groupId>
+        <artifactId>FastAsyncWorldEdit-Bukkit</artifactId>
+        <scope>provided</scope>
+        <exclusions>
+            <exclusion>
+                <artifactId>FastAsyncWorldEdit-Core</artifactId>
+                <groupId>*</groupId>
+            </exclusion>
+        </exclusions>
+    </dependency>
+    <dependency>
+        <groupId>com.sk89q.worldguard</groupId>
+        <artifactId>worldguard-bukkit</artifactId>
+        <version>7.0.1</version>
+        <scope>provided</scope>
+    </dependency>
         <!-- discordsrv -->
-        <dependency>
-            <groupId>com.discordsrv</groupId>
-            <artifactId>discordsrv</artifactId>
-            <version>1.21.1</version>
-            <scope>provided</scope>
-        </dependency>
+<dependency>
+    <groupId>com.discordsrv</groupId>
+    <artifactId>discordsrv</artifactId>
+    <version>1.21.1</version>
+    <scope>provided</scope>
+</dependency>
         <dependency>
             <groupId>net.luckperms</groupId>
             <artifactId>api</artifactId>
-            <version>5.3</version>
+            <version>5.4</version>
             <scope>provided</scope>
         </dependency>
-        <dependency>
-            <groupId>org.bukkit</groupId>
-            <artifactId>bukkit</artifactId>
-            <version>1.12.2-R0.1-SNAPSHOT</version>
-            <type>jar</type>
-            <scope>provided</scope>
-        </dependency>
+    <dependency>
+           <groupId>org.spigotmc</groupId>
+           <artifactId>spigot-api</artifactId>
+           <version>1.19.4-R0.1-SNAPSHOT</version>
+           <scope>provided</scope>
+    </dependency>
 
     </dependencies>
 </project>

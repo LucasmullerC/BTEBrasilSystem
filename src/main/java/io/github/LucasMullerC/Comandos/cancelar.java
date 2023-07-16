@@ -2,10 +2,11 @@ package io.github.LucasMullerC.Comandos;
 
 import java.util.UUID;
 
-import com.sk89q.worldguard.bukkit.RegionContainer;
-import com.sk89q.worldguard.bukkit.WGBukkit;
+import com.sk89q.worldedit.bukkit.BukkitAdapter;
+import com.sk89q.worldguard.WorldGuard;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 import com.sk89q.worldguard.protection.managers.RegionManager;
+import com.sk89q.worldguard.protection.regions.RegionContainer;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -35,9 +36,10 @@ public class cancelar implements CommandExecutor {
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         Player player = (Player) sender;
         UUID id = player.getUniqueId();
-        World w = player.getWorld();
-        WorldGuardPlugin WGplugin = WGBukkit.getPlugin();
-        RegionContainer container = WGplugin.getRegionContainer();
+        World world = player.getWorld();
+        com.sk89q.worldedit.entity.Player playerbukkit = BukkitAdapter.adapt(player);
+        com.sk89q.worldedit.world.World w = playerbukkit.getWorld();
+        RegionContainer container = WorldGuard.getInstance().getPlatform().getRegionContainer();
         RegionManager regions = container.get(w);
         Aplicar aplicar = new Aplicar();
         Regioes regioes = new Regioes();
@@ -62,10 +64,10 @@ public class cancelar implements CommandExecutor {
                 }
                 // Remover Zona
                 player.sendMessage(ChatColor.RED + Mensagens.ZonaDel);
-                regioes.removeRegion(w, Zn);
+                regioes.removeRegion(player, Zn);
                 player.sendMessage(ChatColor.GREEN + Mensagens.ZonaDel1);
                 // Teleporta Player
-                Location l = new Location(w, -1163, 80, 300);
+                Location l = new Location(world, -1163, 80, 300);
                 player.teleport(l);
                 player.removePotionEffect(PotionEffectType.NIGHT_VISION);
                 PlayerInventory inventory = player.getInventory();
@@ -97,10 +99,10 @@ public class cancelar implements CommandExecutor {
                     }
                     // Remover Zona
                     player.sendMessage(ChatColor.RED + Mensagens.ZonaDel);
-                    regioes.removeRegion(w, Zn);
+                    regioes.removeRegion(player, Zn);
                     player.sendMessage(ChatColor.GREEN + Mensagens.ZonaDel1);
                     // Teleporta Player
-                    Location l = new Location(w, -1163, 80, 300);
+                    Location l = new Location(world, -1163, 80, 300);
                     player.teleport(l);
                     OfflinePlayer pa = Bukkit.getOfflinePlayer(UUID.fromString(A.getUUID()));
                     if (pa.isOnline() == true) {

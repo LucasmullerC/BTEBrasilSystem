@@ -26,49 +26,46 @@ public class aplicacao implements CommandExecutor {
         UUID id = player.getUniqueId();
         String discordId = DiscordSRV.getPlugin().getAccountLinkManager().getDiscordId(player.getUniqueId());
         Aplicar aplicar = new Aplicar();
-        if (args.length == 0) { // Se /aplicacao somente
-            sender.sendMessage(ChatColor.GOLD + Mensagens.invalido);
+        if (player.hasPermission("group.b_br") || player.hasPermission("group.b_sp")
+                || player.hasPermission("group.b_co") || player.hasPermission("group.b_es")
+                || player.hasPermission("group.b_mg") || player.hasPermission("group.b_ne")
+                || player.hasPermission("group.b_norte") || player.hasPermission("group.b_rj")
+                || player.hasPermission("group.b_sul") == true) { // Já é
+            // construtor
+            // no
+            // time
+            player.sendMessage(ChatColor.RED + Mensagens.Isconstrutor);
             return true;
-        } else if (args[0] != null) { // Se o argumento não for nulo
-            if (player.hasPermission("group." + args[0]) == true) { // Já é construtor no time
-                player.sendMessage(ChatColor.RED + Mensagens.Isconstrutor);
+        } else { // Se ele não for construtor no time
+            if (aplicar.getAplicante(id.toString()) != null) { // Se ele já for Aplicante
+                player.sendMessage(ChatColor.RED + Mensagens.AplicacaoAndamento);
+                player.sendMessage(ChatColor.GOLD + Mensagens.AplicacaoAndamento2);
                 return true;
-            } else { // Se ele não for construtor no time
-                if (aplicar.getAplicante(id.toString()) != null) { // Se ele já for Aplicante
-                    player.sendMessage(ChatColor.RED + Mensagens.AplicacaoAndamento);
-                    player.sendMessage(ChatColor.GOLD + Mensagens.AplicacaoAndamento2);
+            } else { // Ele não é Aplicante
+                if (discordId == null) { // Não está linkado
+                    player.sendMessage(ChatColor.RED + Mensagens.Link1);
+                    player.sendMessage(
+                            ChatColor.YELLOW + Mensagens.Link2 + ChatColor.BLUE + Mensagens.InviteDiscord);
+                    player.sendMessage(ChatColor.YELLOW + Mensagens.Link3 + ChatColor.BLUE + Mensagens.Link4
+                            + ChatColor.YELLOW + Mensagens.Link5);
                     return true;
-                } else { // Ele não é Aplicante
-                    if (discordId == null) { // Não está linkado
-                        player.sendMessage(ChatColor.RED + Mensagens.Link1);
-                        player.sendMessage(
-                                ChatColor.YELLOW + Mensagens.Link2 + ChatColor.BLUE + Mensagens.InviteDiscord);
-                        player.sendMessage(ChatColor.YELLOW + Mensagens.Link3 + ChatColor.BLUE + Mensagens.Link4
-                                + ChatColor.YELLOW + Mensagens.Link5);
+                } else {
+                    if (DiscordPonte.CheckDiscord(discordId) == true) {
+                        IniciarAplicacao(player, discordId, aplicar); // Aplicacão Iniciada
                         return true;
-                    } else {
-                        if (DiscordPonte.CheckDiscord(discordId) == true) {
-                            IniciarAplicacao(player, args[0], discordId, aplicar); // Aplicacão Iniciada
-                            return true;
 
-                        } else {// Se ele não estiver no Discor do time
-                            player.sendMessage(ChatColor.YELLOW + Mensagens.NotDiscord);
-                            return true;
-                        }
+                    } else {// Se ele não estiver no Discor do time
+                        player.sendMessage(ChatColor.YELLOW + Mensagens.NotDiscord);
+                        return true;
                     }
-
                 }
-            }
-        } else
 
-        { // Comando inválido
-            player.sendMessage(ChatColor.RED + "Invalido!");
-            return true;
+            }
         }
     }
 
-    public void IniciarAplicacao(Player player, String Time, String Discord, Aplicar aplicar) {
-        aplicar.addZonas(player, Time, Discord);
+    public void IniciarAplicacao(Player player, String Discord, Aplicar aplicar) {
+        aplicar.addZonas(player, Discord);
         player.addPotionEffect(new PotionEffect(PotionEffectType.NIGHT_VISION, Integer.MAX_VALUE, 0));
         player.getInventory().addItem(new ItemStack(Material.getMaterial("WOOD_AXE"), 1));
         player.sendMessage(ChatColor.GREEN + Mensagens.AppInit);

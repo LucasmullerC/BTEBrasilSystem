@@ -2,10 +2,11 @@ package io.github.LucasMullerC.Comandos;
 
 import java.util.UUID;
 
-import com.sk89q.worldguard.bukkit.RegionContainer;
-import com.sk89q.worldguard.bukkit.WGBukkit;
-import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
+import com.sk89q.worldedit.bukkit.BukkitAdapter;
+import com.sk89q.worldguard.WorldGuard;
 import com.sk89q.worldguard.protection.managers.RegionManager;
+import com.sk89q.worldguard.protection.regions.RegionContainer;
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
@@ -130,7 +131,7 @@ public class analisar implements CommandExecutor {
     }
 
     private void ConfirmarAplicacao(String[] comando, Player player, Builder builder) {
-        World w = player.getWorld();
+        World world = player.getWorld();
         Boolean pass = false;
         Aplicar aplicar = new Aplicar();
         Regioes regioes = new Regioes();
@@ -143,8 +144,9 @@ public class analisar implements CommandExecutor {
 
         // Analisar Aplicações
         if (pass == true) {
-            WorldGuardPlugin WGplugin = WGBukkit.getPlugin();
-            RegionContainer container = WGplugin.getRegionContainer();
+            com.sk89q.worldedit.entity.Player playerbukkit = BukkitAdapter.adapt(player);
+            com.sk89q.worldedit.world.World w = playerbukkit.getWorld();
+            RegionContainer container = WorldGuard.getInstance().getPlatform().getRegionContainer();
             RegionManager regions = container.get(w);
 
             P = aplicar.getPendenteAplicacao();
@@ -176,7 +178,7 @@ public class analisar implements CommandExecutor {
                 if (pa.isOnline() == true) {
                     Player app = Bukkit.getPlayer(UUID.fromString(A.getUUID()));
                     regioes.RemovePermissao(app, A.getZona());
-                    Location l = new Location(w, -1163, 80, 300);
+                    Location l = new Location(world, -1163, 80, 300);
                     app.teleport(l);
                     app.removePotionEffect(PotionEffectType.NIGHT_VISION);
                     PlayerInventory inventoryp = app.getInventory();
@@ -184,10 +186,10 @@ public class analisar implements CommandExecutor {
                 }
                 // Remover Zona
                 player.sendMessage(ChatColor.RED + Mensagens.ZonaDel);
-                regioes.removeRegion(w, Zn);
+                regioes.removeRegion(player, Zn);
                 player.sendMessage(ChatColor.GREEN + Mensagens.ZonaDel1);
                 // Teleporta Aplicador
-                Location l = new Location(w, -1163, 80, 300);
+                Location l = new Location(world, -1163, 80, 300);
                 player.teleport(l);
                 player.sendMessage(ChatColor.GOLD + Mensagens.AppAprov);
                 DiscordPonte.sendMessage(A.getDiscord(), Mensagens.AppAprovBuilder);
@@ -199,7 +201,7 @@ public class analisar implements CommandExecutor {
                 motivo = motivo.trim();
                 aplicar.RemoverPendenteAplicacao(A.getUUID());
                 DiscordPonte.sendMessage(A.getDiscord(), Mensagens.AppRecusada1 + motivo + Mensagens.AppRecusada2);
-                Location l = new Location(w, -1163, 80, 300);
+                Location l = new Location(world, -1163, 80, 300);
                 if (pa.isOnline() == true) {
                     regioes.AddPermissao(pa.getPlayer(), A.getZona());
                 }

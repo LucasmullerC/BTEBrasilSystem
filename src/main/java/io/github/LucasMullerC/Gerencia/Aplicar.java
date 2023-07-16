@@ -1,6 +1,8 @@
 package io.github.LucasMullerC.Gerencia;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -10,10 +12,10 @@ import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 
-import com.sk89q.worldguard.bukkit.RegionContainer;
-import com.sk89q.worldguard.bukkit.WGBukkit;
-import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
+import com.sk89q.worldedit.bukkit.BukkitAdapter;
+import com.sk89q.worldguard.WorldGuard;
 import com.sk89q.worldguard.protection.managers.RegionManager;
+import com.sk89q.worldguard.protection.regions.RegionContainer;
 
 import io.github.LucasMullerC.BTEBrasilSystem.BTEBrasilSystem;
 import io.github.LucasMullerC.BTEBrasilSystem.DiscordPonte;
@@ -47,6 +49,12 @@ public class Aplicar {
 
     }
 
+    public void SaveAplicar() {
+        aplicante.save();
+        pendente.save();
+        zonas.save();
+    }
+
     // APLICANTE
     public Aplicantes addAplicante(String UUID, String Discord, String Zona) {
         if (getAplicantePos(UUID) != null) {
@@ -73,7 +81,7 @@ public class Aplicar {
         aplicante.save();
     }
 
-    public void DeletarDeadLines(World w) {
+    public void DeletarDeadLines(Player player) {
         ArrayList<Aplicantes> ParaRemover = new ArrayList<Aplicantes>();
         // get data
         LocalDate deadline = LocalDate.now(); // x = 10
@@ -81,8 +89,9 @@ public class Aplicar {
         String data = deadline.format(formatter);
         // WorldGuard
         // World w = Bukkit.getServer().getWorld("TerraPreGenerated");
-        WorldGuardPlugin WGplugin = WGBukkit.getPlugin();
-        RegionContainer container = WGplugin.getRegionContainer();
+        com.sk89q.worldedit.entity.Player playerbukkit = BukkitAdapter.adapt(player);
+        com.sk89q.worldedit.world.World w = playerbukkit.getWorld();
+        RegionContainer container = WorldGuard.getInstance().getPlatform().getRegionContainer();
         RegionManager regions = container.get(w);
         int cont = 0;
         Regioes regioes = new Regioes();
@@ -103,7 +112,7 @@ public class Aplicar {
                         RemoverPendenteAplicacao(d.getUUID());
                     }
                     // Remover Zona
-                    regioes.removeRegion(w, Zn);
+                    regioes.removeRegion(player, Zn);
                     // DiscordPonte.sendMessage(d.getDiscord(), Mensagens.TimesUp);
                     cont++;
                 }
@@ -198,7 +207,7 @@ public class Aplicar {
     }
 
     // ZONAS
-    public void addZonas(Player player, String Time, String Discord) {
+    public void addZonas(Player player, String Discord) {
         World w = player.getWorld();
         ArrayList<Zonas> z = zonas.getValues();
         Zonas zonaold;
@@ -219,7 +228,15 @@ public class Aplicar {
             meio = new Location(w, -650, 45, 287);
             // worldguard
             regioes.CreateRegion(1, player, false);
-            regioes.loadSchematic(player, meio);
+            try {
+                regioes.loadSchematic(player, meio);
+            } catch (FileNotFoundException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            } catch (IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
         } else {
             if (result == 0) {
                 Integer posterior = z.size();
@@ -251,7 +268,12 @@ public class Aplicar {
                 regioes.CreateRegion(pos, player, false);
             }
             meio = new Location(w, L.getX() - 2, 45, L.getZ() - 2);
-            regioes.loadSchematic(player, meio);
+            try {
+                regioes.loadSchematic(player, meio);
+            } catch (IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
         }
         zn.setNome(player.getUniqueId().toString());
         zn.setOcupado(true);

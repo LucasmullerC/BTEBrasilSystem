@@ -26,10 +26,11 @@ public class DiscordSrvListener {
     public DiscordSrvListener(Plugin plugin) {
         this.plugin = plugin;
     }
-    
+
     @Subscribe
     public void discordReadyEvent(DiscordReadyEvent event) {
-        // We need to wait until DiscordSRV has initialized JDA, thus we're doing this inside DiscordReadyEvent
+        // We need to wait until DiscordSRV has initialized JDA, thus we're doing this
+        // inside DiscordReadyEvent
         DiscordUtil.getJda().addEventListener(new JDAListener(plugin));
 
         plugin.getLogger().info("Chatting on Discord with " + DiscordUtil.getJda().getUsers().size() + " users!");
@@ -39,7 +40,7 @@ public class DiscordSrvListener {
     public void discordMessageReceived(DiscordGuildMessageReceivedEvent event) {
         Message msg = event.getMessage();
         String[] cmd = msg.getContentRaw().split("\\s+");
-        switch(cmd[0]){
+        switch (cmd[0]) {
             case "!perfil":
                 new DiscordPerfil(msg);
                 break;

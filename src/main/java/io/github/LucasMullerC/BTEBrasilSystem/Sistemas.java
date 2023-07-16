@@ -70,6 +70,7 @@ public class Sistemas {
         user.data().remove(Node.builder("group.b_mg").build());
         user.data().remove(Node.builder("group.b_co").build());
         user.data().remove(Node.builder("group.b_sul").build());
+        user.data().remove(Node.builder("group.b_br").build());
     }
 
     public Boolean VerificarBuilder(Player player) {

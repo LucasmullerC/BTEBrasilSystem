@@ -43,6 +43,7 @@ public class anterior implements CommandExecutor {
                 A.setSeccao("a");
                 Zn.setb(false);
                 Zn.seta(true);
+                aplicar.SaveAplicar();
                 Location l = Zn.getla();
                 player.teleport(l);
                 scheduler.scheduleSyncDelayedTask(plugin, new Runnable() {
@@ -57,6 +58,7 @@ public class anterior implements CommandExecutor {
                 A.setSeccao("b");
                 Zn.setc(false);
                 Zn.setb(true);
+                aplicar.SaveAplicar();
                 Location l = Zn.getlb();
                 player.teleport(l);
                 scheduler.scheduleSyncDelayedTask(plugin, new Runnable() {
@@ -72,6 +74,7 @@ public class anterior implements CommandExecutor {
                 A.setSeccao("c");
                 Zn.setd(false);
                 Zn.setc(true);
+                aplicar.SaveAplicar();
                 Location l = Zn.getlc();
                 player.teleport(l);
                 scheduler.scheduleSyncDelayedTask(plugin, new Runnable() {

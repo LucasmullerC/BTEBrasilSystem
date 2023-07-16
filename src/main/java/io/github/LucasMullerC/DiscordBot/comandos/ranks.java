@@ -11,7 +11,8 @@ public class ranks {
         MessageChannel channel = msg.getChannel();
 
         Footer ft = new Footer("Build The Earth: Brasil", null, null);
-        MessageEmbed emb2 = new MessageEmbed(null,Mensagens.RanksTitulo,Mensagens.ListaRanks(), null, null, 52224, null, null, null, null, ft,null, null);
+        MessageEmbed emb2 = new MessageEmbed(null, Mensagens.RanksTitulo, Mensagens.ListaRanks(), null, null, 52224,
+                null, null, null, null, ft, null, null);
         channel.sendMessage(emb2).queue();
     }
 

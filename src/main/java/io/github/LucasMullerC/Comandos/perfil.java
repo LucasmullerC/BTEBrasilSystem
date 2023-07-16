@@ -1,7 +1,5 @@
 package io.github.LucasMullerC.Comandos;
 
-import java.util.Collection;
-
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -9,12 +7,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import github.scarsz.discordsrv.DiscordSRV;
-import io.github.LucasMullerC.BTEBrasilSystem.Sistemas;
 import io.github.LucasMullerC.Util.Mensagens;
-import net.luckperms.api.LuckPerms;
-import net.luckperms.api.LuckPermsProvider;
-import net.luckperms.api.model.user.User;
-import net.luckperms.api.node.Node;
 
 public class perfil implements CommandExecutor {
 
@@ -44,8 +37,10 @@ public class perfil implements CommandExecutor {
         }
         // CONSTRUTOR
         if (DiscordSRV.getPlugin().getAccountLinkManager().getDiscordId(player.getUniqueId()) != null) {
-            String motivo = "BTE Brasil";
-            player.sendMessage(ChatColor.AQUA + "CONSTRUTOR - " + ChatColor.GOLD + motivo);
+            if (player.hasPermission("group.b_br")) {
+                String motivo = "BTE Brasil";
+                player.sendMessage(ChatColor.AQUA + "CONSTRUTOR - " + ChatColor.GOLD + motivo);
+            }
             return true;
         } else
 

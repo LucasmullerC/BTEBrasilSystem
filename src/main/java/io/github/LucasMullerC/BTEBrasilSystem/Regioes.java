@@ -1,39 +1,47 @@
 package io.github.LucasMullerC.BTEBrasilSystem;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
+import com.fastasyncworldedit.core.FaweAPI;
 import com.google.common.collect.Lists;
-import com.sk89q.worldedit.BlockVector2D;
-import com.sk89q.worldedit.CuboidClipboard;
 import com.sk89q.worldedit.EditSession;
-import com.sk89q.worldedit.MaxChangedBlocksException;
-import com.sk89q.worldedit.Vector;
-import com.sk89q.worldedit.blocks.BaseBlock;
-import com.sk89q.worldedit.blocks.BlockID;
-import com.sk89q.worldedit.bukkit.BukkitWorld;
-import com.sk89q.worldedit.bukkit.WorldEditPlugin;
-import com.sk89q.worldedit.bukkit.selections.Polygonal2DSelection;
-import com.sk89q.worldedit.bukkit.selections.Selection;
-import com.sk89q.worldedit.data.DataException;
+import com.sk89q.worldedit.IncompleteRegionException;
+import com.sk89q.worldedit.LocalSession;
+import com.sk89q.worldedit.WorldEdit;
+import com.sk89q.worldedit.bukkit.BukkitAdapter;
+import com.sk89q.worldedit.extent.clipboard.Clipboard;
+import com.sk89q.worldedit.extent.clipboard.io.ClipboardFormat;
+import com.sk89q.worldedit.extent.clipboard.io.ClipboardFormats;
+import com.sk89q.worldedit.extent.clipboard.io.ClipboardReader;
+import com.sk89q.worldedit.function.operation.Operation;
+import com.sk89q.worldedit.function.operation.Operations;
+import com.sk89q.worldedit.math.BlockVector2;
+import com.sk89q.worldedit.math.BlockVector3;
 import com.sk89q.worldedit.regions.CuboidRegion;
-import com.sk89q.worldguard.bukkit.RegionContainer;
-import com.sk89q.worldguard.bukkit.WGBukkit;
-import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
+import com.sk89q.worldedit.regions.Polygonal2DRegion;
+import com.sk89q.worldedit.regions.Region;
+import com.sk89q.worldedit.session.ClipboardHolder;
+import com.sk89q.worldedit.session.SessionManager;
+import com.sk89q.worldedit.util.formatting.text.TextComponent;
+import com.sk89q.worldedit.world.World;
+import com.sk89q.worldguard.WorldGuard;
 import com.sk89q.worldguard.domains.DefaultDomain;
 import com.sk89q.worldguard.protection.managers.RegionManager;
 import com.sk89q.worldguard.protection.regions.ProtectedPolygonalRegion;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
+import com.sk89q.worldguard.protection.regions.RegionContainer;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
-import org.bukkit.World;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 
@@ -51,13 +59,19 @@ public class Regioes {
     // CLAIMS
 
     public String getSelection(Player player, int Tier) {
-        WorldEditPlugin worldEdit = (WorldEditPlugin) Bukkit.getServer().getPluginManager().getPlugin("WorldEdit");
-        Selection selection = worldEdit.getSelection(player);
+        com.sk89q.worldedit.entity.Player actor = BukkitAdapter.adapt(player);
+        SessionManager manager = WorldEdit.getInstance().getSessionManager();
+        LocalSession localSession = manager.get(actor);
+        Region region;
 
-        if (selection != null) {
-            World world = selection.getWorld();
-            Integer largura = selection.getWidth();
-            Integer leng = selection.getLength();
+        World selection = localSession.getSelectionWorld();
+        try {
+            if (selection == null)
+                throw new IncompleteRegionException();
+            region = localSession.getSelection(selection);
+            // World world = selection.getWorld();
+            Integer largura = getSelectionWidth(localSession, selection);
+            Integer leng = getSelectionLength(localSession, selection);
             int Limite = 212;
             if (player.hasPermission("btebrasil.addcompleto")) {
                 Limite = 99999;
@@ -65,10 +79,11 @@ public class Regioes {
                 Limite = getLimiteSelection(Tier);
             }
             if (largura <= Limite && leng <= Limite && largura >= 20 && leng >= 20) {
-                Polygonal2DSelection polygon = (Polygonal2DSelection) selection;
-                List<BlockVector2D> points = polygon.getNativePoints();
-                Map<String, ProtectedRegion> rgs = WorldGuardPlugin.inst().getRegionManager(world).getRegions();
+                Polygonal2DRegion polygonalRegion = (Polygonal2DRegion) selection;
+                List<BlockVector2> points = polygonalRegion.getPoints();
                 /*
+                 * Map<String, ProtectedRegion> rgs =
+                 * WorldGuardPlugin.inst().getRegionManager(selection).getRegions();
                  * // For passando por cada Ponto da seleção
                  * for (int c = 1; c < points.size(); c++) {
                  * // Atual
@@ -116,9 +131,29 @@ public class Regioes {
             } else {
                 return "2"; // 2 = Seleção Fora dos Limites
             }
-        } else {
+        } catch (IncompleteRegionException ex) {
+            actor.printError(TextComponent.of("Faça uma seleção primeiro."));
             return "3"; // 3 = Seleção não encontrada
         }
+
+    }
+
+    private static int getSelectionWidth(LocalSession localSession, World w) {
+        BlockVector3 min = localSession.getRegionSelector(w).getRegion()
+                .getMinimumPoint();
+        BlockVector3 max = localSession.getRegionSelector(w).getRegion()
+                .getMaximumPoint();
+
+        return Math.abs(max.getBlockX() - min.getBlockX()) + 1;
+    }
+
+    private static int getSelectionLength(LocalSession localSession, World w) {
+        BlockVector3 min = localSession.getRegionSelector(w).getRegion()
+                .getMinimumPoint();
+        BlockVector3 max = localSession.getRegionSelector(w).getRegion()
+                .getMaximumPoint();
+
+        return Math.abs(max.getBlockZ() - min.getBlockZ()) + 1;
     }
 
     public int getLimiteSelection(int Tier) {
@@ -138,15 +173,15 @@ public class Regioes {
     }
 
     public void AddClaimGuard(String coords, String Id, Player player) {
-        WorldGuardPlugin WGplugin = WGBukkit.getPlugin();
-        World w = player.getWorld();
-        RegionContainer container = WGplugin.getRegionContainer();
+        com.sk89q.worldedit.entity.Player playerbukkit = BukkitAdapter.adapt(player);
+        World w = playerbukkit.getWorld();
+        RegionContainer container = WorldGuard.getInstance().getPlatform().getRegionContainer();
         RegionManager regions = container.get(w);
         DefaultDomain members;
         String[] ary = coords.split(",");
-        List<BlockVector2D> points = Lists.newArrayList();
+        List<BlockVector2> points = Lists.newArrayList();
         for (int i = 0; i < (ary.length - 1); i += 2) {
-            points.add(new BlockVector2D(Integer.parseInt(ary[i].split("\\.")[0]),
+            points.add(BlockVector2.at(Integer.parseInt(ary[i].split("\\.")[0]),
                     Integer.parseInt(ary[i + 1].split("\\.")[0])));
         }
         int minY = -100;
@@ -176,20 +211,20 @@ public class Regioes {
         ConsoleCommandSender console = Bukkit.getServer().getConsoleSender();
         if (A.getStatus().equals("T")) {
             Bukkit.dispatchCommand(console,
-                    "region flag " + Id + " -w TerraPreGenerated greeting-title &a" + A.getNome());
+                    "region flag " + Id + " -w world greeting-title &a" + A.getNome());
         } else {
             Bukkit.dispatchCommand(console,
-                    "region flag " + Id + " -w TerraPreGenerated greeting-title &9" + A.getNome());
+                    "region flag " + Id + " -w world greeting-title &9" + A.getNome());
         }
         Bukkit.dispatchCommand(console,
-                "region flag " + Id + " -w TerraPreGenerated greeting-subtitle &6" + Participantes);
-        Bukkit.dispatchCommand(console, "region flag " + Id + " worldedit -w TerraPreGenerated -g members allow");
+                "region flag " + Id + " -w world greeting-subtitle &6" + Participantes);
+        Bukkit.dispatchCommand(console, "region flag " + Id + " worldedit -w world -g members allow");
     }
 
     public void RemoveClaim(Areas A, Player player) {
-        World w = player.getWorld();
-        WorldGuardPlugin WGplugin = WGBukkit.getPlugin();
-        RegionContainer container = WGplugin.getRegionContainer();
+        com.sk89q.worldedit.entity.Player playerbukkit = BukkitAdapter.adapt(player);
+        World w = playerbukkit.getWorld();
+        RegionContainer container = WorldGuard.getInstance().getPlatform().getRegionContainer();
         RegionManager regions = container.get(w);
         Claim claim = new Claim();
         regions.removeRegion(A.getClaim());
@@ -211,9 +246,9 @@ public class Regioes {
     }
 
     public void CompleteClaim(String ID, Player player, String Participantes) {
-        World w = player.getWorld();
-        WorldGuardPlugin WGplugin = WGBukkit.getPlugin();
-        RegionContainer container = WGplugin.getRegionContainer();
+        com.sk89q.worldedit.entity.Player playerbukkit = BukkitAdapter.adapt(player);
+        World w = playerbukkit.getWorld();
+        RegionContainer container = WorldGuard.getInstance().getPlatform().getRegionContainer();
         RegionManager regions = container.get(w);
         ProtectedRegion regiona = regions.getRegion(ID);
         DefaultDomain members = regiona.getMembers();
@@ -255,9 +290,9 @@ public class Regioes {
     }
 
     public void addPermissaoWG(String ID, Player player, UUID uid) {
-        World w = player.getWorld();
-        WorldGuardPlugin WGplugin = WGBukkit.getPlugin();
-        RegionContainer container = WGplugin.getRegionContainer();
+        com.sk89q.worldedit.entity.Player playerbukkit = BukkitAdapter.adapt(player);
+        World w = playerbukkit.getWorld();
+        RegionContainer container = WorldGuard.getInstance().getPlatform().getRegionContainer();
         RegionManager regions = container.get(w);
         ProtectedRegion regiona = regions.getRegion(ID);
         DefaultDomain members = regiona.getMembers();
@@ -267,9 +302,9 @@ public class Regioes {
     }
 
     public void removePermissaoWG(String ID, Player player, UUID uid) {
-        World w = player.getWorld();
-        WorldGuardPlugin WGplugin = WGBukkit.getPlugin();
-        RegionContainer container = WGplugin.getRegionContainer();
+        com.sk89q.worldedit.entity.Player playerbukkit = BukkitAdapter.adapt(player);
+        World w = playerbukkit.getWorld();
+        RegionContainer container = WorldGuard.getInstance().getPlatform().getRegionContainer();
         RegionManager regions = container.get(w);
         ProtectedRegion regiona = regions.getRegion(ID);
         DefaultDomain members = regiona.getMembers();
@@ -317,9 +352,9 @@ public class Regioes {
         }
     }
 
-    public double getDistancia(String id, World w, int peso) {
-        WorldGuardPlugin WGplugin = WGBukkit.getPlugin();
-        RegionContainer container = WGplugin.getRegionContainer();
+    public double getDistancia(String id, org.bukkit.World world, int peso) {
+        com.sk89q.worldedit.world.World w = BukkitAdapter.adapt(world);
+        RegionContainer container = WorldGuard.getInstance().getPlatform().getRegionContainer();
         RegionManager regions = container.get(w);
         ProtectedRegion regiona = regions.getRegion(id);
         Integer distanciaX = regiona.getMaximumPoint().getBlockX() - regiona.getMinimumPoint().getBlockX();
@@ -334,38 +369,46 @@ public class Regioes {
     }
 
     // APLICAÇÃO
-
-    @SuppressWarnings("deprecation")
-    public void loadSchematic(Player player, Location location) {
-
+    public void loadSchematic(Player player, Location location) throws FileNotFoundException, IOException {
+        Clipboard clipboard;
         BTEBrasilSystem plugin = BTEBrasilSystem.getPlugin();
-        EditSession editSession = new EditSession(new BukkitWorld(player.getLocation().getWorld()), Integer.MAX_VALUE);
-        Vector loc = new Vector(location.getX(), location.getY(), location.getZ());
+
         File schem = new File(
                 plugin.getDataFolder() + File.separator + "schematics" + File.separator + "area2.schematic");
-        try {
-            CuboidClipboard cc = CuboidClipboard.loadSchematic(schem);
-            cc.paste(editSession, loc, false);
-        } catch (DataException | IOException | MaxChangedBlocksException e) {
-            e.printStackTrace();
-        } catch (com.sk89q.worldedit.world.DataException e) {
-            e.printStackTrace();
+
+        BlockVector3 to = BlockVector3.at(location.getX(), location.getY(), location.getZ());
+        ClipboardFormat format = ClipboardFormats.findByFile(schem);
+
+        try (ClipboardReader reader = format.getReader(new FileInputStream(schem))) {
+            clipboard = reader.read();
+
+            try (EditSession editSession = WorldEdit.getInstance().newEditSessionBuilder()
+                    .world(FaweAPI.getWorld("world"))
+                    .build()) {
+                Operation operation = new ClipboardHolder(clipboard)
+                        .createPaste(editSession) // Create a builder using the edit session
+                        .to(to) // Set where you want the paste to go
+                        .ignoreAirBlocks(false) // Tell world edit not to paste air blocks (true/false)
+                        .build(); // Build the operation
+                Operations.complete(operation); // This'll complete a operation synchronously until it's finished
+                editSession.close(); // We now close it to flush the buffers and run the cleanup tasks.
+            }
         }
     }
 
-    @SuppressWarnings("deprecation")
-    public void removeRegion(World w, Zonas z) {
-        Location meio = new Location(w, z.getla().getX() - 2, 45, z.getla().getZ() - 2);
-        Vector loc1 = new Vector(meio.getX() - 45, 60, meio.getZ() - 45);
-        Vector loc2 = new Vector(meio.getX() + 45, 25, meio.getZ() + 45);
-        CuboidRegion selection = new CuboidRegion(loc1, loc2);
-        EditSession editSession = new EditSession(new BukkitWorld(w), Integer.MAX_VALUE);
-        BaseBlock bb = new BaseBlock(BlockID.AIR);
-        try {
-            editSession.setBlocks(selection, bb);
-        } catch (MaxChangedBlocksException e) {
-            e.printStackTrace();
-        }
+    public void removeRegion(Player player, Zonas z) {
+        WorldEdit worldEdit = WorldEdit.getInstance();
+        com.sk89q.worldedit.entity.Player actor = BukkitAdapter.adapt(player);
+        SessionManager manager = WorldEdit.getInstance().getSessionManager();
+        LocalSession localSession = manager.get(actor);
+        EditSession editSession = worldEdit.getEditSessionFactory().getEditSession(actor.getWorld(), -1);
+
+        Location meio = new Location(player.getWorld(), z.getla().getX() - 2, 45, z.getla().getZ() - 2);
+        BlockVector3 minPoint = BlockVector3.at(meio.getX() - 45, 60, meio.getZ() - 45);
+        BlockVector3 maxPoint = BlockVector3.at(meio.getX() + 45, 25, meio.getZ() + 45);
+
+        CuboidRegion selection = new CuboidRegion(minPoint, maxPoint);
+        editSession.setBlocks((Region) selection, BukkitAdapter.adapt(Material.AIR.createBlockData()));
 
     }
 
@@ -377,22 +420,22 @@ public class Regioes {
         Node nodea = Node.builder("worldedit.*").value(true).withContext("worldguard:region", "apply" + Zona + "a")
                 .build();
         Bukkit.dispatchCommand(console,
-                "region flag apply" + Zona + "a worldedit -w TerraPreGenerated -g members allow");
+                "region flag apply" + Zona + "a worldedit -w world -g members allow");
 
         Node nodeb = Node.builder("worldedit.*").value(true).withContext("worldguard:region", "apply" + Zona + "b")
                 .build();
         Bukkit.dispatchCommand(console,
-                "region flag apply" + Zona + "b worldedit -w TerraPreGenerated -g members allow");
+                "region flag apply" + Zona + "b worldedit -w world -g members allow");
 
         Node nodec = Node.builder("worldedit.*").value(true).withContext("worldguard:region", "apply" + Zona + "c")
                 .build();
         Bukkit.dispatchCommand(console,
-                "region flag apply" + Zona + "c worldedit -w TerraPreGenerated -g members allow");
+                "region flag apply" + Zona + "c worldedit -w world -g members allow");
 
         Node noded = Node.builder("worldedit.*").value(true).withContext("worldguard:region", "apply" + Zona + "d")
                 .build();
         Bukkit.dispatchCommand(console,
-                "region flag apply" + Zona + "d worldedit -w TerraPreGenerated -g members allow");
+                "region flag apply" + Zona + "d worldedit -w world -g members allow");
 
         user.data().add(nodea);
         user.data().add(nodeb);
@@ -422,30 +465,30 @@ public class Regioes {
     }
 
     public void CreateRegion(Integer zona, Player player, boolean sobe) {
-        WorldGuardPlugin WGplugin = WGBukkit.getPlugin();
-        World w = player.getWorld();
-        RegionContainer container = WGplugin.getRegionContainer();
+        com.sk89q.worldedit.entity.Player playerbukkit = BukkitAdapter.adapt(player);
+        World w = playerbukkit.getWorld();
+        RegionContainer container = WorldGuard.getInstance().getPlatform().getRegionContainer();
         RegionManager regions = container.get(w);
         DefaultDomain members;
         if (zona == 1) {
             // 1a
-            List<BlockVector2D> points = Lists.newArrayList(); // Call from Guava
-            points.add(new BlockVector2D(-649, 288));
-            points.add(new BlockVector2D(-611, 288));
-            points.add(new BlockVector2D(-612, 294));
-            points.add(new BlockVector2D(-613, 298));
-            points.add(new BlockVector2D(-614, 302));
-            points.add(new BlockVector2D(-615, 304));
-            points.add(new BlockVector2D(-616, 306));
-            points.add(new BlockVector2D(-617, 308));
-            points.add(new BlockVector2D(-625, 317));
-            points.add(new BlockVector2D(-629, 320));
-            points.add(new BlockVector2D(-631, 321));
-            points.add(new BlockVector2D(-633, 322));
-            points.add(new BlockVector2D(-635, 323));
-            points.add(new BlockVector2D(-639, 324));
-            points.add(new BlockVector2D(-643, 325));
-            points.add(new BlockVector2D(-649, 326));
+            List<BlockVector2> points = Lists.newArrayList(); // Call from Guava
+            points.add(BlockVector2.at(-649, 288));
+            points.add(BlockVector2.at(-611, 288));
+            points.add(BlockVector2.at(-612, 294));
+            points.add(BlockVector2.at(-613, 298));
+            points.add(BlockVector2.at(-614, 302));
+            points.add(BlockVector2.at(-615, 304));
+            points.add(BlockVector2.at(-616, 306));
+            points.add(BlockVector2.at(-617, 308));
+            points.add(BlockVector2.at(-625, 317));
+            points.add(BlockVector2.at(-629, 320));
+            points.add(BlockVector2.at(-631, 321));
+            points.add(BlockVector2.at(-633, 322));
+            points.add(BlockVector2.at(-635, 323));
+            points.add(BlockVector2.at(-639, 324));
+            points.add(BlockVector2.at(-643, 325));
+            points.add(BlockVector2.at(-649, 326));
             int minY = 31;
             int maxY = 42;
 
@@ -455,18 +498,18 @@ public class Regioes {
             members.addPlayer(player.getUniqueId());
             // 1b
             points = Lists.newArrayList(); // Call from Guava
-            points.add(new BlockVector2D(-651, 288));
-            points.add(new BlockVector2D(-651, 326));
-            points.add(new BlockVector2D(-657, 325));
-            points.add(new BlockVector2D(-661, 324));
-            points.add(new BlockVector2D(-665, 323));
-            points.add(new BlockVector2D(-669, 321));
-            points.add(new BlockVector2D(-675, 317));
-            points.add(new BlockVector2D(-680, 312));
-            points.add(new BlockVector2D(-685, 304));
-            points.add(new BlockVector2D(-687, 298));
-            points.add(new BlockVector2D(-688, 294));
-            points.add(new BlockVector2D(-689, 288));
+            points.add(BlockVector2.at(-651, 288));
+            points.add(BlockVector2.at(-651, 326));
+            points.add(BlockVector2.at(-657, 325));
+            points.add(BlockVector2.at(-661, 324));
+            points.add(BlockVector2.at(-665, 323));
+            points.add(BlockVector2.at(-669, 321));
+            points.add(BlockVector2.at(-675, 317));
+            points.add(BlockVector2.at(-680, 312));
+            points.add(BlockVector2.at(-685, 304));
+            points.add(BlockVector2.at(-687, 298));
+            points.add(BlockVector2.at(-688, 294));
+            points.add(BlockVector2.at(-689, 288));
             minY = 31;
             maxY = 42;
 
@@ -476,41 +519,41 @@ public class Regioes {
             members.addPlayer(player.getUniqueId());
             // 1c
             points = Lists.newArrayList(); // Call from Guava
-            points.add(new BlockVector2D(-651, 286));
-            points.add(new BlockVector2D(-689, 286));
-            points.add(new BlockVector2D(-689, 281));
-            points.add(new BlockVector2D(-688, 280));
-            points.add(new BlockVector2D(-688, 277));
-            points.add(new BlockVector2D(-687, 276));
-            points.add(new BlockVector2D(-687, 273));
-            points.add(new BlockVector2D(-686, 272));
-            points.add(new BlockVector2D(-686, 271));
-            points.add(new BlockVector2D(-685, 270));
-            points.add(new BlockVector2D(-685, 269));
-            points.add(new BlockVector2D(-684, 268));
-            points.add(new BlockVector2D(-684, 267));
-            points.add(new BlockVector2D(-683, 266));
-            points.add(new BlockVector2D(-683, 265));
-            points.add(new BlockVector2D(-682, 264));
-            points.add(new BlockVector2D(-681, 263));
-            points.add(new BlockVector2D(-680, 262));
-            points.add(new BlockVector2D(-680, 261));
-            points.add(new BlockVector2D(-676, 257));
-            points.add(new BlockVector2D(-675, 257));
-            points.add(new BlockVector2D(-672, 254));
-            points.add(new BlockVector2D(-671, 254));
-            points.add(new BlockVector2D(-670, 253));
-            points.add(new BlockVector2D(-669, 253));
-            points.add(new BlockVector2D(-668, 252));
-            points.add(new BlockVector2D(-667, 252));
-            points.add(new BlockVector2D(-666, 251));
-            points.add(new BlockVector2D(-665, 251));
-            points.add(new BlockVector2D(-664, 250));
-            points.add(new BlockVector2D(-661, 250));
-            points.add(new BlockVector2D(-660, 249));
-            points.add(new BlockVector2D(-657, 249));
-            points.add(new BlockVector2D(-656, 248));
-            points.add(new BlockVector2D(-651, 248));
+            points.add(BlockVector2.at(-651, 286));
+            points.add(BlockVector2.at(-689, 286));
+            points.add(BlockVector2.at(-689, 281));
+            points.add(BlockVector2.at(-688, 280));
+            points.add(BlockVector2.at(-688, 277));
+            points.add(BlockVector2.at(-687, 276));
+            points.add(BlockVector2.at(-687, 273));
+            points.add(BlockVector2.at(-686, 272));
+            points.add(BlockVector2.at(-686, 271));
+            points.add(BlockVector2.at(-685, 270));
+            points.add(BlockVector2.at(-685, 269));
+            points.add(BlockVector2.at(-684, 268));
+            points.add(BlockVector2.at(-684, 267));
+            points.add(BlockVector2.at(-683, 266));
+            points.add(BlockVector2.at(-683, 265));
+            points.add(BlockVector2.at(-682, 264));
+            points.add(BlockVector2.at(-681, 263));
+            points.add(BlockVector2.at(-680, 262));
+            points.add(BlockVector2.at(-680, 261));
+            points.add(BlockVector2.at(-676, 257));
+            points.add(BlockVector2.at(-675, 257));
+            points.add(BlockVector2.at(-672, 254));
+            points.add(BlockVector2.at(-671, 254));
+            points.add(BlockVector2.at(-670, 253));
+            points.add(BlockVector2.at(-669, 253));
+            points.add(BlockVector2.at(-668, 252));
+            points.add(BlockVector2.at(-667, 252));
+            points.add(BlockVector2.at(-666, 251));
+            points.add(BlockVector2.at(-665, 251));
+            points.add(BlockVector2.at(-664, 250));
+            points.add(BlockVector2.at(-661, 250));
+            points.add(BlockVector2.at(-660, 249));
+            points.add(BlockVector2.at(-657, 249));
+            points.add(BlockVector2.at(-656, 248));
+            points.add(BlockVector2.at(-651, 248));
             minY = 30;
             maxY = 42;
 
@@ -520,40 +563,40 @@ public class Regioes {
             members.addPlayer(player.getUniqueId());
             // 1d
             points = Lists.newArrayList(); // Call from Guava
-            points.add(new BlockVector2D(-649, 286));
-            points.add(new BlockVector2D(-649, 248));
-            points.add(new BlockVector2D(-644, 248));
-            points.add(new BlockVector2D(-643, 249));
-            points.add(new BlockVector2D(-640, 249));
-            points.add(new BlockVector2D(-639, 250));
-            points.add(new BlockVector2D(-636, 250));
-            points.add(new BlockVector2D(-635, 251));
-            points.add(new BlockVector2D(-634, 251));
-            points.add(new BlockVector2D(-633, 252));
-            points.add(new BlockVector2D(-632, 252));
-            points.add(new BlockVector2D(-631, 253));
-            points.add(new BlockVector2D(-630, 253));
-            points.add(new BlockVector2D(-629, 254));
-            points.add(new BlockVector2D(-628, 254));
-            points.add(new BlockVector2D(-627, 255));
-            points.add(new BlockVector2D(-625, 257));
-            points.add(new BlockVector2D(-624, 257));
-            points.add(new BlockVector2D(-620, 261));
-            points.add(new BlockVector2D(-620, 262));
-            points.add(new BlockVector2D(-617, 265));
-            points.add(new BlockVector2D(-617, 266));
-            points.add(new BlockVector2D(-616, 267));
-            points.add(new BlockVector2D(-616, 268));
-            points.add(new BlockVector2D(-615, 269));
-            points.add(new BlockVector2D(-615, 270));
-            points.add(new BlockVector2D(-614, 271));
-            points.add(new BlockVector2D(-614, 272));
-            points.add(new BlockVector2D(-613, 273));
-            points.add(new BlockVector2D(-613, 276));
-            points.add(new BlockVector2D(-612, 277));
-            points.add(new BlockVector2D(-612, 280));
-            points.add(new BlockVector2D(-611, 281));
-            points.add(new BlockVector2D(-611, 286));
+            points.add(BlockVector2.at(-649, 286));
+            points.add(BlockVector2.at(-649, 248));
+            points.add(BlockVector2.at(-644, 248));
+            points.add(BlockVector2.at(-643, 249));
+            points.add(BlockVector2.at(-640, 249));
+            points.add(BlockVector2.at(-639, 250));
+            points.add(BlockVector2.at(-636, 250));
+            points.add(BlockVector2.at(-635, 251));
+            points.add(BlockVector2.at(-634, 251));
+            points.add(BlockVector2.at(-633, 252));
+            points.add(BlockVector2.at(-632, 252));
+            points.add(BlockVector2.at(-631, 253));
+            points.add(BlockVector2.at(-630, 253));
+            points.add(BlockVector2.at(-629, 254));
+            points.add(BlockVector2.at(-628, 254));
+            points.add(BlockVector2.at(-627, 255));
+            points.add(BlockVector2.at(-625, 257));
+            points.add(BlockVector2.at(-624, 257));
+            points.add(BlockVector2.at(-620, 261));
+            points.add(BlockVector2.at(-620, 262));
+            points.add(BlockVector2.at(-617, 265));
+            points.add(BlockVector2.at(-617, 266));
+            points.add(BlockVector2.at(-616, 267));
+            points.add(BlockVector2.at(-616, 268));
+            points.add(BlockVector2.at(-615, 269));
+            points.add(BlockVector2.at(-615, 270));
+            points.add(BlockVector2.at(-614, 271));
+            points.add(BlockVector2.at(-614, 272));
+            points.add(BlockVector2.at(-613, 273));
+            points.add(BlockVector2.at(-613, 276));
+            points.add(BlockVector2.at(-612, 277));
+            points.add(BlockVector2.at(-612, 280));
+            points.add(BlockVector2.at(-611, 281));
+            points.add(BlockVector2.at(-611, 286));
             minY = 31;
             maxY = 42;
 
@@ -570,11 +613,11 @@ public class Regioes {
                 ProtectedRegion regionpostd = regions.getRegion("apply" + zonapost.toString() + "d");
                 // a
                 ProtectedPolygonalRegion polygona = (ProtectedPolygonalRegion) regionposta;
-                List<BlockVector2D> pointsaold = polygona.getPoints();
-                List<BlockVector2D> pointsanew = Lists.newArrayList(); // Call from Guava
+                List<BlockVector2> pointsaold = polygona.getPoints();
+                List<BlockVector2> pointsanew = Lists.newArrayList(); // Call from Guava
                 for (int i = 0; i < pointsaold.size(); i++) {
                     pointsaold.get(i).getBlockX();
-                    pointsanew.add(new BlockVector2D(pointsaold.get(i).getBlockX() + 90,
+                    pointsanew.add(BlockVector2.at(pointsaold.get(i).getBlockX() + 90,
                             pointsaold.get(i).getBlockZ()));
                 }
                 int minY = 31;
@@ -586,11 +629,11 @@ public class Regioes {
                 members.addPlayer(player.getUniqueId());
                 // b
                 ProtectedPolygonalRegion polygonb = (ProtectedPolygonalRegion) regionpostb;
-                List<BlockVector2D> pointsbold = polygonb.getPoints();
-                List<BlockVector2D> pointsbnew = Lists.newArrayList(); // Call from Guava
+                List<BlockVector2> pointsbold = polygonb.getPoints();
+                List<BlockVector2> pointsbnew = Lists.newArrayList(); // Call from Guava
                 for (int i = 0; i < pointsbold.size(); i++) {
                     pointsbold.get(i).getBlockX();
-                    pointsbnew.add(new BlockVector2D(pointsbold.get(i).getBlockX() + 90,
+                    pointsbnew.add(BlockVector2.at(pointsbold.get(i).getBlockX() + 90,
                             pointsbold.get(i).getBlockZ()));
                 }
                 minY = 31;
@@ -602,11 +645,11 @@ public class Regioes {
                 members.addPlayer(player.getUniqueId());
                 // c
                 ProtectedPolygonalRegion polygonc = (ProtectedPolygonalRegion) regionpostc;
-                List<BlockVector2D> pointscold = polygonc.getPoints();
-                List<BlockVector2D> pointscnew = Lists.newArrayList(); // Call from Guava
+                List<BlockVector2> pointscold = polygonc.getPoints();
+                List<BlockVector2> pointscnew = Lists.newArrayList(); // Call from Guava
                 for (int i = 0; i < pointscold.size(); i++) {
                     pointscold.get(i).getBlockX();
-                    pointscnew.add(new BlockVector2D(pointscold.get(i).getBlockX() + 90,
+                    pointscnew.add(BlockVector2.at(pointscold.get(i).getBlockX() + 90,
                             pointscold.get(i).getBlockZ()));
                 }
                 minY = 30;
@@ -618,11 +661,11 @@ public class Regioes {
                 members.addPlayer(player.getUniqueId());
                 // d
                 ProtectedPolygonalRegion polygond = (ProtectedPolygonalRegion) regionpostd;
-                List<BlockVector2D> pointsdold = polygond.getPoints();
-                List<BlockVector2D> pointsdnew = Lists.newArrayList(); // Call from Guava
+                List<BlockVector2> pointsdold = polygond.getPoints();
+                List<BlockVector2> pointsdnew = Lists.newArrayList(); // Call from Guava
                 for (int i = 0; i < pointsdold.size(); i++) {
                     pointsdold.get(i).getBlockX();
-                    pointsdnew.add(new BlockVector2D(pointsdold.get(i).getBlockX() + 90,
+                    pointsdnew.add(BlockVector2.at(pointsdold.get(i).getBlockX() + 90,
                             pointsdold.get(i).getBlockZ()));
                 }
                 minY = 31;
@@ -640,11 +683,11 @@ public class Regioes {
                 ProtectedRegion regionpostd = regions.getRegion("apply" + zonapost.toString() + "d");
                 // a
                 ProtectedPolygonalRegion polygona = (ProtectedPolygonalRegion) regionposta;
-                List<BlockVector2D> pointsaold = polygona.getPoints();
-                List<BlockVector2D> pointsanew = Lists.newArrayList(); // Call from Guava
+                List<BlockVector2> pointsaold = polygona.getPoints();
+                List<BlockVector2> pointsanew = Lists.newArrayList(); // Call from Guava
                 for (int i = 0; i < pointsaold.size(); i++) {
                     pointsaold.get(i).getBlockX();
-                    pointsanew.add(new BlockVector2D(pointsaold.get(i).getBlockX(),
+                    pointsanew.add(BlockVector2.at(pointsaold.get(i).getBlockX(),
                             pointsaold.get(i).getBlockZ() + 90));
                 }
                 int minY = 31;
@@ -656,11 +699,11 @@ public class Regioes {
                 members.addPlayer(player.getUniqueId());
                 // b
                 ProtectedPolygonalRegion polygonb = (ProtectedPolygonalRegion) regionpostb;
-                List<BlockVector2D> pointsbold = polygonb.getPoints();
-                List<BlockVector2D> pointsbnew = Lists.newArrayList(); // Call from Guava
+                List<BlockVector2> pointsbold = polygonb.getPoints();
+                List<BlockVector2> pointsbnew = Lists.newArrayList(); // Call from Guava
                 for (int i = 0; i < pointsbold.size(); i++) {
                     pointsbold.get(i).getBlockX();
-                    pointsbnew.add(new BlockVector2D(pointsbold.get(i).getBlockX(),
+                    pointsbnew.add(BlockVector2.at(pointsbold.get(i).getBlockX(),
                             pointsbold.get(i).getBlockZ() + 90));
                 }
                 minY = 31;
@@ -672,11 +715,11 @@ public class Regioes {
                 members.addPlayer(player.getUniqueId());
                 // c
                 ProtectedPolygonalRegion polygonc = (ProtectedPolygonalRegion) regionpostc;
-                List<BlockVector2D> pointscold = polygonc.getPoints();
-                List<BlockVector2D> pointscnew = Lists.newArrayList(); // Call from Guava
+                List<BlockVector2> pointscold = polygonc.getPoints();
+                List<BlockVector2> pointscnew = Lists.newArrayList(); // Call from Guava
                 for (int i = 0; i < pointscold.size(); i++) {
                     pointscold.get(i).getBlockX();
-                    pointscnew.add(new BlockVector2D(pointscold.get(i).getBlockX(),
+                    pointscnew.add(BlockVector2.at(pointscold.get(i).getBlockX(),
                             pointscold.get(i).getBlockZ() + 90));
                 }
                 minY = 30;
@@ -688,11 +731,11 @@ public class Regioes {
                 members.addPlayer(player.getUniqueId());
                 // d
                 ProtectedPolygonalRegion polygond = (ProtectedPolygonalRegion) regionpostd;
-                List<BlockVector2D> pointsdold = polygond.getPoints();
-                List<BlockVector2D> pointsdnew = Lists.newArrayList(); // Call from Guava
+                List<BlockVector2> pointsdold = polygond.getPoints();
+                List<BlockVector2> pointsdnew = Lists.newArrayList(); // Call from Guava
                 for (int i = 0; i < pointsdold.size(); i++) {
                     pointsdold.get(i).getBlockX();
-                    pointsdnew.add(new BlockVector2D(pointsdold.get(i).getBlockX(),
+                    pointsdnew.add(BlockVector2.at(pointsdold.get(i).getBlockX(),
                             pointsdold.get(i).getBlockZ() + 90));
                 }
                 minY = 31;
