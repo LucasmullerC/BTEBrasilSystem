@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
@@ -44,6 +45,7 @@ import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.util.BlockVector;
 
 import io.github.LucasMullerC.Gerencia.Claim;
 import io.github.LucasMullerC.Objetos.Areas;
@@ -79,9 +81,12 @@ public class Regioes {
                 Limite = getLimiteSelection(Tier);
             }
             if (largura <= Limite && leng <= Limite && largura >= 20 && leng >= 20) {
-                Polygonal2DRegion polygonalRegion = (Polygonal2DRegion) selection;
-                List<BlockVector2> points = polygonalRegion.getPoints();
                 /*
+                 * Polygonal2DRegion polygonalRegion = convertToPolygonal2DRegion(region);
+                 * /*List<BlockVector2> points = polygonalRegion.getPoints();
+                 * 
+                 * 
+                 * /*
                  * Map<String, ProtectedRegion> rgs =
                  * WorldGuardPlugin.inst().getRegionManager(selection).getRegions();
                  * // For passando por cada Ponto da seleção
@@ -126,8 +131,8 @@ public class Regioes {
                  * } while (x != xp && z != zp);
                  * }
                  */
-                String pontos = points.toString().replaceAll("[\\[\\](){}]", "");
-                return pontos.replaceAll(" ", "");
+
+                return convertToPolygonal2DRegion(region);
             } else {
                 return "2"; // 2 = Seleção Fora dos Limites
             }
@@ -136,6 +141,22 @@ public class Regioes {
             return "3"; // 3 = Seleção não encontrada
         }
 
+    }
+
+    private static String convertToPolygonal2DRegion(Region region) {
+        if (region instanceof Polygonal2DRegion) {
+            Polygonal2DRegion polygonalRegion = (Polygonal2DRegion) region; // If the region is already a
+                                                                            // Polygonal2DRegion, simply return it
+            List<BlockVector2> points = polygonalRegion.getPoints();
+            String pontos = points.toString().replaceAll("[\\[\\](){}]", "");
+            return pontos.replaceAll(" ", "");
+        } else {
+            List<BlockVector3> points = new ArrayList<BlockVector3>();
+            points.add(region.getMinimumPoint());
+            points.add(region.getMaximumPoint());
+            String pontos = points.toString().replaceAll("[\\[\\](){}]", "");
+            return pontos.replaceAll(" ", "");
+        }
     }
 
     private static int getSelectionWidth(LocalSession localSession, World w) {
