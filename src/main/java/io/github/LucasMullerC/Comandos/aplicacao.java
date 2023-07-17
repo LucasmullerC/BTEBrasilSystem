@@ -1,6 +1,5 @@
 package io.github.LucasMullerC.Comandos;
 
-import java.util.HashMap;
 import java.util.UUID;
 
 import org.bukkit.ChatColor;
