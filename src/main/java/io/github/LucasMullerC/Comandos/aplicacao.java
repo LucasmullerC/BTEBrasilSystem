@@ -30,7 +30,7 @@ public class aplicacao implements CommandExecutor {
                 || player.hasPermission("group.b_co") || player.hasPermission("group.b_es")
                 || player.hasPermission("group.b_mg") || player.hasPermission("group.b_ne")
                 || player.hasPermission("group.b_norte") || player.hasPermission("group.b_rj")
-                || player.hasPermission("group.b_sul") == true) { // Já é
+                || player.hasPermission("group.b_sul") || player.hasPermission("group.builder_not") == true) { // Já é
             // construtor
             // no
             // time

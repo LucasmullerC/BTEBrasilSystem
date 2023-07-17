@@ -1,5 +1,7 @@
 package io.github.LucasMullerC.BTEBrasilSystem;
 
+import java.util.UUID;
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -7,8 +9,17 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitScheduler;
+
+import com.sk89q.worldedit.bukkit.BukkitAdapter;
+import com.sk89q.worldedit.math.BlockVector3;
+import com.sk89q.worldedit.regions.Region;
+import com.sk89q.worldguard.WorldGuard;
+import com.sk89q.worldguard.domains.DefaultDomain;
+import com.sk89q.worldguard.protection.ApplicableRegionSet;
+import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 
 import github.scarsz.discordsrv.DiscordSRV;
 import github.scarsz.discordsrv.dependencies.jda.api.entities.User;
@@ -60,6 +71,49 @@ public final class BTEBrasilSystem extends JavaPlugin implements Listener {
 		getServer().getPluginManager().registerEvents(this, this);
 		// Inicializou sem problemas.
 		getLogger().info("BTEBrasilSystem Ativado!");
+	}
+
+	@EventHandler
+	public void onPlayerMove(PlayerMoveEvent event) {
+		if (event.getFrom().getBlockX() != event.getTo().getBlock().getX()
+				&& event.getFrom().getBlockY() != event.getTo().getBlock().getY()) {
+			Player player = event.getPlayer();
+			com.sk89q.worldedit.util.Location loc = BukkitAdapter.adapt(player.getLocation());
+			ApplicableRegionSet playerRegion = WorldGuard.getInstance().getPlatform().getRegionContainer().createQuery()
+					.getApplicableRegions(loc);
+
+			// Verifica se o jogador está em alguma região
+			if (playerRegion != null) {
+				for (ProtectedRegion region : playerRegion.getRegions()) {
+					for (UUID uuids : region.getMembers().getUniqueIds()) {
+						System.out.println(uuids);
+						if (player.getUniqueId().equals(uuids)) {
+							if (player.hasPermission("group.builder_not")) {
+								GroupManager gp = new GroupManager();
+								gp.removeGroup(player, "builder_not");
+								gp.addGroup(player, "b_br");
+								return;
+							} else {
+								return;
+							}
+						}
+
+					}
+					if (player.hasPermission("group.b_br")) {
+						GroupManager gp = new GroupManager();
+						gp.addGroup(player, "builder_not");
+						gp.removeGroup(player, "b_br");
+						return;
+					}
+				}
+			} else {
+				if (player.hasPermission("group.builder_not")) {
+					GroupManager gp = new GroupManager();
+					gp.removeGroup(player, "builder_not");
+					gp.addGroup(player, "b_br");
+				}
+			}
+		}
 	}
 
 	// Listener para quando alguém entrar no servidor
@@ -133,6 +187,7 @@ public final class BTEBrasilSystem extends JavaPlugin implements Listener {
 				public void run() {
 					aplicar.DeletarDeadLines(event.getPlayer());
 				}
+
 			}, 30L);
 		}
 	}

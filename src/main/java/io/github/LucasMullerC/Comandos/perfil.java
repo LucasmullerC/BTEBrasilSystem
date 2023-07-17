@@ -37,7 +37,7 @@ public class perfil implements CommandExecutor {
         }
         // CONSTRUTOR
         if (DiscordSRV.getPlugin().getAccountLinkManager().getDiscordId(player.getUniqueId()) != null) {
-            if (player.hasPermission("group.b_br")) {
+            if (player.hasPermission("group.b_br") || player.hasPermission("group.builder_not")) {
                 String motivo = "BTE Brasil";
                 player.sendMessage(ChatColor.AQUA + "CONSTRUTOR - " + ChatColor.GOLD + motivo);
             }
