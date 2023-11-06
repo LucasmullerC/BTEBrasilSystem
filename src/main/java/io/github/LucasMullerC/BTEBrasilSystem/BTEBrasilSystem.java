@@ -105,6 +105,7 @@ public final class BTEBrasilSystem extends JavaPlugin implements Listener {
 								} else if(!player.hasPermission("group.builder_not") || !player.hasPermission("group.b_br")){
 									GroupManager gp = new GroupManager();
 									gp.addGroup(player, "app");
+									return;
 								} else {
 									return;
 								}
@@ -118,7 +119,10 @@ public final class BTEBrasilSystem extends JavaPlugin implements Listener {
 							return;
 						}
 					}
-
+					if(player.hasPermission("group.app")){
+						GroupManager gp = new GroupManager();
+						gp.removeGroup(player, "app");
+					}
 				}
 			}
 		}
