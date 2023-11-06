@@ -66,6 +66,7 @@ public final class BTEBrasilSystem extends JavaPlugin implements Listener {
 		// Inicializa Listener
 		DiscordSRV.api.subscribe(discordsrvListener);
 		getServer().getPluginManager().registerEvents(this, this);
+
 		// Inicializou sem problemas.
 		getLogger().info("BTEBrasilSystem Ativado!");
 	}
@@ -87,6 +88,10 @@ public final class BTEBrasilSystem extends JavaPlugin implements Listener {
 						gp.removeGroup(player, "builder_not");
 						gp.addGroup(player, "b_br");
 						return;
+					}	
+					else if(player.hasPermission("group.app")){
+						GroupManager gp = new GroupManager();
+						gp.removeGroup(player, "app");
 					}
 				} else {
 					for (ProtectedRegion region : playerRegion.getRegions()) {
@@ -97,6 +102,9 @@ public final class BTEBrasilSystem extends JavaPlugin implements Listener {
 									gp.removeGroup(player, "builder_not");
 									gp.addGroup(player, "b_br");
 									return;
+								} else if(!player.hasPermission("group.builder_not") || !player.hasPermission("group.b_br")){
+									GroupManager gp = new GroupManager();
+									gp.addGroup(player, "app");
 								} else {
 									return;
 								}

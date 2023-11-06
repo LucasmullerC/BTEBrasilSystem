@@ -79,7 +79,7 @@ public class Regioes {
             } else {
                 Limite = getLimiteSelection(Tier);
             }
-            if (largura <= Limite && leng <= Limite && largura >= 20 && leng >= 20) {
+            if (largura <= Limite && leng <= Limite && largura >= 5 && leng >= 5) {
                 /*
                  * Polygonal2DRegion polygonalRegion = convertToPolygonal2DRegion(region);
                  * /*List<BlockVector2> points = polygonalRegion.getPoints();
@@ -463,6 +463,8 @@ public class Regioes {
         user.data().add(noded);
         user.data().add(noded);
         api.getUserManager().saveUser(user);
+        GroupManager gp = new GroupManager();
+        gp.addGroup(player, "app");
     }
 
     public void RemovePermissao(Player player, String Zona) {
@@ -482,6 +484,8 @@ public class Regioes {
         user.data().remove(noded);
         user.data().remove(noded);
         api.getUserManager().saveUser(user);
+        GroupManager gp = new GroupManager();
+        gp.addGroup(player, "app");
     }
 
     public void CreateRegion(Integer zona, Player player, boolean sobe) {

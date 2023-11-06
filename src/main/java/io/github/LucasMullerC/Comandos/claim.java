@@ -43,6 +43,17 @@ public class claim implements CommandExecutor {
         UUID id = player.getUniqueId();
         String discordId = DiscordSRV.getPlugin().getAccountLinkManager().getDiscordId(id);
         BTEBrasilSystem plugin = BTEBrasilSystem.getPlugin();
+
+        if(discordId == null){
+            player.sendMessage(ChatColor.GOLD + "Ops! Aparentemente você não está linkado...");
+            player.sendMessage(ChatColor.GOLD + "Digite /link Nick_Discord");
+            return true;
+        }
+        if (player.hasPermission("group.b_br") == false && player.hasPermission("group.builder_not") == false) {
+            player.sendMessage(ChatColor.GOLD + "Aparentemente você não é um construtor...");
+            player.sendMessage(ChatColor.GOLD + "Inicie a aplicação para participar!");
+            return true;
+        }
         ConversationFactory cf = new ConversationFactory(plugin);
         // Verifica se o Builder já está na lista
         builder.addBuilder(id.toString(), discordId);
@@ -76,6 +87,7 @@ public class claim implements CommandExecutor {
                 return true;
             }
         } else if (args[0].equalsIgnoreCase("abandonar") || args[0].equalsIgnoreCase("remover")) {
+            
             Conversation conv = cf.withFirstPrompt(new ClaimPrompt(player, "0", "").remover).withLocalEcho(true)
                     .buildConversation(player);
             conv.begin();

@@ -18,7 +18,6 @@ import github.scarsz.discordsrv.DiscordSRV;
 import io.github.LucasMullerC.BTEBrasilSystem.DiscordPonte;
 import io.github.LucasMullerC.BTEBrasilSystem.Regioes;
 import io.github.LucasMullerC.BTEBrasilSystem.Sistemas;
-import io.github.LucasMullerC.Gerencia.Aplicar;
 import io.github.LucasMullerC.Gerencia.Builder;
 import io.github.LucasMullerC.Gerencia.Claim;
 import io.github.LucasMullerC.Objetos.Areas;

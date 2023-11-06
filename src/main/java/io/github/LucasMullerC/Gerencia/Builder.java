@@ -57,7 +57,8 @@ public class Builder {
                 builder.add(B);
                 builder.save();
                 return true;
-            } else if (getBuilderPos(UUID).getDiscord().equals("nulo")) {
+            } else if (getBuilderPos(UUID).getDiscord().equals("nulo")
+                    || getBuilderPos(UUID).getDiscord().equals("null")) {
                 B = getBuilderPos(UUID);
                 B.setDiscord(Discord);
                 builder.save();
