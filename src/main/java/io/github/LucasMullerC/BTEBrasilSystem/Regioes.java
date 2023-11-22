@@ -74,7 +74,7 @@ public class Regioes {
             Integer largura = getSelectionWidth(localSession, selection);
             Integer leng = getSelectionLength(localSession, selection);
             int Limite = 212;
-            if (player.hasPermission("btebrasil.addcompleto")) {
+            if (player.hasPermission("btebrasil.nolimit")) {
                 Limite = 99999;
             } else {
                 Limite = getLimiteSelection(Tier);
