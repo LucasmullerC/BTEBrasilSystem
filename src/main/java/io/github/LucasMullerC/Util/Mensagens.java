@@ -125,7 +125,7 @@ public class Mensagens {
     public static String ImgAdd = "Imagem adicionada!";
     public static String ImgRemovida = "Imagem removida!";
     public static String ImgNotFind = "Imagem não encontrada!";
-    public static String PerfilNotBuilderDiscord = "Você não é um construtor em nosso time!\r\n Siga o tutorial para participar: https://www.youtube.com/watch?v=Z5p07nhtYxw";
+    public static String PerfilNotBuilderDiscord = "Você não é um construtor em nosso time!\r\n Siga o tutorial para participar: https://www.youtube.com/watch?v=Z5p07nhtYxw \\r\\n Caso você já seja um construtor você deve fazer pelo menos um claim: https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExNWNnZjB0NGxseXp1d3VjNDlnNjF6eHloZW82M2o3YTZ2eGNtanBiYyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/2egnSyHUNLObIkDTVh/giphy.gif";
     public static String giveconquista = "**!giveconquista id_discord id_conquista**";
     public static String addconquista = "**!addconquista id_conquista pontos url nome**";
     public static String addpontos = "**!addpontos id_discord pontos**";

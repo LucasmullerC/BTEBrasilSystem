@@ -178,17 +178,17 @@ public class Regioes {
 
     public int getLimiteSelection(int Tier) {
         if (Tier >= 1 && Tier <= 2) {
-            return 212;
-        } else if (Tier >= 3 && Tier <= 4) {
-            return 312;
-        } else if (Tier >= 5 && Tier <= 6) {
-            return 412;
-        } else if (Tier >= 7 && Tier <= 8) {
             return 512;
+        } else if (Tier >= 3 && Tier <= 4) {
+            return 1312;
+        } else if (Tier >= 5 && Tier <= 6) {
+            return 2412;
+        } else if (Tier >= 7 && Tier <= 8) {
+            return 3512;
         } else if (Tier >= 9 && Tier <= 10) {
-            return 612;
+            return 4412;
         } else {
-            return 712;
+            return 9999;
         }
     }
 
