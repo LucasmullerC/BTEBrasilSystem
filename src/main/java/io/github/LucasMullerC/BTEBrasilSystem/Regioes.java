@@ -75,11 +75,11 @@ public class Regioes {
             Integer leng = getSelectionLength(localSession, selection);
             int Limite = 212;
             if (player.hasPermission("btebrasil.nolimit")) {
-                Limite = 99999;
+                return convertToPolygonal2DRegion(region);
             } else {
                 Limite = getLimiteSelection(Tier);
             }
-            if (largura <= Limite && leng <= Limite && largura >= 5 && leng >= 5) {
+            if (largura <= Limite && leng <= Limite) {
                 /*
                  * Polygonal2DRegion polygonalRegion = convertToPolygonal2DRegion(region);
                  * /*List<BlockVector2> points = polygonalRegion.getPoints();
