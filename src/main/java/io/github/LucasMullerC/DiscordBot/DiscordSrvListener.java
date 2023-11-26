@@ -12,6 +12,7 @@ import io.github.LucasMullerC.DiscordBot.comandos.DiscordPerfil;
 import io.github.LucasMullerC.DiscordBot.comandos.addbuilds;
 import io.github.LucasMullerC.DiscordBot.comandos.addconquista;
 import io.github.LucasMullerC.DiscordBot.comandos.addpontos;
+import io.github.LucasMullerC.DiscordBot.comandos.claim;
 import io.github.LucasMullerC.DiscordBot.comandos.conquistas;
 import io.github.LucasMullerC.DiscordBot.comandos.destacar;
 import io.github.LucasMullerC.DiscordBot.comandos.giveconquista;
@@ -79,6 +80,9 @@ public class DiscordSrvListener {
                 break;
             case "!removebuilds":
                 new removerbuilds(msg);
+                break;
+            case "!claim":
+                new claim(msg);
                 break;
         }
     }

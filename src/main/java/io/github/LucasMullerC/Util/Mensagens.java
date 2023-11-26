@@ -1,5 +1,9 @@
 package io.github.LucasMullerC.Util;
 
+import java.util.ArrayList;
+
+import io.github.LucasMullerC.Objetos.Areas;
+
 public class Mensagens {
     public static String Link1 = "Sua conta não está linkada ao Discord, Siga os passos abaixo:";
     public static String Link2 = "1 - Entre em nosso Discord: ";
@@ -199,6 +203,12 @@ public class Mensagens {
                     + "\r\n\r\n :white_check_mark:**CLAIMS COMPLETOS - **" + qtdCompletos
                     + "\r\n **--------------------------**\r\n\r\n Você não tem nenhuma conquista em destaque!\r\n Digite **!destacar (id_da_conquista)** para adicionar!";
         }
+    }
+
+    public static String claimBody(int claimCompletoNum, int claimEmProgressoNum, ArrayList<Areas> completedClaims,ArrayList<Areas> notcompletedClaims){
+        return":axe:**CLAIMS EM CONSTRUÇÃO - **" + claimEmProgressoNum + ClaimUtils.printAreasString(notcompletedClaims) 
+        + "\r\n\r\n :white_check_mark:**CLAIMS COMPLETOS - **" + claimCompletoNum
+        + ClaimUtils.printAreasString(completedClaims);
     }
 
 }

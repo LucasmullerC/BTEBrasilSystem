@@ -1,6 +1,7 @@
 package io.github.LucasMullerC.Gerencia;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.UUID;
 
 import org.bukkit.entity.Player;
@@ -267,6 +268,26 @@ public class Claim {
             }
         }
         return cont;
+    }
+
+    public ArrayList<Areas> getAreaNotCompletedByPlayerUuid(String playerUuid) {
+        ArrayList<Areas> notCompletedAreas = new ArrayList<>();
+        for (Areas area : areas.getValues()) {
+            if (area.getPlayer() != null && area.getPlayer().contains(playerUuid) && area.getStatus().equals("F")) {
+                notCompletedAreas.add(area);
+            }
+        }
+        return notCompletedAreas;
+    }
+
+    public ArrayList<Areas> getAreaCompletedByPlayerUuid(String playerUuid) {
+        ArrayList<Areas> completedAreas = new ArrayList<>();
+        for (Areas area : areas.getValues()) {
+            if (area.getPlayer() != null && area.getPlayer().contains(playerUuid) && area.getStatus().equals("T")) {
+                completedAreas.add(area);
+            }
+        }
+        return completedAreas;
     }
 
     public int getAreaCompletaQtdByPlayerNum(String search) {

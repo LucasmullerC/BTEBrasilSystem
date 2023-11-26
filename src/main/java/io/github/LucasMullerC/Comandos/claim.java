@@ -1,5 +1,6 @@
 package io.github.LucasMullerC.Comandos;
 
+import java.util.ArrayList;
 import java.util.UUID;
 
 import org.bukkit.ChatColor;
@@ -16,8 +17,10 @@ import io.github.LucasMullerC.BTEBrasilSystem.BTEBrasilSystem;
 import io.github.LucasMullerC.BTEBrasilSystem.Regioes;
 import io.github.LucasMullerC.Gerencia.Builder;
 import io.github.LucasMullerC.Gerencia.Claim;
+import io.github.LucasMullerC.Objetos.Areas;
 import io.github.LucasMullerC.Objetos.Builders;
 import io.github.LucasMullerC.Prompts.ClaimPrompt;
+import io.github.LucasMullerC.Util.ClaimUtils;
 import io.github.LucasMullerC.Util.Mensagens;
 
 public class claim implements CommandExecutor {
@@ -59,7 +62,7 @@ public class claim implements CommandExecutor {
         builder.addBuilder(id.toString(), discordId);
         if (args[0].equalsIgnoreCase("add")) {
             B = builder.getBuilder(id.toString());
-            if (CalcLimite(B.getTier(), player) == false) {
+            if (CalcLimite(B.getTier(), player) == false || player.hasPermission("group.nolimit")) {
                 String pontos = regioes.getSelection(player, B.getTier());
                 if (pontos.length() == 1) {
                     switch (pontos) {
@@ -153,6 +156,21 @@ public class claim implements CommandExecutor {
                 return true;
 
             }
+        }else if(args[0].equalsIgnoreCase("info")){
+            int claimsCompletosNum, claimEmProgressoNum;
+            ArrayList<Areas> completedClaims = new ArrayList<>();
+            ArrayList<Areas> notcompletedClaims = new ArrayList<>();
+            Claim claim = new Claim();
+
+            claimEmProgressoNum = claim.getAreaQtdByPlayerNum(player.getUniqueId().toString());
+            claimsCompletosNum = claim.getAreaCompletaQtdByPlayerNum(player.getUniqueId().toString());
+            notcompletedClaims = claim.getAreaNotCompletedByPlayerUuid(player.getUniqueId().toString());
+            completedClaims = claim.getAreaCompletedByPlayerUuid(player.getUniqueId().toString());
+
+            player.sendMessage(ChatColor.DARK_BLUE + "CLAIMS EM CONSTRUÇÃO - " + ChatColor.GOLD + claimEmProgressoNum);
+            ClaimUtils.printAreasMinecraft(notcompletedClaims, player);
+            player.sendMessage(ChatColor.GREEN + "CLAIMS COMPLETOS - " + ChatColor.GOLD + claimsCompletosNum);
+            ClaimUtils.printAreasMinecraft(completedClaims, player);
         } else if (args[0].equalsIgnoreCase("addcompleto")) {
             if (player.hasPermission("btebrasil.addcompleto")) {
                 if (args.length == 1) {

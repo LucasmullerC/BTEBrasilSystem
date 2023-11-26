@@ -1,6 +1,6 @@
 name: BTEBrasilSystem
 main: io.github.LucasMullerC.BTEBrasilSystem.BTEBrasilSystem
-version: 0.5.2
+version: 0.5.3
 author: LucasMullerC
 depend: [DiscordSRV, WorldGuard]
 commands:

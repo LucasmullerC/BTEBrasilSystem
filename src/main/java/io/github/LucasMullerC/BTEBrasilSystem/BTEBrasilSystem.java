@@ -88,8 +88,7 @@ public final class BTEBrasilSystem extends JavaPlugin implements Listener {
 						gp.removeGroup(player, "builder_not");
 						gp.addGroup(player, "b_br");
 						return;
-					}	
-					else if(player.hasPermission("group.app")){
+					} else if (player.hasPermission("group.app")) {
 						GroupManager gp = new GroupManager();
 						gp.removeGroup(player, "app");
 					}
@@ -102,7 +101,8 @@ public final class BTEBrasilSystem extends JavaPlugin implements Listener {
 									gp.removeGroup(player, "builder_not");
 									gp.addGroup(player, "b_br");
 									return;
-								} else if(!player.hasPermission("group.builder_not") || !player.hasPermission("group.b_br")){
+								} else if (!player.hasPermission("group.builder_not")
+										|| !player.hasPermission("group.b_br")) {
 									GroupManager gp = new GroupManager();
 									gp.addGroup(player, "app");
 									return;
@@ -119,7 +119,7 @@ public final class BTEBrasilSystem extends JavaPlugin implements Listener {
 							return;
 						}
 					}
-					if(player.hasPermission("group.app")){
+					if (player.hasPermission("group.app")) {
 						GroupManager gp = new GroupManager();
 						gp.removeGroup(player, "app");
 					}
@@ -178,13 +178,16 @@ public final class BTEBrasilSystem extends JavaPlugin implements Listener {
 					public void run() {
 						final Player p = event.getPlayer();
 						event.getPlayer().sendMessage(ChatColor.GREEN + Mensagens.Bnovamente + user.getAsTag() + "!");
-						int cont = aplicar.getPendenteAplicacaoQtd();
 
-						if (cont > 0) {
-							p.sendMessage(ChatColor.RED + Mensagens.Atencao);
-							p.sendMessage(
-									ChatColor.GOLD + Mensagens.SeuTime1 + cont + Mensagens.SeuTime2 + ChatColor.BLUE
-											+ Mensagens.analisar);
+						if (event.getPlayer().hasPermission("group.reviewer")) {
+							int cont = aplicar.getPendenteAplicacaoQtd();
+
+							if (cont > 0) {
+								p.sendMessage(ChatColor.RED + Mensagens.Atencao);
+								p.sendMessage(
+										ChatColor.GOLD + Mensagens.SeuTime1 + cont + Mensagens.SeuTime2 + ChatColor.BLUE
+												+ Mensagens.analisar);
+							}
 						}
 						Sistemas sistemas = new Sistemas();
 						sistemas.CheckRank(p.getUniqueId().toString());
