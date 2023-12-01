@@ -72,6 +72,16 @@ public class Claim {
         return null;
     }
 
+    public ArrayList<Pendentes> getPendentePlayer(String UUID){
+        ArrayList<Pendentes> playerPendetes = new ArrayList<>();
+        for (Pendentes pendente : pendente.getValues()) {
+            if(pendente.getUUID().equals(UUID)){
+                playerPendetes.add(pendente);
+            }
+        }
+        return playerPendetes;
+    }
+
     // AREAS
     public Boolean addArea(String Nome, String id, String Pontos, String player) {
         if (areas.getValues().isEmpty() == true) {

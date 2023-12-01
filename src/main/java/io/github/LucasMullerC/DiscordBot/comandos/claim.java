@@ -15,6 +15,7 @@ import io.github.LucasMullerC.Gerencia.Builder;
 import io.github.LucasMullerC.Gerencia.Claim;
 import io.github.LucasMullerC.Objetos.Areas;
 import io.github.LucasMullerC.Objetos.Builders;
+import io.github.LucasMullerC.Objetos.Pendentes;
 import io.github.LucasMullerC.Util.Mensagens;
 
 public class claim {
@@ -45,19 +46,21 @@ public class claim {
             int claimsCompletosNum, claimEmProgressoNum;
             ArrayList<Areas> completedClaims = new ArrayList<>();
             ArrayList<Areas> notcompletedClaims = new ArrayList<>();
+            ArrayList<Pendentes> playerPendente = new ArrayList<>();
             Claim claim = new Claim();
 
             claimEmProgressoNum = claim.getAreaQtdByPlayerNum(B.getUUID());
             claimsCompletosNum = claim.getAreaCompletaQtdByPlayerNum(B.getUUID());
             notcompletedClaims = claim.getAreaNotCompletedByPlayerUuid(B.getUUID());
             completedClaims = claim.getAreaCompletedByPlayerUuid(B.getUUID());
+            playerPendente = claim.getPendentePlayer(B.getUUID());
 
             Thumbnail thumb = new Thumbnail(u.getAvatarUrl(), null, 100, 100); // thumb
             Footer ft = new Footer("!perfil para ver seu perfil.", null, null);
             ImageInfo img = null;
 
             MessageEmbed emb2 = new MessageEmbed(null, Mensagens.PerfilDiscordTitle(u.getName()),
-                    Mensagens.claimBody(claimsCompletosNum, claimEmProgressoNum, completedClaims, notcompletedClaims),
+                    Mensagens.claimBody(claimsCompletosNum, claimEmProgressoNum, completedClaims, notcompletedClaims,playerPendente),
                     null, null, 52224, thumb, null, null, null, ft,
                     img, null);
 

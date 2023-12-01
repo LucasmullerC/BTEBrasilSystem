@@ -110,14 +110,11 @@ public class Sistemas {
 
     }
 
-    public String FormLb() {
+    public String FormLb(int position) {
         Builder builder = new Builder();
         Map<String, Double> unsortMap = builder.GetPointsMap();
-        // 1. Convert Map to List of Map
         List<Map.Entry<String, Double>> list = new LinkedList<Map.Entry<String, Double>>(unsortMap.entrySet());
 
-        // 2. Sort list with Collections.sort(), provide a custom Comparator
-        // Try switch the o1 o2 position for a different order
         Collections.sort(list, new Comparator<Map.Entry<String, Double>>() {
             public int compare(Map.Entry<String, Double> o1,
                     Map.Entry<String, Double> o2) {
@@ -125,31 +122,38 @@ public class Sistemas {
             }
         });
 
-        // 3. Loop the sorted list and put it into a new insertion order Map
-        // LinkedHashMap
         Map<String, Double> sortedMap = new LinkedHashMap<String, Double>();
         for (Map.Entry<String, Double> entry : list) {
             sortedMap.put(entry.getKey(), entry.getValue());
         }
-        return printLb(sortedMap);
+        return printLb(sortedMap, position);
     }
 
-    public <K, V> String printLb(Map<K, V> map) {
+    public <K, V> String printLb(Map<K, V> map, int position) {
         String lb = "";
         int cont = 1;
         Builder builder = new Builder();
-        for (Map.Entry<K, V> entry : map.entrySet()) {
+        List<Map.Entry<K, V>> entryList = new ArrayList<>(map.entrySet());
+
+        position = Math.max(0, Math.min(position, entryList.size() - 1));
+    
+        for (int i = position; i < entryList.size(); i++) {
+            Map.Entry<K, V> entry = entryList.get(i);
             Builders B = builder.getBuilderDiscord(entry.getKey().toString());
+    
             if (entry.getKey().equals("nulo")) {
                 OfflinePlayer pl = Bukkit.getOfflinePlayer(UUID.fromString(B.getUUID()));
-                lb += "**#" + cont + " ->** _" + pl.getName() + "_\r\n";
+                lb += "**#" + (i+1) + " ->** _" + pl.getName() + "_\r\n";
             } else {
-                lb += "**#" + cont + " ->** <@" + entry.getKey() + ">\r\n";
+                lb += "**#" + (i+1) + " ->** <@" + entry.getKey() + ">\r\n";
             }
+    
             String pts = String.valueOf(B.getPontos());
             pts = pts.substring(0, pts.indexOf(".") + 2);
+    
             lb += ":medal: Tier `" + B.getTier().toString() + "`\r\n :chart_with_upwards_trend: Pontos `"
                     + pts + "`\r\n\r\n";
+    
             if (cont == 10) {
                 break;
             }

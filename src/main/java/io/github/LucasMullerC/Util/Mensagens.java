@@ -3,6 +3,7 @@ package io.github.LucasMullerC.Util;
 import java.util.ArrayList;
 
 import io.github.LucasMullerC.Objetos.Areas;
+import io.github.LucasMullerC.Objetos.Pendentes;
 
 public class Mensagens {
     public static String Link1 = "Sua conta não está linkada ao Discord, Siga os passos abaixo:";
@@ -205,10 +206,18 @@ public class Mensagens {
         }
     }
 
-    public static String claimBody(int claimCompletoNum, int claimEmProgressoNum, ArrayList<Areas> completedClaims,ArrayList<Areas> notcompletedClaims){
-        return":axe:**CLAIMS EM CONSTRUÇÃO - **" + claimEmProgressoNum + ClaimUtils.printAreasString(notcompletedClaims) 
-        + "\r\n\r\n :white_check_mark:**CLAIMS COMPLETOS - **" + claimCompletoNum
-        + ClaimUtils.printAreasString(completedClaims);
+    public static String claimBody(int claimCompletoNum, int claimEmProgressoNum, ArrayList<Areas> completedClaims,
+            ArrayList<Areas> notcompletedClaims, ArrayList<Pendentes> pendentes) {
+        String pendentesBody = "";
+        if (!pendentes.isEmpty()) {
+            pendentesBody = "\r\n\r\n :yellow_circle:**CLAIMS EM ANÁLISE - **" + pendentes.size()
+                    + ClaimUtils.printPendentesString(pendentes);
+        }
+        return ":axe:**CLAIMS EM CONSTRUÇÃO - **" + claimEmProgressoNum
+                + ClaimUtils.printAreasString(notcompletedClaims) +
+                pendentesBody
+                + "\r\n\r\n :white_check_mark:**CLAIMS COMPLETOS - **" + claimCompletoNum
+                + ClaimUtils.printAreasString(completedClaims);
     }
 
 }

@@ -19,6 +19,7 @@ import io.github.LucasMullerC.Gerencia.Builder;
 import io.github.LucasMullerC.Gerencia.Claim;
 import io.github.LucasMullerC.Objetos.Areas;
 import io.github.LucasMullerC.Objetos.Builders;
+import io.github.LucasMullerC.Objetos.Pendentes;
 import io.github.LucasMullerC.Prompts.ClaimPrompt;
 import io.github.LucasMullerC.Util.ClaimUtils;
 import io.github.LucasMullerC.Util.Mensagens;
@@ -47,7 +48,7 @@ public class claim implements CommandExecutor {
         String discordId = DiscordSRV.getPlugin().getAccountLinkManager().getDiscordId(id);
         BTEBrasilSystem plugin = BTEBrasilSystem.getPlugin();
 
-        if(discordId == null){
+        if (discordId == null) {
             player.sendMessage(ChatColor.GOLD + "Ops! Aparentemente você não está linkado...");
             player.sendMessage(ChatColor.GOLD + "Digite /link Nick_Discord");
             return true;
@@ -90,7 +91,7 @@ public class claim implements CommandExecutor {
                 return true;
             }
         } else if (args[0].equalsIgnoreCase("abandonar") || args[0].equalsIgnoreCase("remover")) {
-            
+
             Conversation conv = cf.withFirstPrompt(new ClaimPrompt(player, "0", "").remover).withLocalEcho(true)
                     .buildConversation(player);
             conv.begin();
@@ -156,19 +157,25 @@ public class claim implements CommandExecutor {
                 return true;
 
             }
-        }else if(args[0].equalsIgnoreCase("info")){
+        } else if (args[0].equalsIgnoreCase("info")) {
             int claimsCompletosNum, claimEmProgressoNum;
             ArrayList<Areas> completedClaims = new ArrayList<>();
             ArrayList<Areas> notcompletedClaims = new ArrayList<>();
+            ArrayList<Pendentes> playerPendente = new ArrayList<>();
             Claim claim = new Claim();
 
             claimEmProgressoNum = claim.getAreaQtdByPlayerNum(player.getUniqueId().toString());
             claimsCompletosNum = claim.getAreaCompletaQtdByPlayerNum(player.getUniqueId().toString());
             notcompletedClaims = claim.getAreaNotCompletedByPlayerUuid(player.getUniqueId().toString());
             completedClaims = claim.getAreaCompletedByPlayerUuid(player.getUniqueId().toString());
+            playerPendente = claim.getPendentePlayer(B.getUUID());
 
             player.sendMessage(ChatColor.DARK_BLUE + "CLAIMS EM CONSTRUÇÃO - " + ChatColor.GOLD + claimEmProgressoNum);
             ClaimUtils.printAreasMinecraft(notcompletedClaims, player);
+            if (!playerPendente.isEmpty()) {
+                player.sendMessage(ChatColor.YELLOW + "CLAIMS EM ANÁLISE - " + ChatColor.GOLD + playerPendente.size());
+                ClaimUtils.printPendentesMinecraft(playerPendente, player);
+            }
             player.sendMessage(ChatColor.GREEN + "CLAIMS COMPLETOS - " + ChatColor.GOLD + claimsCompletosNum);
             ClaimUtils.printAreasMinecraft(completedClaims, player);
         } else if (args[0].equalsIgnoreCase("addcompleto")) {

@@ -6,6 +6,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 import io.github.LucasMullerC.Objetos.Areas;
+import io.github.LucasMullerC.Objetos.Pendentes;
 
 public class ClaimUtils {
     
@@ -20,5 +21,19 @@ public class ClaimUtils {
             areasList += "\r\n\r\n ID - "+area.getClaim();
         }
         return areasList;
+    }
+
+    public static void printPendentesMinecraft(ArrayList<Pendentes> pendentes,Player player){
+        for (Pendentes pendente : pendentes) {
+            player.sendMessage(ChatColor.RED + "ID - " + ChatColor.GOLD + pendente.getArea());
+        }
+    }
+
+    public static String printPendentesString(ArrayList<Pendentes> pendentes){
+        String pendentesList = "";
+        for(Pendentes pendente : pendentes){
+            pendentesList += "\r\n\r\n ID - "+pendente.getArea();
+        }
+        return pendentesList;
     }
 }
