@@ -85,6 +85,8 @@ public class Sistemas {
         al.add("b_mg");
         al.add("b_co");
         al.add("b_sul");
+        al.add("b_br");
+        al.add("builder_not");
         for (String time : al) {
             if (groups.contains(time)) {
                 return true;

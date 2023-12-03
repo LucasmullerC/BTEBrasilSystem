@@ -151,6 +151,7 @@ public class analisar implements CommandExecutor {
 
             P = aplicar.getPendenteAplicacao();
             A = aplicar.getAplicante(P.getUUID());
+
             OfflinePlayer pa = Bukkit.getOfflinePlayer(UUID.fromString(A.getUUID()));
             player.sendMessage(Mensagens.VoceAnalisa + pa.getName() + Mensagens.VoceAnalisa2
                     + DiscordPonte.GetDiscordName(A.getDiscord()));
@@ -175,7 +176,7 @@ public class analisar implements CommandExecutor {
                 // Adiciona Cargo no Discord
                 DiscordPonte.addCargo(A.getUUID(), A.getDiscord());
                 // Teleporta Aplicante para o Spawn
-                if (pa.isOnline() == true) {
+                if (pa != null || pa.isOnline() == true) {
                     Player app = Bukkit.getPlayer(UUID.fromString(A.getUUID()));
                     regioes.RemovePermissao(app, A.getZona());
                     Location l = new Location(world, -1163, 80, 300);
@@ -202,7 +203,7 @@ public class analisar implements CommandExecutor {
                 aplicar.RemoverPendenteAplicacao(A.getUUID());
                 DiscordPonte.sendMessage(A.getDiscord(), Mensagens.AppRecusada1 + motivo + Mensagens.AppRecusada2);
                 Location l = new Location(world, -1163, 80, 300);
-                if (pa.isOnline() == true) {
+                if (pa != null || pa.isOnline() == true) {
                     regioes.AddPermissao(pa.getPlayer(), A.getZona());
                 }
                 player.teleport(l);
