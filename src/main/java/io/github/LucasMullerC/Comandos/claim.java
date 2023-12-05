@@ -1,6 +1,7 @@
 package io.github.LucasMullerC.Comandos;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.UUID;
 
 import org.bukkit.ChatColor;
@@ -11,10 +12,12 @@ import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.conversations.Conversation;
 import org.bukkit.conversations.ConversationFactory;
 import org.bukkit.entity.Player;
+import org.stringtemplate.v4.compiler.CodeGenerator.region_return;
 
 import github.scarsz.discordsrv.DiscordSRV;
 import io.github.LucasMullerC.BTEBrasilSystem.BTEBrasilSystem;
 import io.github.LucasMullerC.BTEBrasilSystem.Regioes;
+import io.github.LucasMullerC.BTEBrasilSystem.Sistemas;
 import io.github.LucasMullerC.Gerencia.Builder;
 import io.github.LucasMullerC.Gerencia.Claim;
 import io.github.LucasMullerC.Objetos.Areas;
@@ -240,8 +243,66 @@ public class claim implements CommandExecutor {
                 }
             }
             return true;
+        } else if (args[0].equalsIgnoreCase("addevento")) { //PROVISÓRIO! //PROVISÓRIO!
+            if (player.hasPermission("btebrasil.evento")) {
+                if (args.length == 1) {
+                    player.sendMessage(ChatColor.RED + "/addevento ID_do_Evento");
+                    return true;
+                } else {
+                    Areas A = VefClaimEvento(args[1]);
+                    if (A != null) {
+                        Sistemas sistemas = new Sistemas();
+                        Claim claim = new Claim();
+                        String[] participante;
+                        // Verifica se o participante é construtor
+                        if (sistemas.VerificarBuilder(player) == true) {
+                            builder.addBuilder(id.toString(), discordId);
+                            String pp = A.getParticipantes();
+                            if (pp.equals("nulo")) {
+                                claim.setParticipante(A.getClaim(), id.toString());
+                                regioes.addPermissaoWG(A.getClaim(), player, id);
+                                player.sendMessage(ChatColor.GREEN + Mensagens.Equipe1);
+                                return true;
+                            } else {
+                                participante = pp.split(",");
+                                if (!Arrays.stream(participante).anyMatch(id::equals)) {
+                                    claim.setParticipante(A.getClaim(), id.toString());
+                                    regioes.addPermissaoWG(A.getClaim(), player, id);
+                                    player.sendMessage(ChatColor.GREEN + Mensagens.Equipe1);
+                                    return true;
+                                } else {
+                                    player.sendMessage(ChatColor.RED + Mensagens.Equipe2);
+                                    return true;
+                                }
+                            }
+                        } else {
+                            return true;
+                        }
+                    } else {
+                        return true;
+                    }
+                }
+            }
+            return true;
         }
         return false;
+    }
+
+    //PROVISÓRIO! //PROVISÓRIO!
+    private Areas VefClaimEvento(String input) {
+        Claim claim = new Claim();
+        Areas A = claim.getArea(input);
+        // Quando for re-fazer essa função no 6.x implementar lógica de evento
+        if (A != null) {
+            if (A.getPlayer().equals("ff3983ae-2286-4a2b-b8a4-e59d0217184b") && A.getClaim().contains("evento")){
+                return A;
+            }
+            else{
+                return null;
+            }
+        } else {
+            return null;
+        }
     }
 
     private boolean CalcLimite(int Tier, Player player) {
