@@ -243,13 +243,13 @@ public class claim implements CommandExecutor {
                 }
             }
             return true;
-        } else if (args[0].equalsIgnoreCase("addevento")) { //PROVISÓRIO! //PROVISÓRIO!
+        } else if (args[0].equalsIgnoreCase("addevento")) { // PROVISÓRIO! //PROVISÓRIO!
             if (player.hasPermission("btebrasil.evento")) {
                 if (args.length == 1) {
                     player.sendMessage(ChatColor.RED + "/addevento ID_do_Evento");
                     return true;
                 } else {
-                    Areas A = VefClaimEvento(args[1]);
+                    Areas A = VefClaimEvento(args[1], player);
                     if (A != null) {
                         Sistemas sistemas = new Sistemas();
                         Claim claim = new Claim();
@@ -288,21 +288,27 @@ public class claim implements CommandExecutor {
         return false;
     }
 
-    //PROVISÓRIO! //PROVISÓRIO!
-    private Areas VefClaimEvento(String input) {
+    // PROVISÓRIO! //PROVISÓRIO!
+    private Areas VefClaimEvento(String input, Player player) {
         Claim claim = new Claim();
         Areas A = claim.getArea(input);
         // Quando for re-fazer essa função no 6.x implementar lógica de evento
         if (A != null) {
-            if (A.getPlayer().equals("ff3983ae-2286-4a2b-b8a4-e59d0217184b") && A.getClaim().contains("evento")){
-                return A;
+            String[] participantes = A.getParticipantes().split(",");
+            for (String participante : participantes) {
+                if (participante.equals(player.getUniqueId().toString())) {
+                    return null;
+                }
             }
-            else{
-                return null;
+            if (A.getPlayer().equals("ff3983ae-2286-4a2b-b8a4-e59d0217184b")
+                            && A.getClaim().contains("evento")) {
+                        return A;
             }
         } else {
             return null;
         }
+
+        return null;
     }
 
     private boolean CalcLimite(int Tier, Player player) {
