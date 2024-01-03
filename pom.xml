@@ -2,35 +2,23 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>io.github.LucasMullerC</groupId>
     <artifactId>BTEBrasilSystem</artifactId>
-    <version>0.5.4</version>
+    <version>0.6.0</version>
     <build>
+    <properties>
+        <java.version>17</java.version>
+
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
+</properties>
         <plugins>
-            <plugin>
+    <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>2.3.2</version>
+                <version>3.8.1</version>
                 <configuration>
-                    <source>1.8</source>
-                    <target>1.8</target>
+                    <source>17</source>
+                    <target>17</target>
                 </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-shade-plugin</artifactId>
-                <version>3.1.0</version>
-                <executions>
-                    <execution>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>shade</goal>
-                        </goals>
-                        <configuration>
-                            <outputDirectory>${dir}</outputDirectory>
-                            <createDependencyReducedPom>false</createDependencyReducedPom>
-                            <shadedArtifactAttached>true</shadedArtifactAttached>
-                        </configuration>
-                    </execution>
-                </executions>
             </plugin>
         </plugins>
         <resources>
@@ -47,17 +35,13 @@
     </repository>
         <!-- discordsrv -->
         <repository>
+            <id>dv8tion</id>
+            <name>m2-dv8tion</name>
+            <url>https://m2.dv8tion.net/releases</url>
+        </repository>
+        <repository>
             <id>Scarsz-Nexus</id>
             <url>https://nexus.scarsz.me/content/groups/public/</url>
-        </repository>
-        <repository>
-            <id>jcenter</id>
-            <name>jcenter-bintray</name>
-            <url>https://jcenter.bintray.com</url>
-        </repository>
-        <repository>
-            <id>spigot-repo</id>
-            <url>https://hub.spigotmc.org/nexus/content/repositories/public/</url>
         </repository>
         <repository>
             <id>sk89q-repo</id>
@@ -72,14 +56,20 @@
     <dependencies>
         <dependency>
             <groupId>com.intellectualsites.bom</groupId>
-            <artifactId>bom-1.18.x</artifactId>
-            <version>1.28</version>
+            <artifactId>bom-newest</artifactId> <!--  Ref: https://github.com/IntellectualSites/bom -->
+            <version>1.39</version>
             <scope>import</scope>
             <type>pom</type>
         </dependency>
     </dependencies>
 </dependencyManagement>
     <dependencies>
+    <dependency>
+    <groupId>io.papermc.paper</groupId>
+    <artifactId>paper-api</artifactId>
+    <version>1.20.1-R0.1-SNAPSHOT</version>
+    <scope>provided</scope>
+</dependency>
     <dependency>
       <groupId>com.fastasyncworldedit</groupId>
       <artifactId>FastAsyncWorldEdit-Core</artifactId>
@@ -107,7 +97,7 @@
 <dependency>
     <groupId>com.discordsrv</groupId>
     <artifactId>discordsrv</artifactId>
-    <version>1.21.1</version>
+    <version>1.26.2</version>
     <scope>provided</scope>
 </dependency>
         <dependency>
@@ -116,12 +106,11 @@
             <version>5.4</version>
             <scope>provided</scope>
         </dependency>
-    <dependency>
-           <groupId>org.spigotmc</groupId>
-           <artifactId>spigot-api</artifactId>
-           <version>1.19.4-R0.1-SNAPSHOT</version>
-           <scope>provided</scope>
-    </dependency>
-
+<dependency>
+    <groupId>com.github.seeseemelk</groupId>
+    <artifactId>MockBukkit-v1.20</artifactId>
+    <version>3.19.0</version>
+    <scope>test</scope>
+</dependency>
     </dependencies>
 </project>
