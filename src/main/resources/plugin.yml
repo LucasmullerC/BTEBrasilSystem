@@ -4,6 +4,9 @@ version: 0.6.0
 author: LucasMullerC
 depend: [DiscordSRV, WorldGuard]
 commands:
+  data:
+    description: Manage server data.
+    usage: /data [convert]
   aplicacao:
     description: Iniciar Aplicação.
     usage: /aplicacao

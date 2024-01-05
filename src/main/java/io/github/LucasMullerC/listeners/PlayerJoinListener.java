@@ -1,4 +1,4 @@
-package io.github.LucasMullerC.listeners;
+/*package io.github.LucasMullerC.listeners;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -81,4 +81,4 @@ public class PlayerJoinListener implements Listener{
 			}, 30L);
 		}
 	}
-}
+}*/

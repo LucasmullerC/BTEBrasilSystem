@@ -1,6 +1,8 @@
 package io.github.LucasMullerC.BTEBrasilSystem;
 
 import org.bukkit.plugin.java.JavaPlugin;
+
+import io.github.LucasMullerC.commands.data;
 import io.github.LucasMullerC.listeners.PlayerMoveListener;
 
 public class BTEBrasilSystem extends JavaPlugin {
@@ -10,6 +12,7 @@ public class BTEBrasilSystem extends JavaPlugin {
 	@Override
 	public void onEnable() {
 		instance = this;
+		getCommand("data").setExecutor(new data());
 		/*
 		// Comandos
 		getCommand("aplicacao").setExecutor(new aplicacao());

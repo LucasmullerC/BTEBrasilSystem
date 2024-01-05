@@ -1,17 +1,20 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemalocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>io.github.LucasMullerC</groupId>
     <artifactId>BTEBrasilSystem</artifactId>
     <version>0.6.0</version>
-    <build>
+
     <properties>
         <java.version>17</java.version>
-
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
-</properties>
+    </properties>
+
+    <build>
         <plugins>
-    <plugin>
+            <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.8.1</version>
@@ -20,6 +23,14 @@
                     <target>17</target>
                 </configuration>
             </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>3.2.3</version>
+                <configuration>
+                  <skipTests>true</skipTests>
+                </configuration>
+              </plugin>
         </plugins>
         <resources>
             <resource>
@@ -30,9 +41,9 @@
     </build>
     <repositories>
         <repository>
-        <id>papermc</id>
-        <url>https://repo.papermc.io/repository/maven-public/</url>
-    </repository>
+            <id>papermc</id>
+            <url>https://repo.papermc.io/repository/maven-public/</url>
+        </repository>
         <!-- discordsrv -->
         <repository>
             <id>dv8tion</id>
@@ -53,64 +64,70 @@
         </repository>
     </repositories>
     <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>com.intellectualsites.bom</groupId>
+                <artifactId>bom-newest</artifactId> <!--  Ref:https://github.com/IntellectualSites/bom -->
+                <version>1.39</version>
+                <scope>import</scope>
+                <type>pom</type>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
     <dependencies>
         <dependency>
-            <groupId>com.intellectualsites.bom</groupId>
-            <artifactId>bom-newest</artifactId> <!--  Ref: https://github.com/IntellectualSites/bom -->
-            <version>1.39</version>
-            <scope>import</scope>
-            <type>pom</type>
+            <groupId>io.papermc.paper</groupId>
+            <artifactId>paper-api</artifactId>
+            <version>1.20.1-R0.1-SNAPSHOT</version>
+            <scope>provided</scope>
         </dependency>
-    </dependencies>
-</dependencyManagement>
-    <dependencies>
-    <dependency>
-    <groupId>io.papermc.paper</groupId>
-    <artifactId>paper-api</artifactId>
-    <version>1.20.1-R0.1-SNAPSHOT</version>
-    <scope>provided</scope>
-</dependency>
-    <dependency>
-      <groupId>com.fastasyncworldedit</groupId>
-      <artifactId>FastAsyncWorldEdit-Core</artifactId>
-      <scope>provided</scope>
-    </dependency>
+        <dependency>
+            <groupId>com.fastasyncworldedit</groupId>
+            <artifactId>FastAsyncWorldEdit-Core</artifactId>
+            <scope>provided</scope>
+        </dependency>
 
-    <dependency>
-        <groupId>com.fastasyncworldedit</groupId>
-        <artifactId>FastAsyncWorldEdit-Bukkit</artifactId>
-        <scope>provided</scope>
-        <exclusions>
-            <exclusion>
-                <artifactId>FastAsyncWorldEdit-Core</artifactId>
-                <groupId>*</groupId>
-            </exclusion>
-        </exclusions>
-    </dependency>
-    <dependency>
-        <groupId>com.sk89q.worldguard</groupId>
-        <artifactId>worldguard-bukkit</artifactId>
-        <version>7.0.1</version>
-        <scope>provided</scope>
-    </dependency>
+        <dependency>
+            <groupId>com.fastasyncworldedit</groupId>
+            <artifactId>FastAsyncWorldEdit-Bukkit</artifactId>
+            <scope>provided</scope>
+            <exclusions>
+                <exclusion>
+                    <artifactId>FastAsyncWorldEdit-Core</artifactId>
+                    <groupId>*</groupId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>com.sk89q.worldguard</groupId>
+            <artifactId>worldguard-bukkit</artifactId>
+            <version>7.0.1</version>
+            <scope>provided</scope>
+        </dependency>
         <!-- discordsrv -->
-<dependency>
-    <groupId>com.discordsrv</groupId>
-    <artifactId>discordsrv</artifactId>
-    <version>1.26.2</version>
-    <scope>provided</scope>
-</dependency>
+        <dependency>
+            <groupId>com.discordsrv</groupId>
+            <artifactId>discordsrv</artifactId>
+            <version>1.26.2</version>
+            <scope>provided</scope>
+        </dependency>
         <dependency>
             <groupId>net.luckperms</groupId>
             <artifactId>api</artifactId>
             <version>5.4</version>
             <scope>provided</scope>
         </dependency>
-<dependency>
-    <groupId>com.github.seeseemelk</groupId>
-    <artifactId>MockBukkit-v1.20</artifactId>
-    <version>3.19.0</version>
-    <scope>test</scope>
-</dependency>
+        <dependency>
+            <groupId>com.github.seeseemelk</groupId>
+            <artifactId>MockBukkit-v1.20</artifactId>
+            <version>3.19.0</version>
+            <scope>test</scope>
+        </dependency>
+        <!-- Chat color replacer -->
+        <dependency>
+            <groupId>net.kyori</groupId>
+            <artifactId>adventure-text-minimessage</artifactId>
+            <version>4.14.0</version>
+         </dependency>
     </dependencies>
 </project>
