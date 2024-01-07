@@ -10,7 +10,16 @@ import io.github.LucasMullerC.service.data.DatabaseService;
 import io.github.LucasMullerC.util.DatabaseConnection;
 
 public class ClaimService {
-   
+    
+    public void addClaim(String name, String id, String points, Player player) throws SQLException{
+        String[]claim = {id,name,points,player.getUniqueId().toString(),"","F","","0"};
+        Connection conn = DatabaseConnection.getConnection();
+        DatabaseService databaseService = new DatabaseService();
+        databaseService.addRecord(conn, "claim", claim);
+        WorldGuardService worldGuardService = new WorldGuardService();
+        worldGuardService.AddRegion(points, id, player);
+    }
+
     public void removeClaim(String claimId,Player player) throws SQLException{
         Connection conn = DatabaseConnection.getConnection();
         DatabaseService databaseService = new DatabaseService();

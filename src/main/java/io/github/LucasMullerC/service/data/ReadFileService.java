@@ -42,13 +42,11 @@ public class ReadFileService {
             List<String> lines = readLinesFromFile(file);
 
             if (!lines.isEmpty()) {
-                String firstLine = lines.get(0);
-                String[] columnNames = firstLine.split(";");
 
                 for (int i = 1; i < lines.size(); i++) {
                     String[] values = lines.get(i).split(";");
                     DatabaseService databaseService = new DatabaseService();
-                    databaseService.addRecord(connection, tableName, columnNames, values);
+                    databaseService.addRecord(connection, tableName, values);
                 }
             }
         }

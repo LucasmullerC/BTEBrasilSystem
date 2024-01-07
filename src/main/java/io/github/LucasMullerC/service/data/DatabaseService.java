@@ -9,13 +9,8 @@ import java.util.List;
 
 public class DatabaseService {
 
-    public void addRecord(Connection connection, String tableName, String[] columnNames, String[] values) {
-        if (columnNames.length != values.length) {
-            System.out.println("Incorrect number of values. Unable to add record.");
-            return;
-        }
-
-        String sql = buildInsertSQL(tableName, columnNames.length);
+    public void addRecord(Connection connection, String tableName, String[] values) {
+        String sql = buildInsertSQL(tableName, values.length);
         try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             for (int i = 0; i < values.length; i++) {
                 preparedStatement.setString(i + 1, values[i]);
