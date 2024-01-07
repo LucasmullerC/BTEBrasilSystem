@@ -1,8 +1,8 @@
 package io.github.LucasMullerC.model;
 
 public class Pending implements Comparable<Pending> {
-    String UUID, ApplicationZones, Builds;
-    Boolean isFinished;
+    String UUID, regionId, builds;
+    Boolean isApplication;
 
     public Pending(String U) {
         this.UUID = U;
@@ -16,28 +16,28 @@ public class Pending implements Comparable<Pending> {
         UUID = uUID;
     }
 
-    public String getApplicationZones() {
-        return ApplicationZones;
+    public String getregionId() {
+        return regionId;
     }
 
-    public void setApplicationZones(String ApplicationZones) {
-        this.ApplicationZones = ApplicationZones;
+    public void setregionId(String regionId) {
+        this.regionId = regionId;
     }
 
-    public String getBuilds() {
-        return Builds;
+    public String getbuilds() {
+        return builds;
     }
 
-    public void setBuilds(String builds) {
-        Builds = builds;
+    public void setbuilds(String builds) {
+        this.builds = builds;
     }
 
-    public Boolean getIsFinished() {
-        return isFinished;
+    public Boolean getisApplication() {
+        return isApplication;
     }
 
-    public void setIsFinished(Boolean isFinished) {
-        this.isFinished = isFinished;
+    public void setisApplication(Boolean isApplication) {
+        this.isApplication = isApplication;
     }
 
     @Override

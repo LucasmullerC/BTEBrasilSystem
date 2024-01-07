@@ -6,7 +6,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.jetbrains.annotations.NotNull;
 
-import io.github.LucasMullerC.service.ReadFileService;
+import io.github.LucasMullerC.service.data.ReadFileService;
 import io.github.LucasMullerC.util.MessageUtils;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;

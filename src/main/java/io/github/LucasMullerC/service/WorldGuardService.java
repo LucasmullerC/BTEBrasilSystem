@@ -1,6 +1,7 @@
 package io.github.LucasMullerC.service;
 
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 import org.bukkit.Bukkit;
@@ -23,28 +24,35 @@ import io.github.LucasMullerC.model.Claim;
 
 public class WorldGuardService {
 
-    public void AddToGuard(String coords, String Id, Player player) {
-        com.sk89q.worldedit.entity.Player playerbukkit = BukkitAdapter.adapt(player);
-        World w = playerbukkit.getWorld();
-        RegionContainer container = WorldGuard.getInstance().getPlatform().getRegionContainer();
-        RegionManager regions = container.get(w);
+    public void AddRegion(String coords, String Id, Player player) {
+        RegionManager regions = getRegions(player);
         DefaultDomain members;
-        String[] ary = coords.split(",");
+        String[] coordinatesArray = coords.split(",");
         List<BlockVector2> points = Lists.newArrayList();
-        for (int i = 0; i < (ary.length - 1); i += 2) {
-            points.add(BlockVector2.at(Integer.parseInt(ary[i].split("\\.")[0]),
-                    Integer.parseInt(ary[i + 1].split("\\.")[0])));
+        for (int i = 0; i < (coordinatesArray.length - 1); i += 2) {
+            points.add(BlockVector2.at(Integer.parseInt(coordinatesArray[i].split("\\.")[0]),
+                    Integer.parseInt(coordinatesArray[i + 1].split("\\.")[0])));
         }
         int minY = -100;
         int maxY = 3500;
-        ProtectedRegion regiona = new ProtectedPolygonalRegion(Id, points, minY, maxY);
-        regiona.setPriority(1);
-        regions.addRegion(regiona);
-        members = regiona.getMembers();
+        ProtectedRegion newRegion = new ProtectedPolygonalRegion(Id, points, minY, maxY);
+        newRegion.setPriority(1);
+        regions.addRegion(newRegion);
+        members = newRegion.getMembers();
         members.addPlayer(player.getUniqueId());
 
         LuckpermsService Luckperms = new LuckpermsService();
         Luckperms.addPermissionLuckPerms(Id, player.getUniqueId());
+    }
+
+    public void RemoveRegion(String regionId, Player player) {
+        LuckpermsService Luckperms = new LuckpermsService();
+        RegionManager regions = getRegions(player);
+        Set<UUID> members = regions.getRegion(regionId).getMembers().getUniqueIds();
+        for(UUID member:members){
+            Luckperms.removePermissionLuckPerms(regionId, member);
+        }
+        regions.removeRegion(regionId);
     }
 
     public void AddFlags(Claim claim) {
@@ -70,28 +78,30 @@ public class WorldGuardService {
         Bukkit.dispatchCommand(console, "region flag " + claim.getClaim() + " worldedit -w world -g members allow");
     }
 
-    public void addPermissionWG(String ID, Player player, UUID uid) {
-        DefaultDomain members = getRegionMembers(ID, player);
+    public void addPermissionWG(String regionId, Player player, UUID uid) {
+        RegionManager regions = getRegions(player);
+        ProtectedRegion region = regions.getRegion(regionId);
+        DefaultDomain members = region.getMembers();
         members.addPlayer(uid);
 
         LuckpermsService Luckperms = new LuckpermsService();
-        Luckperms.addPermissionLuckPerms(ID, uid);
+        Luckperms.addPermissionLuckPerms(regionId, uid);
     }
 
-    public void removePermissionWG(String ID, Player player, UUID uid) {
-        DefaultDomain members = getRegionMembers(ID, player);
+    public void removePermissionWG(String regionId, Player player, UUID uid) {
+        RegionManager regions = getRegions(player);
+        ProtectedRegion region = regions.getRegion(regionId);
+        DefaultDomain members = region.getMembers();
         members.removePlayer(uid);
 
         LuckpermsService Luckperms = new LuckpermsService();
-        Luckperms.addPermissionLuckPerms(ID, uid);
+        Luckperms.addPermissionLuckPerms(regionId, uid);
     }
 
-    private DefaultDomain getRegionMembers(String ID,Player player){
+    private RegionManager getRegions(Player player){
         com.sk89q.worldedit.entity.Player playerbukkit = BukkitAdapter.adapt(player);
         World w = playerbukkit.getWorld();
         RegionContainer container = WorldGuard.getInstance().getPlatform().getRegionContainer();
-        RegionManager regions = container.get(w);
-        ProtectedRegion regiona = regions.getRegion(ID);
-        return regiona.getMembers();
+        return container.get(w);
     }
 }

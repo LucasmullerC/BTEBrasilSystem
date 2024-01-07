@@ -1,4 +1,4 @@
-package io.github.LucasMullerC.service;
+package io.github.LucasMullerC.service.data;
 
 import java.io.BufferedReader;
 import java.io.DataInputStream;

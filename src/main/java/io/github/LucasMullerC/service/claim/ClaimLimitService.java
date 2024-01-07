@@ -1,4 +1,4 @@
-package io.github.LucasMullerC.service;
+package io.github.LucasMullerC.service.claim;
 
 import org.bukkit.entity.Player;
 
