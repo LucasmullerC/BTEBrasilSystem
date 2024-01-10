@@ -18,26 +18,40 @@ public class DatabaseConnection {
     public static Connection getConnection() throws SQLException {
         CreateDatabaseConfig();
         String url = "jdbc:mysql://" + HOST +
-                     ":" + PORT +
-                     "/" + NAME;
+                ":" + PORT +
+                "/" + NAME;
 
         return DriverManager.getConnection(url, USER, PASSWORD);
     }
 
-    private static void CreateDatabaseConfig(){
+    public static Connection getConnectionInput(String host, String port, String name, String user, String password)
+            throws SQLException {
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            String url = "jdbc:mysql://" + host +
+                    ":" + port +
+                    "/" + name;
+
+            return DriverManager.getConnection(url, user, password);
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    private static void CreateDatabaseConfig() {
         BTEBrasilSystem plugin = BTEBrasilSystem.getPlugin();
         FileConfiguration configFile = plugin.getConfig();
 
-        if (configFile.getKeys(true).size() == 0 ){
-            configFile.set("database.host","hostname");
-            configFile.set("database.port","port");
-            configFile.set("database.name","name");
-            configFile.set("database.user","user");
-            configFile.set("database.password","password");   
+        if (configFile.getKeys(true).size() == 0) {
+            configFile.set("database.host", "hostname");
+            configFile.set("database.port", "port");
+            configFile.set("database.name", "name");
+            configFile.set("database.user", "user");
+            configFile.set("database.password", "password");
 
             plugin.saveConfig();
-        }
-        else{
+        } else {
             HOST = configFile.getString("database.host");
             PORT = configFile.getString("database.port");
             NAME = configFile.getString("database.name");
@@ -46,4 +60,3 @@ public class DatabaseConnection {
         }
     }
 }
-
