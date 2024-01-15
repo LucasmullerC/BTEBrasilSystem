@@ -25,6 +25,14 @@ public class ClaimService {
         worldGuardService.RemoveRegion(claimId, player);
     }
 
+    public void updateClaim(Claim claim){
+        String[] columns = {"claim","name","points","player","image","status","participants","builds"};
+        String[] values = {claim.getClaim(), claim.getName(), claim.getPoints(), claim.getPlayer(), claim.getImage(),
+            claim.getStatus(), claim.getParticipants(), claim.getBuilds().toString() };
+        
+        DatabaseUtils.updateDatabase("claims", values, columns, "claim = '" + claim.getClaim() + "'");
+    }
+
     public Claim getClaim(String claimId, String condition) {
         List<String[]> response = DatabaseUtils.getFromDatabase("claims WHERE claim = '" + claimId + "'", condition);
         return stringToClaim(response.get(0));
