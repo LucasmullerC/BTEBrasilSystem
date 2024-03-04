@@ -1,7 +1,6 @@
-/*package io.github.LucasMullerC.listeners;
+package io.github.LucasMullerC.listeners;
 
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -12,29 +11,42 @@ import org.bukkit.scheduler.BukkitScheduler;
 import github.scarsz.discordsrv.DiscordSRV;
 import github.scarsz.discordsrv.util.DiscordUtil;
 import io.github.LucasMullerC.BTEBrasilSystem.BTEBrasilSystem;
+import io.github.LucasMullerC.service.pending.PendingService;
 import io.github.LucasMullerC.util.MessageUtils;
 import net.dv8tion.jda.api.entities.User;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
 
-public class PlayerJoinListener implements Listener{
-    	@EventHandler(priority = EventPriority.NORMAL)
+public class PlayerJoinListener implements Listener {
+	@EventHandler(priority = EventPriority.NORMAL)
 	public void onPlayerJoin(PlayerJoinEvent event) {
 		BukkitScheduler scheduler = Bukkit.getServer().getScheduler();
 		String discordId = DiscordSRV.getPlugin().getAccountLinkManager().getDiscordId(event.getPlayer().getUniqueId());
-		Aplicar aplicar = new Aplicar();
 
 		if (discordId == null) {
+			// Not Linked
 			scheduler.scheduleSyncDelayedTask(BTEBrasilSystem.getPlugin(), new Runnable() {
-
 				@Override
 				public void run() {
-					event.getPlayer().sendMessage(ChatColor.RED + MessageUtils.getMessage("link1", event.getPlayer()));
+					event.getPlayer().sendMessage(Component.text(MessageUtils.getMessage("link1", event.getPlayer()))
+							.color(NamedTextColor.RED));
+
 					event.getPlayer()
-							.sendMessage(ChatColor.YELLOW + MessageUtils.getMessage("Link2", event.getPlayer()) + ChatColor.BLUE + MessageUtils.getMessage("InviteDiscord", event.getPlayer()));
-					event.getPlayer().sendMessage(ChatColor.YELLOW + MessageUtils.getMessage("Link3", event.getPlayer()) + ChatColor.BLUE + MessageUtils.getMessage("Link4", event.getPlayer())
-							+ ChatColor.YELLOW + MessageUtils.getMessage("Link5", event.getPlayer()));
+							.sendMessage(Component.text(MessageUtils.getMessage("Link2", event.getPlayer()))
+									.color(NamedTextColor.YELLOW)
+									.append(Component.text(MessageUtils.getMessage("InviteDiscord", event.getPlayer()))
+											.color(NamedTextColor.BLUE)));
+					event.getPlayer()
+							.sendMessage(Component.text(MessageUtils.getMessage("Link3", event.getPlayer()))
+									.color(NamedTextColor.YELLOW)
+									.append(Component.text(MessageUtils.getMessage("Link4", event.getPlayer()))
+											.color(NamedTextColor.BLUE)
+											.append(Component.text(MessageUtils.getMessage("Link5", event.getPlayer()))
+													.color(NamedTextColor.YELLOW))));
 				}
 			}, 30L);
 		} else {
+			//Not in Discord
 			User user = DiscordUtil.getJda().getUserById(discordId);
 			if (user == null) {
 
@@ -42,34 +54,42 @@ public class PlayerJoinListener implements Listener{
 
 					@Override
 					public void run() {
-						event.getPlayer().sendMessage(ChatColor.YELLOW + MessageUtils.getMessage("Link6", event.getPlayer()));
-						event.getPlayer().sendMessage(ChatColor.BLUE + MessageUtils.getMessage("InviteDiscord", event.getPlayer()));
+						event.getPlayer()
+								.sendMessage(Component.text(MessageUtils.getMessage("Link6", event.getPlayer())).color(NamedTextColor.YELLOW));
+						event.getPlayer().sendMessage(
+							Component.text(MessageUtils.getMessage("InviteDiscord", event.getPlayer())).color(NamedTextColor.BLUE));
 						return;
 					}
 				}, 30L);
 			} else {
+				//Linkado
 				scheduler.scheduleSyncDelayedTask(BTEBrasilSystem.getPlugin(), new Runnable() {
 					@Override
 					public void run() {
 						final Player player = event.getPlayer();
-						event.getPlayer().sendMessage(ChatColor.GREEN + MessageUtils.getMessage("Bnovamente", event.getPlayer()) + user.getAsTag() + "!");
+						event.getPlayer().sendMessage(
+							Component.text(MessageUtils.getMessage("Bnovamente", event.getPlayer()) + user.getAsTag() + "!").color(NamedTextColor.GREEN));
 
 						if (event.getPlayer().hasPermission("group.reviewer")) {
-							int cont = aplicar.getPendenteAplicacaoQtd();
+							PendingService pendingService = new PendingService();
+							int cont = pendingService.countPending(true);
 
 							if (cont > 0) {
-								player.sendMessage(ChatColor.RED + MessageUtils.getMessage("Atencao", event.getPlayer()));
-								player.sendMessage(
-										ChatColor.GOLD + MessageUtils.getMessage("SeuTime1", event.getPlayer()) + cont + MessageUtils.getMessage("SeuTime2", event.getPlayer()) + ChatColor.BLUE
-												+ MessageUtils.getMessage("analisar", event.getPlayer()));
+								player.sendMessage(Component.text(MessageUtils.getMessage("Atencao", event.getPlayer())).color(NamedTextColor.RED));
+
+								player.sendMessage(Component.text(MessageUtils.getMessage("SeuTime1", event.getPlayer()) 
+								+ cont + 
+								MessageUtils.getMessage("SeuTime2", event.getPlayer())).color(NamedTextColor.GOLD).append(Component.text(MessageUtils.getMessage("analisar", event.getPlayer())).color(NamedTextColor.BLUE)));
 							}
 						}
-						Sistemas sistemas = new Sistemas();
-						sistemas.CheckRank(player.getUniqueId().toString());
+						//TODO Checar rank do Jogador
+						//Sistemas sistemas = new Sistemas();
+						//sistemas.CheckRank(player.getUniqueId().toString());
 					}
 				}, 30L);
 			}
 		}
+		/*TODO VERIFICAR DEADLINES APLICAÇÕES
 		if (aplicar.AplicacaoIsNull() == false) {
 			scheduler.scheduleSyncDelayedTask(BTEBrasilSystem.getPlugin(), new Runnable() {
 
@@ -80,5 +100,6 @@ public class PlayerJoinListener implements Listener{
 
 			}, 30L);
 		}
+		*/
 	}
-}*/
+}

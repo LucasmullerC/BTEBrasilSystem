@@ -1,4 +1,4 @@
-package io.github.LucasMullerC.service;
+package io.github.LucasMullerC.service.pending;
 
 import java.util.List;
 
@@ -19,6 +19,18 @@ public class PendingService {
     public void getPending(String regionId, String condition){
         List<String[]> response = DatabaseUtils.getFromDatabase("pending WHERE regionId = '" + regionId + "'", condition);
         stringToPending(response.get(0));
+    }
+
+    public int countPending(boolean isApplication){
+        List<String[]> response = DatabaseUtils.getFromDatabase("pending", "");
+        int count = 0;
+        for (String[] values : response) {
+            Pending pending = stringToPending(values);
+            if (pending != null && pending.getisApplication() == isApplication) {
+                count++;
+            }
+        }
+        return count;
     }
 
     private Pending stringToPending(String[] values) {
