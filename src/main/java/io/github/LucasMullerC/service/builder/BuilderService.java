@@ -16,9 +16,9 @@ public class BuilderService {
         DatabaseUtils.removeFromDatabase("builders", "UUID = '" + uuid + "'");
     }
 
-    public void getBuilder(String uuid, String condition){
+    public Builder getBuilder(String uuid, String condition){
         List<String[]> response = DatabaseUtils.getFromDatabase("builders WHERE UUID = '" + uuid + "'", condition);
-        stringToBuilder(response.get(0));
+        return stringToBuilder(response.get(0));
     }
 
     private Builder stringToBuilder(String[] values) {

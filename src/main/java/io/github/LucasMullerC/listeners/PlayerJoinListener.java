@@ -11,7 +11,10 @@ import org.bukkit.scheduler.BukkitScheduler;
 import github.scarsz.discordsrv.DiscordSRV;
 import github.scarsz.discordsrv.util.DiscordUtil;
 import io.github.LucasMullerC.BTEBrasilSystem.BTEBrasilSystem;
+import io.github.LucasMullerC.model.Builder;
+import io.github.LucasMullerC.service.builder.BuilderService;
 import io.github.LucasMullerC.service.pending.PendingService;
+import io.github.LucasMullerC.util.BuilderUtils;
 import io.github.LucasMullerC.util.MessageUtils;
 import net.dv8tion.jda.api.entities.User;
 import net.kyori.adventure.text.Component;
@@ -82,9 +85,9 @@ public class PlayerJoinListener implements Listener {
 								MessageUtils.getMessage("SeuTime2", event.getPlayer())).color(NamedTextColor.GOLD).append(Component.text(MessageUtils.getMessage("analisar", event.getPlayer())).color(NamedTextColor.BLUE)));
 							}
 						}
-						//TODO Checar rank do Jogador
-						//Sistemas sistemas = new Sistemas();
-						//sistemas.CheckRank(player.getUniqueId().toString());
+						BuilderService builderService = new BuilderService();
+						Builder builder = builderService.getBuilder(player.getUniqueId().toString(), "");
+						BuilderUtils.checkRank(builder);
 					}
 				}, 30L);
 			}
