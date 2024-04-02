@@ -1,47 +1,82 @@
 package io.github.LucasMullerC.service.pending;
 
-import java.util.List;
-
+import de.schlichtherle.io.File;
+import io.github.LucasMullerC.BTEBrasilSystem.BTEBrasilSystem;
 import io.github.LucasMullerC.model.Pending;
-import io.github.LucasMullerC.util.DatabaseUtils;
+import io.github.LucasMullerC.util.ListUtil;
 
 public class PendingService {
+    public ListUtil<Pending> pending;
+    
+    public PendingService() {
+        BTEBrasilSystem plugin = BTEBrasilSystem.getPlugin();
+        String pluginFolder = plugin.getDataFolder().getAbsolutePath();
+        (new File(pluginFolder)).mkdirs();
+        this.pending = new ListUtil<Pending>(new File(pluginFolder + File.separator + "pendente.txt"));
+        pending.load(Pending.class);
+    }
     
     public void addPending(Pending pending){
-        String[] values = { pending.getUUID(),pending.getregionId(),pending.getisApplication().toString(),pending.getbuilds()};
-         DatabaseUtils.addToDatabase(values, "pending");
+        this.pending.add(pending);
+        this.pending.save();
     }
 
-    public void removePending(String regionId){
-        DatabaseUtils.removeFromDatabase("pending", "regionId = '" + regionId + "'");
+    public void removePending(Pending pending){
+        this.pending.remove(pending);
+        this.pending.save();
     }
 
-    public void getPending(String regionId, String condition){
-        List<String[]> response = DatabaseUtils.getFromDatabase("pending WHERE regionId = '" + regionId + "'", condition);
-        stringToPending(response.get(0));
+    public void updatePending(Pending pending) {
+        Pending oldPending = null;
+        if (pending.getisApplication()) {
+            oldPending = getPendingApplication(pending.getUUID());
+        } else {
+            oldPending = getPendingClaim(pending.getregionId());
+        }
+        if (oldPending != null) {
+            oldPending = pending;
+            this.pending.save();
+        }
     }
 
-    public int countPending(boolean isApplication){
-        List<String[]> response = DatabaseUtils.getFromDatabase("pending", "");
+    public int getTotalPendingCount(boolean isApplication) {
         int count = 0;
-        for (String[] values : response) {
-            Pending pending = stringToPending(values);
-            if (pending != null && pending.getisApplication() == isApplication) {
-                count++;
+        for (Pending pending : pending.getValues()) {
+            if(isApplication){
+                if (pending.getisApplication() == true) {
+                    count++;
+                }
+                else{
+                    if (pending.getisApplication() == false) {
+                        count++;
+                    }
+                }
             }
         }
         return count;
     }
 
-    private Pending stringToPending(String[] values) {
-        if (values.length == 4) {
-            Pending pending = new Pending(values[0]);
-            pending.setregionId(values[1]);
-            pending.setisApplication(Boolean.parseBoolean(values[2]));
-            pending.setbuilds(values[3]);
-            return pending;
-        } else {
-            return null;
+    public Pending getPendingApplication(String UUID) {
+        for (Pending pending : pending.getValues()) {
+            if (pending.getUUID() != null && pending.getUUID().contains(UUID)) {
+                if (pending.getisApplication() == true) {
+                    return pending;
+                }
+            }
         }
+        return null;
     }
+
+    public Pending getPendingClaim(String claimId) {
+        for (Pending pending : pending.getValues()) {
+            if (pending.getregionId() != null && pending.getregionId().contains(claimId)) {
+                if (pending.getisApplication() == false) {
+                    return pending;
+                }
+            }
+        }
+        return null;
+    }
+
+
 }

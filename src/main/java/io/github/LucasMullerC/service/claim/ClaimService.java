@@ -1,57 +1,56 @@
 package io.github.LucasMullerC.service.claim;
 
-import java.util.List;
-
 import org.bukkit.entity.Player;
 
+import de.schlichtherle.io.File;
+import io.github.LucasMullerC.BTEBrasilSystem.BTEBrasilSystem;
 import io.github.LucasMullerC.model.Claim;
 import io.github.LucasMullerC.service.WorldGuardService;
-import io.github.LucasMullerC.util.DatabaseUtils;
+import io.github.LucasMullerC.util.ListUtil;
 
 public class ClaimService {
-
-    public void addClaim(Claim claim, Player player) {
-        String[] values = { claim.getClaim(), claim.getName(), claim.getPoints(), claim.getPlayer(), claim.getImage(),
-                claim.getStatus(), claim.getParticipants(), claim.getBuilds().toString() };
-        DatabaseUtils.addToDatabase(values, "claims");
-        WorldGuardService worldGuardService = new WorldGuardService();
-        worldGuardService.AddRegion(claim.getPoints(), claim.getClaim(), player);
+    public ListUtil<Claim> claim;
+    
+    public ClaimService() {
+        BTEBrasilSystem plugin = BTEBrasilSystem.getPlugin();
+        String pluginFolder = plugin.getDataFolder().getAbsolutePath();
+        (new File(pluginFolder)).mkdirs();
+        this.claim = new ListUtil<Claim>(new File(pluginFolder + File.separator + "areas.txt"));
+        claim.load(Claim.class);
     }
 
-    public void removeClaim(String claimId, Player player) {
-        DatabaseUtils.removeFromDatabase("claims", "claim = '" + claimId + "'");
-        DatabaseUtils.removeFromDatabase("pending", "regionId = '" + claimId + "'");
+    public void addClaim(Claim claim, Player player) {
+        if(claim != null){
+            this.claim.add(claim);
+            this.claim.save();
+            WorldGuardService worldGuardService = new WorldGuardService();
+            worldGuardService.AddRegion(claim.getPoints(), claim.getClaim(), player);
+        }
+    }
+
+    public void removeClaim(Claim claim, Player player) {
+        this.claim.remove(claim);
+        this.claim.save();
         WorldGuardService worldGuardService = new WorldGuardService();
-        worldGuardService.RemoveRegion(claimId, player);
+        worldGuardService.RemoveRegion(claim.getClaim(), player);
     }
 
     public void updateClaim(Claim claim){
-        String[] columns = {"claim","name","points","player","image","status","participants","builds"};
-        String[] values = {claim.getClaim(), claim.getName(), claim.getPoints(), claim.getPlayer(), claim.getImage(),
-            claim.getStatus(), claim.getParticipants(), claim.getBuilds().toString() };
-        
-        DatabaseUtils.updateDatabase("claims", values, columns, "claim = '" + claim.getClaim() + "'");
+       Claim oldClaim = getClaim(claim.getClaim());
+       if(oldClaim != null){
+        oldClaim = claim;
+        this.claim.save();
+       }
     }
 
-    public Claim getClaim(String claimId, String condition) {
-        List<String[]> response = DatabaseUtils.getFromDatabase("claims WHERE claim = '" + claimId + "'", condition);
-        return stringToClaim(response.get(0));
-    }
-
-    private Claim stringToClaim(String[] values) {
-        if (values.length == 8) {
-            Claim claim = new Claim(values[0]);
-            claim.setName(values[1]);
-            claim.setPoints(values[2]);
-            claim.setPlayer(values[3]);
-            claim.setImage(values[4]);
-            claim.setStatus(values[5]);
-            claim.setParticipants(values[6]);
-            claim.setBuilds(Integer.parseInt(values[7]));
-
-            return claim;
-        } else {
-            return null;
+    public Claim getClaim(String claimId) {
+        for (Claim claim : this.claim.getValues()) {
+            if (claim.getClaim() != null && claim.getClaim().contains(claimId)) {
+                if (claim.getClaim().equals(claimId)) {
+                    return claim;
+                }
+            }
         }
+        return null;
     }
 }

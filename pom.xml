@@ -129,12 +129,5 @@
             <artifactId>adventure-text-minimessage</artifactId>
             <version>4.14.0</version>
          </dependency>
-         <!-- https://mvnrepository.com/artifact/mysql/mysql-connector-java -->
-        <dependency>
-            <groupId>mysql</groupId>
-            <artifactId>mysql-connector-java</artifactId>
-            <version>8.0.33</version>
-        </dependency>
-
     </dependencies>
 </project>

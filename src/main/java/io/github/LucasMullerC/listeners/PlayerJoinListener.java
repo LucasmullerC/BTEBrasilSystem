@@ -75,7 +75,7 @@ public class PlayerJoinListener implements Listener {
 
 						if (event.getPlayer().hasPermission("group.reviewer")) {
 							PendingService pendingService = new PendingService();
-							int cont = pendingService.countPending(true);
+							int cont = pendingService.getTotalPendingCount(true);
 
 							if (cont > 0) {
 								player.sendMessage(Component.text(MessageUtils.getMessage("Atencao", event.getPlayer())).color(NamedTextColor.RED));
@@ -86,7 +86,7 @@ public class PlayerJoinListener implements Listener {
 							}
 						}
 						BuilderService builderService = new BuilderService();
-						Builder builder = builderService.getBuilder(player.getUniqueId().toString(), "");
+						Builder builder = builderService.getBuilderUuid(player.getUniqueId().toString());
 						BuilderUtils.checkRank(builder);
 					}
 				}, 30L);
