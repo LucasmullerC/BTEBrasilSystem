@@ -25,25 +25,28 @@ public class ListUtil<T> {
         try {
             BufferedReader reader = new BufferedReader(new FileReader(this.storageFile));
             String line;
-            T obj = clazz.getDeclaredConstructor().newInstance();
             Field[] fields = clazz.getDeclaredFields();
-            int fieldIndex = 0;
+            T obj = null;
             while ((line = reader.readLine()) != null) {
-                Field field = fields[fieldIndex];
-                field.setAccessible(true);
-                if (field.getType() == String.class) {
-                    field.set(obj, line);
-                } else if (field.getType() == int.class) {
-                    field.set(obj, Integer.parseInt(line));
-                } else if (field.getType() == boolean.class) {
-                    field.set(obj, Boolean.parseBoolean(line));
+                String[] parts = line.split(";");
+                for (int i = 0; i < parts.length && i < fields.length; i++) {
+                    Field field = fields[i];
+                    field.setAccessible(true);
+
+                    if(i == 0){
+                        obj = clazz.getDeclaredConstructor().newInstance(line);
+                    }
+                    if(obj != null){
+                        if (field.getType() == String.class) {
+                            field.set(obj, parts[i]);
+                        } else if (field.getType() == int.class) {
+                            field.set(obj, Integer.parseInt(parts[i]));
+                        } else if (field.getType() == boolean.class) {
+                            field.set(obj, Boolean.parseBoolean(parts[i]));
+                        }
+                    }
                 }
-                fieldIndex++;
-                if (fieldIndex >= fields.length) {
-                    values.add(obj);
-                    obj = clazz.getDeclaredConstructor().newInstance();
-                    fieldIndex = 0;
-                }
+                values.add(obj);
             }
             reader.close();
         } catch (IOException | IllegalAccessException | InstantiationException e) {
@@ -66,8 +69,9 @@ public class ListUtil<T> {
                 for (Field field : value.getClass().getDeclaredFields()) {
                     field.setAccessible(true);
                     writer.write(field.get(value).toString());
-                    writer.newLine();
+                    writer.write(";");
                 }
+                writer.newLine();
             }
             writer.close();
         } catch (IOException | IllegalAccessException e) {
