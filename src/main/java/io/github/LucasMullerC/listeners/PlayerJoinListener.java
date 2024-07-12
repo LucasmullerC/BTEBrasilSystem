@@ -12,6 +12,7 @@ import github.scarsz.discordsrv.DiscordSRV;
 import github.scarsz.discordsrv.util.DiscordUtil;
 import io.github.LucasMullerC.BTEBrasilSystem.BTEBrasilSystem;
 import io.github.LucasMullerC.model.Builder;
+import io.github.LucasMullerC.service.applicant.DeadlineService;
 import io.github.LucasMullerC.service.builder.BuilderService;
 import io.github.LucasMullerC.service.pending.PendingService;
 import io.github.LucasMullerC.util.BuilderUtils;
@@ -92,17 +93,13 @@ public class PlayerJoinListener implements Listener {
 				}, 30L);
 			}
 		}
-		/*TODO VERIFICAR DEADLINES APLICAÇÕES
-		if (aplicar.AplicacaoIsNull() == false) {
-			scheduler.scheduleSyncDelayedTask(BTEBrasilSystem.getPlugin(), new Runnable() {
+		scheduler.scheduleSyncDelayedTask(BTEBrasilSystem.getPlugin(), new Runnable() {
 
-				@Override
-				public void run() {
-					aplicar.DeletarDeadLines(event.getPlayer());
-				}
+			@Override
+			public void run() {
+				new DeadlineService(event.getPlayer());
+			}
 
-			}, 30L);
-		}
-		*/
+		}, 30L);
 	}
 }

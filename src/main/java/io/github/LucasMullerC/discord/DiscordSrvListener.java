@@ -28,7 +28,7 @@ public class DiscordSrvListener {
         Message msg = event.getMessage();
         String[] cmd = msg.getContentRaw().split("\\s+");
         switch (cmd[0]) {
-            case "!perfil":
+            case "!perfil": //USAR COMANDOS DE BARRA PESQUISAR
                 //new DiscordPerfil(msg);
                 break;
         }

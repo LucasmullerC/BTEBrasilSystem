@@ -42,7 +42,6 @@ public class PendingService {
     public int getTotalPendingCount(boolean isApplication) {
         int count = 0;
         for (Pending pending : pending.getValues()) {
-            System.out.println(pending.getUUID());
             if(isApplication){
                 if (pending.getisApplication() == true) {
                     count++;
