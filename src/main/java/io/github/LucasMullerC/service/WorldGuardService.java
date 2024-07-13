@@ -45,6 +45,15 @@ public class WorldGuardService {
         Luckperms.addPermissionLuckPerms(Id, player.getUniqueId());
     }
 
+    public void addApplicationZone(Player player,String Id,List<BlockVector2> points,int minY,int maxY){
+        RegionManager regions = getRegions(player);
+        DefaultDomain members;
+        ProtectedRegion newRegion = new ProtectedPolygonalRegion(Id, points, minY, maxY);
+        regions.addRegion(newRegion);
+        members = newRegion.getMembers();
+        members.addPlayer(player.getUniqueId());
+    }
+
     public void RemoveRegion(String regionId, Player player) {
         LuckpermsService Luckperms = new LuckpermsService();
         RegionManager regions = getRegions(player);

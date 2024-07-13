@@ -1,14 +1,37 @@
 package io.github.LucasMullerC.util;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.bukkit.Location;
+import org.bukkit.entity.Player;
+
+import com.fastasyncworldedit.core.FaweAPI;
+import com.sk89q.worldedit.EditSession;
 import com.sk89q.worldedit.LocalSession;
+import com.sk89q.worldedit.WorldEdit;
+import com.sk89q.worldedit.extent.clipboard.Clipboard;
+import com.sk89q.worldedit.extent.clipboard.io.ClipboardFormat;
+import com.sk89q.worldedit.extent.clipboard.io.ClipboardFormats;
+import com.sk89q.worldedit.extent.clipboard.io.ClipboardReader;
+import com.sk89q.worldedit.function.operation.Operation;
+import com.sk89q.worldedit.function.operation.Operations;
 import com.sk89q.worldedit.math.BlockVector2;
 import com.sk89q.worldedit.math.BlockVector3;
 import com.sk89q.worldedit.regions.Polygonal2DRegion;
 import com.sk89q.worldedit.regions.Region;
+import com.sk89q.worldedit.session.ClipboardHolder;
 import com.sk89q.worldedit.world.World;
+import com.sk89q.worldguard.WorldGuard;
+import com.sk89q.worldguard.protection.managers.RegionManager;
+import com.sk89q.worldguard.protection.regions.ProtectedRegion;
+import com.sk89q.worldguard.protection.regions.RegionContainer;
+
+import io.github.LucasMullerC.BTEBrasilSystem.BTEBrasilSystem;
 
 public class RegionUtils {
 
@@ -46,5 +69,38 @@ public class RegionUtils {
         }
 
         return dimensionValue;
+    }
+
+    public static ProtectedRegion getRegion(World world,String regionId){
+        RegionContainer container = WorldGuard.getInstance().getPlatform().getRegionContainer();
+        RegionManager regions = container.get(world);
+        return regions.getRegion(regionId);
+    }
+
+    public static void loadSchematic(Player player, Location location) throws FileNotFoundException, IOException {
+        Clipboard clipboard;
+        BTEBrasilSystem plugin = BTEBrasilSystem.getPlugin();
+
+        File schem = new File(
+                plugin.getDataFolder() + File.separator + "schematics" + File.separator + "area2.schematic");
+
+        BlockVector3 to = BlockVector3.at(location.getX(), location.getY(), location.getZ());
+        ClipboardFormat format = ClipboardFormats.findByFile(schem);
+
+        try (ClipboardReader reader = format.getReader(new FileInputStream(schem))) {
+            clipboard = reader.read();
+
+            try (EditSession editSession = WorldEdit.getInstance().newEditSessionBuilder()
+                    .world(FaweAPI.getWorld("world"))
+                    .build()) {
+                Operation operation = new ClipboardHolder(clipboard)
+                        .createPaste(editSession) // Create a builder using the edit session
+                        .to(to) // Set where you want the paste to go
+                        .ignoreAirBlocks(false) // Tell world edit not to paste air blocks (true/false)
+                        .build(); // Build the operation
+                Operations.complete(operation); // This'll complete a operation synchronously until it's finished
+                editSession.close(); // We now close it to flush the buffers and run the cleanup tasks.
+            }
+        }
     }
 }

@@ -1,5 +1,7 @@
 package io.github.LucasMullerC.service.applicant;
 
+import java.util.ArrayList;
+
 import de.schlichtherle.io.File;
 import io.github.LucasMullerC.BTEBrasilSystem.BTEBrasilSystem;
 import io.github.LucasMullerC.model.ApplicationZone;
@@ -41,6 +43,28 @@ public class ApplicationZoneService {
             }
         }
         return null;
+    }
+
+    public Integer findAvailableZone(){
+        ArrayList<ApplicationZone> applicationZoneList = applicationZone.getValues();
+        String cont;
+        Integer result;
+        for (int i = 0; i < applicationZoneList.size(); i++) {
+            result = i + 1;
+            cont = result.toString();
+            if (getApplicationZone(cont) == null) {
+                return result;
+            }
+        }
+        return 0;
+    }
+
+    public boolean isEmpty(){
+        return applicationZone.getValues().isEmpty();
+    }
+
+    public Integer getSize(){
+        return applicationZone.getValues().size();
     }
     
 }
