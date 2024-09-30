@@ -5,6 +5,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import github.scarsz.discordsrv.DiscordSRV;
 import io.github.LucasMullerC.commands.application;
 import io.github.LucasMullerC.commands.cancel;
+import io.github.LucasMullerC.commands.next;
 import io.github.LucasMullerC.discord.DiscordSrvListener;
 import io.github.LucasMullerC.listeners.PlayerJoinListener;
 import io.github.LucasMullerC.listeners.PlayerMoveListener;
@@ -19,9 +20,9 @@ public class BTEBrasilSystem extends JavaPlugin {
 		// Comandos
 		getCommand("aplicacao").setExecutor(new application());
 		getCommand("cancelar").setExecutor(new cancel());
+		getCommand("proximo").setExecutor(new next());
 		/*
 		getCommand("anterior").setExecutor(new anterior());
-		getCommand("proximo").setExecutor(new proximo());
 		getCommand("continuar").setExecutor(new continuar());
 		getCommand("time").setExecutor(new time());
 		getCommand("completo").setExecutor(new completo());

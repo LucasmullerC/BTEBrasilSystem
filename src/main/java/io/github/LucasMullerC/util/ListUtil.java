@@ -42,6 +42,8 @@ public class ListUtil<T> {
                             field.set(obj, Integer.parseInt(parts[i]));
                         } else if (field.getType() == boolean.class) {
                             field.set(obj, Boolean.parseBoolean(parts[i]));
+                        } else if (field.getType() == Boolean.class) {
+                            field.set(obj, parts[i].isEmpty() ? null : Boolean.parseBoolean(parts[i]));
                         } else if (field.getType() == double.class) {
                             field.set(obj, Double.parseDouble(parts[i]));
                         } else if (field.getType() == float.class) {
@@ -75,7 +77,18 @@ public class ListUtil<T> {
             for (T value : this.values) {
                 for (Field field : value.getClass().getDeclaredFields()) {
                     field.setAccessible(true);
-                    writer.write(field.get(value).toString());
+                    Object fieldValue = field.get(value);
+                    if (fieldValue != null) {
+                        if (field.getType() == boolean.class || field.getType() == Boolean.class) {
+                            writer.write(Boolean.toString((boolean) fieldValue));
+                        } 
+                        else {
+                            writer.write(fieldValue.toString());
+                        }
+                    } else {
+                        writer.write("");
+                    }
+    
                     writer.write(";");
                 }
                 writer.newLine();

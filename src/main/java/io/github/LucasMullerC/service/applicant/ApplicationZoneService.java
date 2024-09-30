@@ -59,6 +59,10 @@ public class ApplicationZoneService {
         return 0;
     }
 
+    public void saveApplicationZone(){
+        applicationZone.save();
+    }
+
     public boolean isEmpty(){
         return applicationZone.getValues().isEmpty();
     }

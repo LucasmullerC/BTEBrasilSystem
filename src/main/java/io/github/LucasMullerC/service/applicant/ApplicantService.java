@@ -45,6 +45,10 @@ public class ApplicantService {
         return null;
     }
 
+    public void saveApplicant(){
+        applicant.save();
+    }
+
     public ArrayList<Applicant> getApplicantList(){
         return this.applicant.getValues();
     }
