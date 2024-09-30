@@ -1,8 +1,9 @@
 package io.github.LucasMullerC.service.claim;
 
+import java.io.File;
+
 import org.bukkit.entity.Player;
 
-import de.schlichtherle.io.File;
 import io.github.LucasMullerC.BTEBrasilSystem.BTEBrasilSystem;
 import io.github.LucasMullerC.model.Claim;
 import io.github.LucasMullerC.service.WorldGuardService;

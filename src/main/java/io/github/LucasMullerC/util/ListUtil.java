@@ -5,6 +5,9 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 
+import org.bukkit.Location;
+
+
 public class ListUtil<T> {
     private File storageFile;
     private ArrayList<T> values;
@@ -26,16 +29,12 @@ public class ListUtil<T> {
             BufferedReader reader = new BufferedReader(new FileReader(this.storageFile));
             String line;
             Field[] fields = clazz.getDeclaredFields();
-            T obj = null;
+            T obj = clazz.getDeclaredConstructor().newInstance();
             while ((line = reader.readLine()) != null) {
                 String[] parts = line.split(";");
                 for (int i = 0; i < parts.length && i < fields.length; i++) {
                     Field field = fields[i];
                     field.setAccessible(true);
-
-                    if(i == 0){
-                        obj = clazz.getDeclaredConstructor().newInstance(line);
-                    }
                     if(obj != null){
                         if (field.getType() == String.class) {
                             field.set(obj, parts[i]);
@@ -43,6 +42,14 @@ public class ListUtil<T> {
                             field.set(obj, Integer.parseInt(parts[i]));
                         } else if (field.getType() == boolean.class) {
                             field.set(obj, Boolean.parseBoolean(parts[i]));
+                        } else if (field.getType() == double.class) {
+                            field.set(obj, Double.parseDouble(parts[i]));
+                        } else if (field.getType() == float.class) {
+                            field.set(obj, Float.parseFloat(parts[i]));
+                        } else if (field.getType() == long.class) {
+                            field.set(obj, Long.parseLong(parts[i]));
+                        } else if(field.getType() == Location.class){
+                            field.set(obj,LocationUtil.fromString(parts[i]));
                         }
                     }
                 }
@@ -96,4 +103,5 @@ public class ListUtil<T> {
     public ArrayList<T> getValues() {
         return this.values;
     }
+    
 }

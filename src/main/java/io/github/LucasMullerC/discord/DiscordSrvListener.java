@@ -7,7 +7,7 @@ import github.scarsz.discordsrv.api.Subscribe;
 import github.scarsz.discordsrv.api.events.DiscordGuildMessageReceivedEvent;
 import github.scarsz.discordsrv.api.events.DiscordReadyEvent;
 import github.scarsz.discordsrv.util.DiscordUtil;
-import net.dv8tion.jda.api.entities.Message;
+import github.scarsz.discordsrv.dependencies.jda.api.entities.Message;
 
 public class DiscordSrvListener {
     private final Plugin plugin;

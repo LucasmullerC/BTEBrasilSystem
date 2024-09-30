@@ -4,6 +4,8 @@ public class Claim implements Comparable<Claim>{
     private String Claim,Name,Points,Player,Participants,Image,Status;
     private Integer Builds;
 
+    public Claim() {
+    }
     public Claim (String A){
         this.Claim = A; 
     }

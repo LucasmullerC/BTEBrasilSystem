@@ -1,6 +1,7 @@
 package io.github.LucasMullerC.service.pending;
 
-import de.schlichtherle.io.File;
+import java.io.File;
+
 import io.github.LucasMullerC.BTEBrasilSystem.BTEBrasilSystem;
 import io.github.LucasMullerC.model.Pending;
 import io.github.LucasMullerC.util.ListUtil;

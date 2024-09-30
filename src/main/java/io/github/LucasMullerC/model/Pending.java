@@ -4,6 +4,8 @@ public class Pending implements Comparable<Pending> {
     String UUID, regionId, builds;
     Boolean isApplication;
 
+    public Pending() {
+    }
     public Pending(String U) {
         this.UUID = U;
     }

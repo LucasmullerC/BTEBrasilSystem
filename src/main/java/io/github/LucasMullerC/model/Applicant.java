@@ -3,6 +3,8 @@ package io.github.LucasMullerC.model;
 public class Applicant implements Comparable<Applicant> {
 	private String UUID, Discord, Section, getZone, deadline;
 
+	public Applicant() {
+    }
 	public Applicant(String U) {
 		this.UUID = U;
 	}

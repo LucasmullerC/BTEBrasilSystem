@@ -17,7 +17,7 @@ import io.github.LucasMullerC.service.builder.BuilderService;
 import io.github.LucasMullerC.service.pending.PendingService;
 import io.github.LucasMullerC.util.BuilderUtils;
 import io.github.LucasMullerC.util.MessageUtils;
-import net.dv8tion.jda.api.entities.User;
+import github.scarsz.discordsrv.dependencies.jda.api.entities.User;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 
@@ -88,7 +88,9 @@ public class PlayerJoinListener implements Listener {
 						}
 						BuilderService builderService = new BuilderService();
 						Builder builder = builderService.getBuilderUuid(player.getUniqueId().toString());
-						BuilderUtils.checkRank(builder);
+						if(builder != null){
+							BuilderUtils.checkRank(builder);
+						}
 					}
 				}, 30L);
 			}

@@ -7,29 +7,29 @@ public class ApplicationZone implements Comparable<ApplicationZone> {
 	private Location LocationA,LocationB,LocationC,LocationD;
 	Boolean isBusy, IsAtZoneA, IsAtZoneb, IsAtZonec, IsAtZoned;
 
-	public Boolean getIsAtZoned() {
-		return IsAtZoned;
+	public ApplicationZone() {
 	}
 
-	public void setIsAtZoned(Boolean isAtZoned) {
-		IsAtZoned = isAtZoned;
-	}
-
-	public ApplicationZone(String A) {
-		this.ApplicationZone = A;
+	public ApplicationZone(String applicationZone) {
+		ApplicationZone = applicationZone;
 	}
 
 	public String getApplicationZone() {
-		return this.ApplicationZone;
+		return ApplicationZone;
 	}
 
-	public void setName(String N) {
-		this.Name = N;
+	public void setApplicationZone(String applicationZone) {
+		ApplicationZone = applicationZone;
 	}
 
 	public String getName() {
-		return this.Name;
+		return Name;
 	}
+
+	public void setName(String name) {
+		Name = name;
+	}
+
 	public Location getLocationA() {
 		return LocationA;
 	}
@@ -61,6 +61,7 @@ public class ApplicationZone implements Comparable<ApplicationZone> {
 	public void setLocationD(Location locationD) {
 		LocationD = locationD;
 	}
+
 	public Boolean getIsBusy() {
 		return isBusy;
 	}
@@ -91,6 +92,14 @@ public class ApplicationZone implements Comparable<ApplicationZone> {
 
 	public void setIsAtZonec(Boolean isAtZonec) {
 		IsAtZonec = isAtZonec;
+	}
+
+	public Boolean getIsAtZoned() {
+		return IsAtZoned;
+	}
+
+	public void setIsAtZoned(Boolean isAtZoned) {
+		IsAtZoned = isAtZoned;
 	}
 
 	@Override

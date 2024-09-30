@@ -3,6 +3,9 @@ package io.github.LucasMullerC.model;
 public class Awards implements Comparable<Awards>{
     String ID,Name,URL;
     double Points;
+
+    public Awards() {
+    }
     public Awards (String A){
         this.ID = A; 
     }

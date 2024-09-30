@@ -1,8 +1,8 @@
 package io.github.LucasMullerC.service.applicant;
 
+import java.io.File;
 import java.util.ArrayList;
 
-import de.schlichtherle.io.File;
 import io.github.LucasMullerC.BTEBrasilSystem.BTEBrasilSystem;
 import io.github.LucasMullerC.model.Applicant;
 import io.github.LucasMullerC.util.ListUtil;

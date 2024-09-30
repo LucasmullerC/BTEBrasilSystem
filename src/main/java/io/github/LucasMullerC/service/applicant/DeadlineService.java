@@ -52,8 +52,10 @@ public class DeadlineService {
                 }
             }
         }
-        String logMessage = cont.toString() + MessageUtils.getMessageConsole("TimesUpAdm");
-        DiscordActions.sendLogMessage(logMessage);
+        if (cont > 0) {
+            String logMessage = cont.toString() + MessageUtils.getMessageConsole("TimesUpAdm");
+            DiscordActions.sendLogMessage(logMessage);
+        }
     }
 
     private String getDate(){

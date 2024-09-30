@@ -5,12 +5,21 @@ import java.io.IOException;
 import java.util.List;
 
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
 import com.google.common.collect.Lists;
+import com.sk89q.worldedit.EditSession;
+import com.sk89q.worldedit.LocalSession;
+import com.sk89q.worldedit.WorldEdit;
 import com.sk89q.worldedit.bukkit.BukkitAdapter;
 import com.sk89q.worldedit.math.BlockVector2;
+import com.sk89q.worldedit.math.BlockVector3;
+import com.sk89q.worldedit.regions.CuboidRegion;
+import com.sk89q.worldedit.regions.Region;
+import com.sk89q.worldedit.session.SessionManager;
 import com.sk89q.worldedit.world.World;
+import com.sk89q.worldedit.world.block.BlockTypes;
 import com.sk89q.worldguard.protection.regions.ProtectedPolygonalRegion;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 
@@ -104,6 +113,30 @@ public class ZoneUtils {
         luckpermsService.addPermissionLuckPerms("apply" + zonenew.getApplicationZone() + "d", player.getUniqueId());
 
         return zonenew;
+    }
+
+    public static void removeRegion(Player player, ApplicationZone applicationZone) {
+        com.sk89q.worldedit.entity.Player actor = BukkitAdapter.adapt(player);
+        
+        SessionManager manager = WorldEdit.getInstance().getSessionManager();
+        LocalSession localSession = manager.get(actor);
+        
+        World adaptedWorld = actor.getWorld();
+        
+
+        Location meio = new Location(player.getWorld(), applicationZone.getLocationA().getX() - 2, 45, applicationZone.getLocationA().getZ() - 2);
+        BlockVector3 minPoint = BlockVector3.at(meio.getX() - 45, 60, meio.getZ() - 45);
+        BlockVector3 maxPoint = BlockVector3.at(meio.getX() + 45, 25, meio.getZ() + 45);
+        
+        CuboidRegion selection = new CuboidRegion(minPoint, maxPoint);
+        
+        try (EditSession editSession = WorldEdit.getInstance().newEditSessionBuilder()
+                .world(adaptedWorld)
+                .build()) {
+            
+            //editSession.setBlocks(selection, BlockTypes.AIR.getDefaultState());
+            editSession.setBlocks((Region) selection, BukkitAdapter.adapt(Material.AIR.createBlockData()));
+        }
     }
 
     private static void createRegion(Integer zoneNum,Player player, boolean up){

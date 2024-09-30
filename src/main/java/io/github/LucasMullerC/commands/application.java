@@ -17,7 +17,6 @@ import org.jetbrains.annotations.NotNull;
 import io.github.LucasMullerC.discord.DiscordActions;
 import io.github.LucasMullerC.model.Applicant;
 import io.github.LucasMullerC.model.ApplicationZone;
-import io.github.LucasMullerC.service.LuckpermsService;
 import io.github.LucasMullerC.service.applicant.ApplicantService;
 import io.github.LucasMullerC.service.applicant.ApplicationZoneService;
 import io.github.LucasMullerC.util.MessageUtils;
@@ -77,14 +76,13 @@ public class application implements CommandExecutor {
                         player.teleport(applicationZone.getLocationA());
 
                         startApplication(player, discordId);
-
+                        return true;
                     }else{
                         player.sendMessage(Component.text(MessageUtils.getMessage("NotDiscord", player)).color(NamedTextColor.YELLOW));
                         return true;
                     }
                 }
             }
-            return false;
         }
     }
 

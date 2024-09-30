@@ -5,6 +5,8 @@ public class Builder implements Comparable<Builder> {
     private Integer Tier,Builds;
     private double Points;
 
+    public Builder() {
+    }
     public Builder (String A){
         this.UUID = A; 
     }
