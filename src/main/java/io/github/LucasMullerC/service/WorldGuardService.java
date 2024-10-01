@@ -104,7 +104,7 @@ public class WorldGuardService {
         members.removePlayer(uid);
 
         LuckpermsService Luckperms = new LuckpermsService();
-        Luckperms.addPermissionLuckPerms(regionId, uid);
+        Luckperms.removePermissionLuckPerms(regionId, uid);
     }
 
     private RegionManager getRegions(Player player){

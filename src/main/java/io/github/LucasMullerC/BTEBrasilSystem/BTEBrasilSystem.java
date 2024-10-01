@@ -6,6 +6,7 @@ import github.scarsz.discordsrv.DiscordSRV;
 import io.github.LucasMullerC.commands.application;
 import io.github.LucasMullerC.commands.back;
 import io.github.LucasMullerC.commands.cancel;
+import io.github.LucasMullerC.commands.completed;
 import io.github.LucasMullerC.commands.next;
 import io.github.LucasMullerC.commands.previous;
 import io.github.LucasMullerC.discord.DiscordSrvListener;
@@ -25,9 +26,9 @@ public class BTEBrasilSystem extends JavaPlugin {
 		getCommand("proximo").setExecutor(new next());
 		getCommand("anterior").setExecutor(new previous());
 		getCommand("continuar").setExecutor(new back());
+		getCommand("completo").setExecutor(new completed());
 		/*
 		getCommand("time").setExecutor(new time());
-		getCommand("completo").setExecutor(new completo());
 		getCommand("tag").setExecutor(new tag());
 		getCommand("analisar").setExecutor(new analisar());
 		getCommand("salvar").setExecutor(new salvar());

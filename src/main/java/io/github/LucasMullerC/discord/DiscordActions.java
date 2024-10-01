@@ -39,4 +39,9 @@ public class DiscordActions {
     public static String getDiscordId(UUID id){
         return DiscordSRV.getPlugin().getAccountLinkManager().getDiscordId(id);
     }
+
+    public static String getDiscordName(String id) {
+        User user = DiscordUtil.getJda().getUserById(id);
+        return user.getName();
+    }
 }
