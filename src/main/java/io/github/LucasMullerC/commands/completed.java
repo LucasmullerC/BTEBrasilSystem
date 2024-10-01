@@ -11,7 +11,6 @@ import org.jetbrains.annotations.NotNull;
 import io.github.LucasMullerC.discord.DiscordActions;
 import io.github.LucasMullerC.model.Applicant;
 import io.github.LucasMullerC.model.Pending;
-import io.github.LucasMullerC.service.LuckpermsService;
 import io.github.LucasMullerC.service.WorldGuardService;
 import io.github.LucasMullerC.service.applicant.ApplicantService;
 import io.github.LucasMullerC.service.pending.PendingService;

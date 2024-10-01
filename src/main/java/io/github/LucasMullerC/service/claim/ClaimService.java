@@ -3,6 +3,7 @@ package io.github.LucasMullerC.service.claim;
 import java.io.File;
 
 import org.bukkit.entity.Player;
+import java.util.ArrayList;
 
 import io.github.LucasMullerC.BTEBrasilSystem.BTEBrasilSystem;
 import io.github.LucasMullerC.model.Claim;
@@ -53,5 +54,9 @@ public class ClaimService {
             }
         }
         return null;
+    }
+
+    public ArrayList<Claim> getClaimList(){
+        return claim.getValues();
     }
 }

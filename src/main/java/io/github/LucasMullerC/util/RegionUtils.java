@@ -11,6 +11,9 @@ import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
 import com.fastasyncworldedit.core.FaweAPI;
+import com.noahhusby.sledgehammer.datasets.projection.GeographicProjection;
+import com.noahhusby.sledgehammer.datasets.projection.ModifiedAirocean;
+import com.noahhusby.sledgehammer.datasets.projection.ScaleProjection;
 import com.sk89q.worldedit.EditSession;
 import com.sk89q.worldedit.LocalSession;
 import com.sk89q.worldedit.WorldEdit;
@@ -34,6 +37,9 @@ import com.sk89q.worldguard.protection.regions.RegionContainer;
 import io.github.LucasMullerC.BTEBrasilSystem.BTEBrasilSystem;
 
 public class RegionUtils {
+    private static final GeographicProjection projection;
+    private static final GeographicProjection uprightProj;
+    private static final ScaleProjection scaleProj;
 
     public static String convertToPolygonal2DRegion(Region region) {
         if (region instanceof Polygonal2DRegion) {
@@ -102,5 +108,20 @@ public class RegionUtils {
                 editSession.close(); // We now close it to flush the buffers and run the cleanup tasks.
             }
         }
+    }
+
+    public static double[] toGeo(final double x, final double z) {
+        return scaleProj.toGeo(x, z);
+    }
+
+    public static double[] fromGeo(final double lon, final double lat) {
+        return scaleProj.fromGeo(lon, lat);
+    }
+
+    static {
+        projection = (GeographicProjection) new ModifiedAirocean();
+        uprightProj = GeographicProjection.orientProjection(projection,
+                GeographicProjection.Orientation.upright);
+        scaleProj = new ScaleProjection(uprightProj, 7318261.522857145, 7318261.522857145);
     }
 }
