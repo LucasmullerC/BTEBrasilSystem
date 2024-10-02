@@ -17,6 +17,40 @@ public class BuilderService {
         builder.load(Builder.class);
     }
 
+    public boolean buildBuilder(String uuid, String discord){
+        if(builder.getValues().isEmpty() == true){
+            Builder builder = new Builder(uuid);
+            builder.setDiscord(discord);
+            builder.setAwards("nulo");
+            builder.setBuilds(0);
+            builder.setPoints(0);
+            builder.setTier(1);
+            builder.setFeatured("nulo");
+            this.builder.add(builder);
+            this.builder.save();
+            return true;
+        } else{
+            Builder builderBase = getBuilderUuid(uuid);
+            if(builderBase == null){
+                Builder builder = new Builder(uuid);
+                builder.setDiscord(discord);
+                builder.setAwards("nulo");
+                builder.setBuilds(0);
+                builder.setPoints(0);
+                builder.setTier(1);
+                builder.setFeatured("nulo");
+                this.builder.add(builder);
+                this.builder.save();
+                return true;
+            } else if(builderBase.getDiscord().equals("nulo") || builderBase.getDiscord().equals("null")){
+                builderBase.setDiscord(discord);
+                this.builder.save();
+                return true;
+            }
+        }
+        return false;
+    }
+
     public void addBuilder(Builder builder){
         Builder foundBuilder = getBuilderUuid(builder.getUUID());
         if(foundBuilder == null){

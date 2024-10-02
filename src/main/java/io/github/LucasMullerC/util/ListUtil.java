@@ -35,23 +35,21 @@ public class ListUtil<T> {
                 for (int i = 0; i < parts.length && i < fields.length; i++) {
                     Field field = fields[i];
                     field.setAccessible(true);
-                    if(obj != null){
+                    if (obj != null) {
                         if (field.getType() == String.class) {
                             field.set(obj, parts[i]);
-                        } else if (field.getType() == int.class) {
-                            field.set(obj, Integer.parseInt(parts[i]));
-                        } else if (field.getType() == boolean.class) {
-                            field.set(obj, Boolean.parseBoolean(parts[i]));
-                        } else if (field.getType() == Boolean.class) {
+                        } else if (field.getType() == int.class || field.getType() == Integer.class) {
+                            field.set(obj, parts[i].isEmpty() ? null : Integer.parseInt(parts[i]));
+                        } else if (field.getType() == boolean.class || field.getType() == Boolean.class) {
                             field.set(obj, parts[i].isEmpty() ? null : Boolean.parseBoolean(parts[i]));
-                        } else if (field.getType() == double.class) {
-                            field.set(obj, Double.parseDouble(parts[i]));
-                        } else if (field.getType() == float.class) {
-                            field.set(obj, Float.parseFloat(parts[i]));
-                        } else if (field.getType() == long.class) {
-                            field.set(obj, Long.parseLong(parts[i]));
-                        } else if(field.getType() == Location.class){
-                            field.set(obj,LocationUtil.fromString(parts[i]));
+                        } else if (field.getType() == double.class || field.getType() == Double.class) {
+                            field.set(obj, parts[i].isEmpty() ? null : Double.parseDouble(parts[i]));
+                        } else if (field.getType() == float.class || field.getType() == Float.class) {
+                            field.set(obj, parts[i].isEmpty() ? null : Float.parseFloat(parts[i]));
+                        } else if (field.getType() == long.class || field.getType() == Long.class) {
+                            field.set(obj, parts[i].isEmpty() ? null : Long.parseLong(parts[i]));
+                        } else if (field.getType() == Location.class) {
+                            field.set(obj, LocationUtil.fromString(parts[i]));
                         }
                     }
                 }

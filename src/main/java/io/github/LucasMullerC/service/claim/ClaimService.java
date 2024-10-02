@@ -56,6 +56,16 @@ public class ClaimService {
         return null;
     }
 
+    public int getClaimQtdByPlayer(String playerId) {
+        int cont = 0;
+        for (Claim claim : this.claim.getValues()) {
+            if (claim.getPlayer() != null && claim.getPlayer().contains(playerId) && claim.getStatus().equals("F")) {
+                cont++;
+            }
+        }
+        return cont;
+    }
+
     public ArrayList<Claim> getClaimList(){
         return claim.getValues();
     }

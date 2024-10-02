@@ -49,10 +49,16 @@ public class RegionUtils {
             String pontos = points.toString().replaceAll("[\\[\\](){}]", "");
             return pontos.replaceAll(" ", "");
         } else {
-            List<BlockVector3> points = new ArrayList<BlockVector3>();
-            points.add(region.getMinimumPoint());
-            points.add(region.getMaximumPoint());
-            String pontos = points.toString().replaceAll("[\\[\\](){}]", "");
+            BlockVector3 minPoint = region.getMinimumPoint();
+            BlockVector3 maxPoint = region.getMaximumPoint();
+
+            List<BlockVector2> polygonPoints = new ArrayList<>();
+            polygonPoints.add(BlockVector2.at(minPoint.getX(), minPoint.getZ())); // Inferior esquerdo
+            polygonPoints.add(BlockVector2.at(maxPoint.getX(), minPoint.getZ())); // Inferior direito
+            polygonPoints.add(BlockVector2.at(maxPoint.getX(), maxPoint.getZ())); // Superior direito
+            polygonPoints.add(BlockVector2.at(minPoint.getX(), maxPoint.getZ())); // Superior esquerdo
+
+            String pontos = polygonPoints.toString().replaceAll("[\\[\\](){}]", "");
             return pontos.replaceAll(" ", "");
         }
     }

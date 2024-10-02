@@ -1,5 +1,7 @@
 package io.github.LucasMullerC.service.claim;
 
+import java.util.UUID;
+
 import org.bukkit.entity.Player;
 
 import com.sk89q.worldedit.IncompleteRegionException;
@@ -34,6 +36,36 @@ public class ClaimLimitService {
         this.manager = WorldEdit.getInstance().getSessionManager();
         this.localSession = manager.get(actor);
         this.world = localSession.getSelectionWorld();
+    }
+
+    public boolean getLimitTier(int Tier, Player player) {
+        UUID id = player.getUniqueId();
+        int limit = 3;
+        ClaimService claimService = new ClaimService();
+
+        if (Tier >= 1 && Tier <= 3) {
+            limit = 3;
+        } else if (Tier >= 4 && Tier <= 6) {
+            limit = 4;
+        } else if (Tier >= 7 && Tier <= 9) {
+            limit = 5;
+        } else if (Tier >= 10 && Tier <= 12) {
+            limit = 6;
+        } else if (Tier >= 13 && Tier <= 15) {
+            limit = 7;
+        } else {
+            limit = Tier - 7;
+        }
+
+        if (player.hasPermission("group.apoiador")) {
+            limit = limit + 10;
+        }
+        int claimQtd = claimService.getClaimQtdByPlayer(id.toString());
+        if(claimQtd == limit){
+            return true;
+        } else{
+            return false;
+        }
     }
 
     public String VerifyClaimLimits(Player player, int Tier) {

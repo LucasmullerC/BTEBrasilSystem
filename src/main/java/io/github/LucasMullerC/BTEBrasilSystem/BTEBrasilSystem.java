@@ -6,6 +6,7 @@ import github.scarsz.discordsrv.DiscordSRV;
 import io.github.LucasMullerC.commands.application;
 import io.github.LucasMullerC.commands.back;
 import io.github.LucasMullerC.commands.cancel;
+import io.github.LucasMullerC.commands.claim;
 import io.github.LucasMullerC.commands.completed;
 import io.github.LucasMullerC.commands.map;
 import io.github.LucasMullerC.commands.next;
@@ -29,6 +30,7 @@ public class BTEBrasilSystem extends JavaPlugin {
 		getCommand("continuar").setExecutor(new back());
 		getCommand("completo").setExecutor(new completed());
 		getCommand("map").setExecutor(new map());
+		getCommand("claim").setExecutor(new claim());
 		/*
 		getCommand("time").setExecutor(new time());
 		getCommand("tag").setExecutor(new tag());
@@ -37,7 +39,6 @@ public class BTEBrasilSystem extends JavaPlugin {
 		getCommand("link").setExecutor(new link());
 		getCommand("deslink").setExecutor(new deslink());
 		getCommand("perfil").setExecutor(new perfil());
-		getCommand("claim").setExecutor(new claim());
 		getCommand("status").setExecutor(new status());
 		*/
 		// Inicializa Listener
