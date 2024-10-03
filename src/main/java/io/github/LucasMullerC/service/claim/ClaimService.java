@@ -2,12 +2,16 @@ package io.github.LucasMullerC.service.claim;
 
 import java.io.File;
 
+import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import java.util.ArrayList;
 
 import io.github.LucasMullerC.BTEBrasilSystem.BTEBrasilSystem;
 import io.github.LucasMullerC.model.Claim;
+import io.github.LucasMullerC.model.Pending;
 import io.github.LucasMullerC.service.WorldGuardService;
+import io.github.LucasMullerC.service.pending.PendingService;
 import io.github.LucasMullerC.util.ListUtil;
 
 public class ClaimService {
@@ -35,6 +39,7 @@ public class ClaimService {
         this.claim.save();
         WorldGuardService worldGuardService = new WorldGuardService();
         worldGuardService.RemoveRegion(claim.getClaim(), player);
+        removePendentandParticipants(claim);
     }
 
     public void updateClaim(Claim claim){
@@ -68,5 +73,23 @@ public class ClaimService {
 
     public ArrayList<Claim> getClaimList(){
         return claim.getValues();
+    }
+
+    private void removePendentandParticipants(Claim claim){
+        PendingService pendingService = new PendingService();
+        Pending pending = pendingService.getPendingClaim(claim.getClaim());
+        if(pending != null){
+            pendingService.removePending(pending);
+        }
+        String participants = claim.getParticipants();
+        
+        if(!participants.equals("nulo")){
+            WorldGuardService worldGuardService = new WorldGuardService();
+            String[] participantList = participants.split(",");
+            for (int i = 0; i < participantList.length; i++) {
+                OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(participantList[i]);
+                worldGuardService.RemoveRegion(claim.getClaim(),offlinePlayer.getPlayer());
+            }
+        } 
     }
 }

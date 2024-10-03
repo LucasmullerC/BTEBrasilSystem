@@ -12,9 +12,11 @@ import org.jetbrains.annotations.NotNull;
 import github.scarsz.discordsrv.DiscordSRV;
 import io.github.LucasMullerC.BTEBrasilSystem.BTEBrasilSystem;
 import io.github.LucasMullerC.model.Builder;
+import io.github.LucasMullerC.model.Claim;
 import io.github.LucasMullerC.service.PromptService;
 import io.github.LucasMullerC.service.builder.BuilderService;
 import io.github.LucasMullerC.service.claim.ClaimLimitService;
+import io.github.LucasMullerC.service.claim.ClaimService;
 import io.github.LucasMullerC.util.ClaimUtils;
 import io.github.LucasMullerC.util.MessageUtils;
 import net.kyori.adventure.text.Component;
@@ -45,6 +47,7 @@ public class claim implements CommandExecutor {
 
             ConversationFactory cf = new ConversationFactory(plugin);
 
+            //ADD CLAIM
             if(arg3[0].equalsIgnoreCase("add")){
                 Builder builder = builderService.getBuilderUuid(id.toString());
                 ClaimLimitService claimLimitService = new ClaimLimitService(player);
@@ -74,12 +77,30 @@ public class claim implements CommandExecutor {
                                 player.sendMessage(Component.text(MessageUtils.getMessage("AddAreas2", player)).color(NamedTextColor.GOLD));
                             })).withLocalEcho(true).buildConversation(player).begin();
                             }
+                            return true;
                 } else{
                     player.sendMessage(Component.text(MessageUtils.getMessage("AreasLimite3", player)).color(NamedTextColor.RED));
                     player.sendMessage(Component.text(MessageUtils.getMessage("AreasLimite2", player)).color(NamedTextColor.GOLD));
                     return true;
                 }
-                
+
+            //REMOVE CLAIM
+            } else if (arg3[0].equalsIgnoreCase("abandonar") || arg3[0].equalsIgnoreCase("remover")) {
+                cf.withFirstPrompt(new PromptService(
+                    MessageUtils.getMessage("idtoremoveclaim", player),
+                    (context, input) -> {
+                        ClaimService claimService = new ClaimService();
+                        Claim claim = claimService.getClaim(input);
+                        if(claim != null){
+                            if (ClaimUtils.verifyClaimProperties(claim, player, false) == true || player.hasPermission("btebrasil.adm")) {
+                                claimService.removeClaim(claim, player);
+                                player.sendMessage(Component.text(MessageUtils.getMessage("ClaimRemoved", player)).color(NamedTextColor.GREEN));
+                            }
+                        }else{
+                            player.sendMessage(Component.text(MessageUtils.getMessage("ClaimNotFound", player)).color(NamedTextColor.RED));
+                        }
+                })).withLocalEcho(true).buildConversation(player).begin();
+                return true;
             }
             return false;
     }

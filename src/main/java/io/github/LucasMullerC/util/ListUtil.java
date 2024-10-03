@@ -29,8 +29,8 @@ public class ListUtil<T> {
             BufferedReader reader = new BufferedReader(new FileReader(this.storageFile));
             String line;
             Field[] fields = clazz.getDeclaredFields();
-            T obj = clazz.getDeclaredConstructor().newInstance();
             while ((line = reader.readLine()) != null) {
+                T obj = clazz.getDeclaredConstructor().newInstance();
                 String[] parts = line.split(";");
                 for (int i = 0; i < parts.length && i < fields.length; i++) {
                     Field field = fields[i];
@@ -72,8 +72,13 @@ public class ListUtil<T> {
     public void save() {
         try {
             BufferedWriter writer = new BufferedWriter(new FileWriter(this.storageFile));
+            int cont;
             for (T value : this.values) {
+                cont = 0;
                 for (Field field : value.getClass().getDeclaredFields()) {
+                    if(cont != 0){
+                        writer.write(";");
+                    }
                     field.setAccessible(true);
                     Object fieldValue = field.get(value);
                     if (fieldValue != null) {
@@ -86,8 +91,8 @@ public class ListUtil<T> {
                     } else {
                         writer.write("");
                     }
-    
-                    writer.write(";");
+                    cont++;
+                    //writer.write(";");
                 }
                 writer.newLine();
             }

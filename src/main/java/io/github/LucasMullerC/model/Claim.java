@@ -83,5 +83,4 @@ public class Claim implements Comparable<Claim>{
 	public int compareTo(Claim A) {
 		return this.Claim.compareTo(A.getClaim());
 	}
-    
 }
