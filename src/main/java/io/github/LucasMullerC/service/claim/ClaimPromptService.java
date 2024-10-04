@@ -10,8 +10,10 @@ import org.bukkit.conversations.Prompt;
 import org.bukkit.conversations.StringPrompt;
 import org.bukkit.entity.Player;
 
+import github.scarsz.discordsrv.DiscordSRV;
 import io.github.LucasMullerC.model.Claim;
 import io.github.LucasMullerC.model.Pending;
+import io.github.LucasMullerC.service.builder.BuilderService;
 import io.github.LucasMullerC.service.pending.PendingService;
 import io.github.LucasMullerC.util.ClaimUtils;
 import io.github.LucasMullerC.util.MessageUtils;
@@ -157,4 +159,66 @@ public class ClaimPromptService {
             }
         }
         };
+
+    // CLAIM TEAM ADD
+    public Prompt teamAdd = new StringPrompt() {
+        @Override
+        public String getPromptText(ConversationContext context) {
+            return ChatColor.BOLD + MessageUtils.getMessage("idtoaddparticipant", player);
+        }
+
+        @Override
+        public Prompt acceptInput(ConversationContext context, String input) {
+            ClaimService claimService = new ClaimService();
+            claim = claimService.getClaim(input);
+            if (ClaimUtils.verifyClaimProperties(claim,player,false) == true) {
+                return teamAdd2;
+            } else {
+                return END_OF_CONVERSATION;
+            }
+        }
+    };
+
+    // CLAIM TEAM ADD 2
+    public Prompt teamAdd2 = new StringPrompt() {
+        @Override
+        public String getPromptText(ConversationContext context) {
+            return ChatColor.BOLD + MessageUtils.getMessage("nicknameofparticipant", player)+ ChatColor.RED
+            +" "+MessageUtils.getMessage("mustbeonline", player);
+        }
+
+        @Override
+        public Prompt acceptInput(ConversationContext context, String input) {
+            Player invite = Bukkit.getPlayer(input);
+            if(invite != null){
+                String id = player.getUniqueId().toString();
+                String idInvite = invite.getUniqueId().toString();
+                if(!idInvite.equals(id)){
+                    if (invite.hasPermission("group.b_br") == false && invite.hasPermission("group.builder_not") == false) {
+                        player.sendMessage(Component.text(MessageUtils.getMessage("EquipeNotBuilder", player)).color(NamedTextColor.RED));
+                        return END_OF_CONVERSATION;
+                    }
+                    else{
+                        String discordId = DiscordSRV.getPlugin().getAccountLinkManager().getDiscordId(invite.getUniqueId());
+                        if (discordId == null) {
+                            player.sendMessage(Component.text(MessageUtils.getMessage("participantnotlinked", player)).color(NamedTextColor.RED));
+                            return END_OF_CONVERSATION; 
+                        }
+                        //Build builder to database
+                        BuilderService builderService = new BuilderService();
+                        builderService.buildBuilder(id.toString(), discordId);
+                        
+                        ClaimUtils.addParticipant(claim, invite);
+                        return END_OF_CONVERSATION; 
+                    }
+                } else{
+                    player.sendMessage(Component.text(MessageUtils.getMessage("MuyMaloEasterEgg", player)).color(NamedTextColor.RED));
+                    return END_OF_CONVERSATION; 
+                }
+            } else{
+                player.sendMessage(Component.text(MessageUtils.getMessage("PlayerOn", player)).color(NamedTextColor.RED));
+                return END_OF_CONVERSATION;
+            }
+        }
+    };
 }

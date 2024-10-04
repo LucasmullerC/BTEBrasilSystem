@@ -92,4 +92,8 @@ public class ClaimService {
             }
         } 
     }
+
+    public void saveClaim(){
+        claim.save();
+    }
 }

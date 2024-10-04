@@ -90,7 +90,26 @@ public class claim implements CommandExecutor {
                 .buildConversation(player);
                 conv.begin();
                 return true;
+            } else if (arg3[0].equalsIgnoreCase("equipe")) {
+                if(arg3.length <= 1){
+                    player.sendMessage(Component.text(MessageUtils.getMessage("ClaimCommand1", player)).color(NamedTextColor.RED));
+                    return true;
+                }
+                if (arg3[1].equalsIgnoreCase("add")) {
+                    Conversation conv = cf.withFirstPrompt(new ClaimPromptService(player, "").teamAdd).withLocalEcho(true)
+                    .buildConversation(player);
+                    conv.begin();
+                    return true;
+                } else if (arg3[1].equalsIgnoreCase("remover")) {
+
+                } else if (arg3[1].equalsIgnoreCase("sair")) {
+
+                } else {
+                    player.sendMessage(Component.text(MessageUtils.getMessage("ClaimCommand1", player)).color(NamedTextColor.RED));
+                    return true;
+                }
             }
+
             return false;
     }
     

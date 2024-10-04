@@ -2,6 +2,7 @@ package io.github.LucasMullerC.util;
 
 import java.util.UUID;
 import java.text.Normalizer;
+import java.util.Arrays;
 
 import org.bukkit.entity.Player;
 
@@ -9,6 +10,7 @@ import github.scarsz.discordsrv.DiscordSRV;
 import io.github.LucasMullerC.discord.DiscordActions;
 import io.github.LucasMullerC.model.Claim;
 import io.github.LucasMullerC.model.Pending;
+import io.github.LucasMullerC.service.WorldGuardService;
 import io.github.LucasMullerC.service.claim.ClaimService;
 import io.github.LucasMullerC.service.pending.PendingService;
 import net.kyori.adventure.text.Component;
@@ -75,6 +77,29 @@ public class ClaimUtils {
             player.sendMessage(Component.text(MessageUtils.getMessage("ClaimNotFound", player)).color(NamedTextColor.RED));
             return false;
         }
+    }
+
+    public static void addParticipant(Claim claim, Player player){
+        String id = player.getUniqueId().toString();
+        String participants = claim.getParticipants();
+        if(participants.equals("nulo")){
+            claim.setParticipants(id);
+        } else{
+            String [] participantList = participants.split(",");
+            if (!Arrays.stream(participantList).anyMatch(id::equals)) {
+                participants += "," + id;
+                claim.setParticipants(participants);
+            } else {
+                player.sendMessage(Component.text(MessageUtils.getMessage("Equipe2", player)).color(NamedTextColor.RED));
+                return;
+            }
+        }
+
+        WorldGuardService worldGuardService = new WorldGuardService();
+        worldGuardService.addPermissionWG(claim.getClaim(), player, player.getUniqueId());
+        ClaimService claimService = new ClaimService();
+        claimService.saveClaim();
+        player.sendMessage(Component.text(MessageUtils.getMessage("Equipe1", player)).color(NamedTextColor.GREEN));
     }
 
     public static boolean isNumeric(String str) {
