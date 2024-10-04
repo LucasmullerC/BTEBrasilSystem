@@ -5,6 +5,7 @@ import java.util.UUID;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.conversations.Conversation;
 import org.bukkit.conversations.ConversationFactory;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -12,12 +13,9 @@ import org.jetbrains.annotations.NotNull;
 import github.scarsz.discordsrv.DiscordSRV;
 import io.github.LucasMullerC.BTEBrasilSystem.BTEBrasilSystem;
 import io.github.LucasMullerC.model.Builder;
-import io.github.LucasMullerC.model.Claim;
-import io.github.LucasMullerC.service.PromptService;
 import io.github.LucasMullerC.service.builder.BuilderService;
 import io.github.LucasMullerC.service.claim.ClaimLimitService;
-import io.github.LucasMullerC.service.claim.ClaimService;
-import io.github.LucasMullerC.util.ClaimUtils;
+import io.github.LucasMullerC.service.claim.ClaimPromptService;
 import io.github.LucasMullerC.util.MessageUtils;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -68,16 +66,11 @@ public class claim implements CommandExecutor {
                                 return true;
                         }
                     } else{
-                        cf.withFirstPrompt(new PromptService(
-                            MessageUtils.getMessage("placename", player),
-                            (context, input) -> {
-                                String claimId =ClaimUtils.buildClaim(player, input, selectionPoints);
-                                player.sendMessage(Component.text(MessageUtils.getMessage("AddAreas1", player)).color(NamedTextColor.GOLD)
-                                .append(Component.text(claimId)).color(NamedTextColor.GREEN));
-                                player.sendMessage(Component.text(MessageUtils.getMessage("AddAreas2", player)).color(NamedTextColor.GOLD));
-                            })).withLocalEcho(true).buildConversation(player).begin();
-                            }
-                            return true;
+                        Conversation conv = cf.withFirstPrompt(new ClaimPromptService(player, selectionPoints).Add).withLocalEcho(true)
+                        .buildConversation(player);
+                        conv.begin();
+                        return true;
+                    }
                 } else{
                     player.sendMessage(Component.text(MessageUtils.getMessage("AreasLimite3", player)).color(NamedTextColor.RED));
                     player.sendMessage(Component.text(MessageUtils.getMessage("AreasLimite2", player)).color(NamedTextColor.GOLD));
@@ -86,20 +79,16 @@ public class claim implements CommandExecutor {
 
             //REMOVE CLAIM
             } else if (arg3[0].equalsIgnoreCase("abandonar") || arg3[0].equalsIgnoreCase("remover")) {
-                cf.withFirstPrompt(new PromptService(
-                    MessageUtils.getMessage("idtoremoveclaim", player),
-                    (context, input) -> {
-                        ClaimService claimService = new ClaimService();
-                        Claim claim = claimService.getClaim(input);
-                        if(claim != null){
-                            if (ClaimUtils.verifyClaimProperties(claim, player, false) == true || player.hasPermission("btebrasil.adm")) {
-                                claimService.removeClaim(claim, player);
-                                player.sendMessage(Component.text(MessageUtils.getMessage("ClaimRemoved", player)).color(NamedTextColor.GREEN));
-                            }
-                        }else{
-                            player.sendMessage(Component.text(MessageUtils.getMessage("ClaimNotFound", player)).color(NamedTextColor.RED));
-                        }
-                })).withLocalEcho(true).buildConversation(player).begin();
+                Conversation conv = cf.withFirstPrompt(new ClaimPromptService(player, "").remove).withLocalEcho(true)
+                .buildConversation(player);
+                conv.begin();
+                return true;
+
+            //FINISH CLAIM
+            } else if (arg3[0].equalsIgnoreCase("completo")) {
+                Conversation conv = cf.withFirstPrompt(new ClaimPromptService(player, "").completedStart).withLocalEcho(true)
+                .buildConversation(player);
+                conv.begin();
                 return true;
             }
             return false;
