@@ -102,6 +102,45 @@ public class ClaimUtils {
         player.sendMessage(Component.text(MessageUtils.getMessage("Equipe1", player)).color(NamedTextColor.GREEN));
     }
 
+    public static void removeParticipant(Claim claim, Player player,Player participant){
+        String participantId = participant.getUniqueId().toString();
+        String participants = claim.getParticipants();
+        if(participants.equals("nulo")){
+            player.sendMessage(Component.text(MessageUtils.getMessage("EquipeNotFound", player)).color(NamedTextColor.RED));
+            return;
+        } else{
+            String [] participantList = participants.split(",");
+            if (!Arrays.stream(participantList).anyMatch(participantId::equals)) {
+                player.sendMessage(Component.text(MessageUtils.getMessage("EquipeNotFound", player)).color(NamedTextColor.RED));
+                return;
+            } else{
+                String newParticipantList = "nulo";
+                for(int i = 0; i < participantList.length; i++){
+                    if(!participantList[i].equals(participantId)) {
+                        if(!participantList[i].equals("nulo")){
+                            if(newParticipantList.equals("nulo")){
+                                newParticipantList = participantList[i];
+                            } else{
+                                newParticipantList += "," + participantList[i];
+                            }
+                        }
+                    }
+                }
+                claim.setParticipants(newParticipantList);
+                ClaimService claimService = new ClaimService();
+                claimService.saveClaim();
+                WorldGuardService worldGuardService = new WorldGuardService();
+                worldGuardService.removePermissionWG(claim.getClaim(), player, participant.getUniqueId());
+                if(player.getUniqueId().toString().equals(participantId)){
+                    player.sendMessage(Component.text(MessageUtils.getMessage("RemovidoEquipe", player)).color(NamedTextColor.GREEN));
+                } else{
+                    player.sendMessage(Component.text(MessageUtils.getMessage("EquipeRemove", player)).color(NamedTextColor.GREEN));
+                }
+                return;
+            }
+        }
+    }
+
     public static boolean isNumeric(String str) {
         try {
             Double.parseDouble(str);

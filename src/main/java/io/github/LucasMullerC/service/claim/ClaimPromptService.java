@@ -221,4 +221,71 @@ public class ClaimPromptService {
             }
         }
     };
+
+    // CLAIM TEAM REMOVE
+    public Prompt teamRemove = new StringPrompt() {
+        @Override
+        public String getPromptText(ConversationContext context) {
+            return ChatColor.BOLD + MessageUtils.getMessage("idtoremoveparticipant", player);
+        }
+
+        @Override
+        public Prompt acceptInput(ConversationContext context, String input) {
+            ClaimService claimService = new ClaimService();
+            claim = claimService.getClaim(input);
+            if (ClaimUtils.verifyClaimProperties(claim,player,false) == true) {
+                return teamRemove2;
+            } else {
+                return END_OF_CONVERSATION;
+            }
+        }
+    };
+
+    // CLAIM TEAM REMOVE 2
+    public Prompt teamRemove2 = new StringPrompt() {
+        @Override
+        public String getPromptText(ConversationContext context) {
+            return ChatColor.BOLD + MessageUtils.getMessage("nicknameofparticipantremove", player);
+        }
+
+        @Override
+        public Prompt acceptInput(ConversationContext context, String input) {
+            OfflinePlayer participant = Bukkit.getOfflinePlayer(input);
+            if(participant != null){
+                String participantId = participant.getUniqueId().toString();
+                String playerId = player.getUniqueId().toString();
+                if(!participantId.equals(playerId)){
+                    ClaimUtils.removeParticipant(claim, player, participant.getPlayer());
+                    return END_OF_CONVERSATION; 
+                } else{
+                    player.sendMessage(Component.text(MessageUtils.getMessage("MuyMaloEasterEgg", player)).color(NamedTextColor.RED));
+                    return END_OF_CONVERSATION; 
+                }
+            }
+            else{
+                player.sendMessage(Component.text(MessageUtils.getMessage("PlayerNotFound", player)).color(NamedTextColor.RED));
+                return END_OF_CONVERSATION;
+            }
+        }
+    };
+
+    // CLAIM TEAM LEAVE
+    public Prompt teamLeave = new StringPrompt() {
+        @Override
+        public String getPromptText(ConversationContext context) {
+            return ChatColor.BOLD + MessageUtils.getMessage("idtoleave", player);
+        }
+
+        @Override
+        public Prompt acceptInput(ConversationContext context, String input) {
+            ClaimService claimService = new ClaimService();
+            claim = claimService.getClaim(input);
+            if (ClaimUtils.verifyClaimProperties(claim,player,false) == true) {
+                ClaimUtils.removeParticipant(claim, player, player);
+                return END_OF_CONVERSATION; 
+            } else {
+                return END_OF_CONVERSATION;
+            }
+        }
+    };
 }

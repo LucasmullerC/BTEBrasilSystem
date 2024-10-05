@@ -101,9 +101,15 @@ public class claim implements CommandExecutor {
                     conv.begin();
                     return true;
                 } else if (arg3[1].equalsIgnoreCase("remover")) {
-
+                    Conversation conv = cf.withFirstPrompt(new ClaimPromptService(player, "").teamRemove).withLocalEcho(true)
+                    .buildConversation(player);
+                    conv.begin();
+                    return true;
                 } else if (arg3[1].equalsIgnoreCase("sair")) {
-
+                    Conversation conv = cf.withFirstPrompt(new ClaimPromptService(player, "").teamLeave).withLocalEcho(true)
+                    .buildConversation(player);
+                    conv.begin();
+                    return true;
                 } else {
                     player.sendMessage(Component.text(MessageUtils.getMessage("ClaimCommand1", player)).color(NamedTextColor.RED));
                     return true;
