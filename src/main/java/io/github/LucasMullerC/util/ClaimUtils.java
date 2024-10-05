@@ -1,8 +1,12 @@
 package io.github.LucasMullerC.util;
 
 import java.util.UUID;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.text.Normalizer;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import org.bukkit.entity.Player;
 
@@ -79,7 +83,7 @@ public class ClaimUtils {
         }
     }
 
-    public static void addParticipant(Claim claim, Player player){
+    public static void addParticipant(Claim claim, Player player, ClaimService claimService){
         String id = player.getUniqueId().toString();
         String participants = claim.getParticipants();
         if(participants.equals("nulo")){
@@ -97,12 +101,11 @@ public class ClaimUtils {
 
         WorldGuardService worldGuardService = new WorldGuardService();
         worldGuardService.addPermissionWG(claim.getClaim(), player, player.getUniqueId());
-        ClaimService claimService = new ClaimService();
         claimService.saveClaim();
         player.sendMessage(Component.text(MessageUtils.getMessage("Equipe1", player)).color(NamedTextColor.GREEN));
     }
 
-    public static void removeParticipant(Claim claim, Player player,Player participant){
+    public static void removeParticipant(Claim claim, Player player,Player participant, ClaimService claimService){
         String participantId = participant.getUniqueId().toString();
         String participants = claim.getParticipants();
         if(participants.equals("nulo")){
@@ -127,7 +130,6 @@ public class ClaimUtils {
                     }
                 }
                 claim.setParticipants(newParticipantList);
-                ClaimService claimService = new ClaimService();
                 claimService.saveClaim();
                 WorldGuardService worldGuardService = new WorldGuardService();
                 worldGuardService.removePermissionWG(claim.getClaim(), player, participant.getUniqueId());
@@ -140,6 +142,51 @@ public class ClaimUtils {
             }
         }
     }
+
+    public static void addImage(Claim claim, String inputUrl, Player player, ClaimService claimService){
+        try {
+            URL url = new URL(inputUrl);
+            String images = claim.getImage();
+            if(images.equals("nulo")){
+                claim.setImage(inputUrl);
+            } else{
+                images += "," + inputUrl;
+                claim.setImage(images);
+            }
+            claimService.saveClaim();
+            DiscordActions.sendLogMessage(MessageUtils.getMessageConsole("newimageadded1")+
+            claim.getClaim()+MessageUtils.getMessageConsole("newimageadded2")+" "+inputUrl);
+
+            player.sendMessage(Component.text(MessageUtils.getMessage("ImgAdd", player)).color(NamedTextColor.GREEN));
+        } catch (MalformedURLException e) {
+            player.sendMessage(Component.text(MessageUtils.getMessage("LinkImg", player)).color(NamedTextColor.RED));
+        }
+    }
+
+public static void removeImage(Claim claim, String imageId, Player player, ClaimService claimService) {
+    String[] images = claim.getImage().split(",");
+
+    try {
+        int index = Integer.parseInt(imageId) - 1;
+
+        if (index >= 0 && index < images.length) {
+            List<String> imageList = new ArrayList<>(Arrays.asList(images));
+            imageList.remove(index);
+            if (imageList.isEmpty()) {
+                claim.setImage("nulo");
+            } else {
+                claim.setImage(String.join(",", imageList));
+            }
+            player.sendMessage(Component.text(MessageUtils.getMessage("ImgRemovida", player)).color(NamedTextColor.GREEN));
+            claimService.saveClaim();
+        } else {
+            player.sendMessage(Component.text(MessageUtils.getMessage("imageidnotfound", player)).color(NamedTextColor.RED));
+        }
+    } catch (NumberFormatException e) {
+        player.sendMessage(Component.text(MessageUtils.getMessage("imageidnotfound", player)).color(NamedTextColor.RED));
+    }
+}
+
 
     public static boolean isNumeric(String str) {
         try {

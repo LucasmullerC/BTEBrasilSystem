@@ -90,6 +90,8 @@ public class claim implements CommandExecutor {
                 .buildConversation(player);
                 conv.begin();
                 return true;
+
+            //CLAIM TEAM MENU
             } else if (arg3[0].equalsIgnoreCase("equipe")) {
                 if(arg3.length <= 1){
                     player.sendMessage(Component.text(MessageUtils.getMessage("ClaimCommand1", player)).color(NamedTextColor.RED));
@@ -112,6 +114,29 @@ public class claim implements CommandExecutor {
                     return true;
                 } else {
                     player.sendMessage(Component.text(MessageUtils.getMessage("ClaimCommand1", player)).color(NamedTextColor.RED));
+                    return true;
+                }
+
+            //CLAIM EDIT (DEPRECATED) (When completed players still have permission to build)
+            }  else if (arg3[0].equalsIgnoreCase("editar")) {
+                player.sendMessage(Component.text(MessageUtils.getMessage("commanddeactivated", player)).color(NamedTextColor.GOLD));
+                return true;
+
+            //CLAIM IMG MENU   
+            } else if (arg3[0].equalsIgnoreCase("img")) {
+                if(arg3.length <= 1){
+                    player.sendMessage(Component.text(MessageUtils.getMessage("ClaimCommand2", player)).color(NamedTextColor.GOLD));
+                    return true;
+                }
+                if (arg3[1].equalsIgnoreCase("add")) {
+                    Conversation conv = cf.withFirstPrompt(new ClaimPromptService(player, "").claimImgAdd).withLocalEcho(true)
+                    .buildConversation(player);
+                    conv.begin();
+                    return true;
+                } else if (arg3[1].equalsIgnoreCase("remover")) {
+                    Conversation conv = cf.withFirstPrompt(new ClaimPromptService(player, "").claimImgRemove).withLocalEcho(true)
+                    .buildConversation(player);
+                    conv.begin();
                     return true;
                 }
             }

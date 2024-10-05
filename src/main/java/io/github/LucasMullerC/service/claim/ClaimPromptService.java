@@ -27,6 +27,7 @@ public class ClaimPromptService {
     int size, participantCont = 0;
     String[] participants;
     Claim claim;
+    ClaimService claimService;
 
     public ClaimPromptService(Player player, String selectionPoints) {
         this.player = player;
@@ -169,7 +170,7 @@ public class ClaimPromptService {
 
         @Override
         public Prompt acceptInput(ConversationContext context, String input) {
-            ClaimService claimService = new ClaimService();
+            claimService = new ClaimService();
             claim = claimService.getClaim(input);
             if (ClaimUtils.verifyClaimProperties(claim,player,false) == true) {
                 return teamAdd2;
@@ -208,7 +209,7 @@ public class ClaimPromptService {
                         BuilderService builderService = new BuilderService();
                         builderService.buildBuilder(id.toString(), discordId);
                         
-                        ClaimUtils.addParticipant(claim, invite);
+                        ClaimUtils.addParticipant(claim, invite,claimService);
                         return END_OF_CONVERSATION; 
                     }
                 } else{
@@ -231,7 +232,7 @@ public class ClaimPromptService {
 
         @Override
         public Prompt acceptInput(ConversationContext context, String input) {
-            ClaimService claimService = new ClaimService();
+            claimService = new ClaimService();
             claim = claimService.getClaim(input);
             if (ClaimUtils.verifyClaimProperties(claim,player,false) == true) {
                 return teamRemove2;
@@ -255,7 +256,7 @@ public class ClaimPromptService {
                 String participantId = participant.getUniqueId().toString();
                 String playerId = player.getUniqueId().toString();
                 if(!participantId.equals(playerId)){
-                    ClaimUtils.removeParticipant(claim, player, participant.getPlayer());
+                    ClaimUtils.removeParticipant(claim, player, participant.getPlayer(),claimService);
                     return END_OF_CONVERSATION; 
                 } else{
                     player.sendMessage(Component.text(MessageUtils.getMessage("MuyMaloEasterEgg", player)).color(NamedTextColor.RED));
@@ -278,14 +279,81 @@ public class ClaimPromptService {
 
         @Override
         public Prompt acceptInput(ConversationContext context, String input) {
-            ClaimService claimService = new ClaimService();
+            claimService = new ClaimService();
             claim = claimService.getClaim(input);
             if (ClaimUtils.verifyClaimProperties(claim,player,false) == true) {
-                ClaimUtils.removeParticipant(claim, player, player);
+                ClaimUtils.removeParticipant(claim, player, player,claimService);
                 return END_OF_CONVERSATION; 
             } else {
                 return END_OF_CONVERSATION;
             }
+        }
+    };
+
+    // CLAIM IMG ADD
+    public Prompt claimImgAdd = new StringPrompt() {
+        @Override
+        public String getPromptText(ConversationContext context) {
+            return ChatColor.BOLD + MessageUtils.getMessage("idtoaddimage", player);
+        }
+
+        @Override
+        public Prompt acceptInput(ConversationContext context, String input) {
+            claimService = new ClaimService();
+            claim = claimService.getClaim(input);
+            if (ClaimUtils.verifyClaimProperties(claim,player,true) == true) {
+                return claimImgAdd2;
+            } else {
+                return END_OF_CONVERSATION;
+            }
+        }
+    };
+
+    // CLAIM IMG ADD 2
+    public Prompt claimImgAdd2 = new StringPrompt() {
+        @Override
+        public String getPromptText(ConversationContext context) {
+            return ChatColor.BOLD + MessageUtils.getMessage("imagetutorial1", player) + ChatColor.BLUE +MessageUtils.getMessage("imgururl", player)+
+            ChatColor.RED+" "+MessageUtils.getMessage("imagetutorial2", player)+ ChatColor.WHITE + ")";
+        }
+
+        @Override
+        public Prompt acceptInput(ConversationContext context, String input) {
+            ClaimUtils.addImage(claim, input, player,claimService);
+            return END_OF_CONVERSATION;
+        }
+    };
+
+    // CLAIM IMG REMOVE
+    public Prompt claimImgRemove = new StringPrompt() {
+        @Override
+        public String getPromptText(ConversationContext context) {
+            return ChatColor.BOLD + MessageUtils.getMessage("idtoremoveimage", player);
+        }
+
+        @Override
+        public Prompt acceptInput(ConversationContext context, String input) {
+            claimService = new ClaimService();
+            claim = claimService.getClaim(input);
+            if (ClaimUtils.verifyClaimProperties(claim,player,true) == true) {
+                return claimImgRemove2;
+            } else {
+                return END_OF_CONVERSATION;
+            }
+        }
+    };
+
+    // CLAIM IMG REMOVE 2
+    public Prompt claimImgRemove2 = new StringPrompt() {
+        @Override
+        public String getPromptText(ConversationContext context) {
+            return ChatColor.BOLD + MessageUtils.getMessage("idtoremoveimage2", player);
+        }
+
+        @Override
+        public Prompt acceptInput(ConversationContext context, String input) {
+            ClaimUtils.removeImage(claim, input, player,claimService);
+            return END_OF_CONVERSATION;
         }
     };
 }
