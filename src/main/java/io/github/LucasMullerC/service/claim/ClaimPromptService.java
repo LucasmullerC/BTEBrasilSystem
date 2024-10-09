@@ -356,4 +356,42 @@ public class ClaimPromptService {
             return END_OF_CONVERSATION;
         }
     };
+
+    // CLAIM EDIT
+    public Prompt claimEdit = new StringPrompt() {
+        @Override
+        public String getPromptText(ConversationContext context) {
+            return ChatColor.BOLD + MessageUtils.getMessage("idtorename", player);
+        }
+
+        @Override
+        public Prompt acceptInput(ConversationContext context, String input) {
+            claimService = new ClaimService();
+            claim = claimService.getClaim(input);
+            if (player.hasPermission("btebrasil.adm")) {
+                return claimEdit2;
+            }
+            else if (ClaimUtils.verifyClaimProperties(claim,player,true) == true) {
+                return claimEdit2;
+            } else {
+                return END_OF_CONVERSATION;
+            }
+        }
+    };
+
+    // CLAIM EDIT 2
+    public Prompt claimEdit2 = new StringPrompt() {
+        @Override
+        public String getPromptText(ConversationContext context) {
+            return ChatColor.BOLD + MessageUtils.getMessage("claimnewname", player);
+        }
+
+        @Override
+        public Prompt acceptInput(ConversationContext context, String input) {
+            claim.setName(input);
+            claimService.saveClaim();
+            player.sendMessage(Component.text(MessageUtils.getMessage("NomeClaim", player)).color(NamedTextColor.GREEN));
+            return END_OF_CONVERSATION;
+        }
+    };
 }

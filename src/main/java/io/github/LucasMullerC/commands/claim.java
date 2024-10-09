@@ -124,9 +124,11 @@ public class claim implements CommandExecutor {
                     return true;
                 }
 
-            //CLAIM EDIT (DEPRECATED) (When completed players still have permission to build)
+            //CLAIM EDIT
             }  else if (arg3[0].equalsIgnoreCase("editar")) {
-                player.sendMessage(Component.text(MessageUtils.getMessage("commanddeactivated", player)).color(NamedTextColor.GOLD));
+                Conversation conv = cf.withFirstPrompt(new ClaimPromptService(player, "").claimEdit).withLocalEcho(true)
+                .buildConversation(player);
+                conv.begin();
                 return true;
 
             //CLAIM IMG MENU   
