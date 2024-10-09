@@ -1,5 +1,7 @@
 package io.github.LucasMullerC.commands;
 
+import java.util.ArrayList;
+import java.util.Map;
 import java.util.UUID;
 
 import org.bukkit.command.Command;
@@ -13,10 +15,15 @@ import org.jetbrains.annotations.NotNull;
 import github.scarsz.discordsrv.DiscordSRV;
 import io.github.LucasMullerC.BTEBrasilSystem.BTEBrasilSystem;
 import io.github.LucasMullerC.model.Builder;
+import io.github.LucasMullerC.model.Claim;
+import io.github.LucasMullerC.model.Pending;
 import io.github.LucasMullerC.service.builder.BuilderService;
 import io.github.LucasMullerC.service.claim.ClaimLimitService;
 import io.github.LucasMullerC.service.claim.ClaimPromptService;
+import io.github.LucasMullerC.service.pending.PendingService;
+import io.github.LucasMullerC.util.ClaimUtils;
 import io.github.LucasMullerC.util.MessageUtils;
+import io.github.LucasMullerC.util.PendingUtils;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 
@@ -139,8 +146,48 @@ public class claim implements CommandExecutor {
                     conv.begin();
                     return true;
                 }
-            }
 
+            //CLAIM INFO
+            } else if (arg3[0].equalsIgnoreCase("info")) {
+                    int pageNum = 1;
+                    if(arg3.length > 1){
+                        try {
+                            pageNum = Integer.valueOf(arg3[1]);
+                        } catch (NumberFormatException e) {
+                            pageNum = 1;
+                        }
+                    }
+                    Map<String, Object> infos = ClaimUtils.getClaimInfos(player.getUniqueId().toString());
+                    int qtdClaim = (int) infos.get("qtdClaim");
+                    int qtdCompleted = (int) infos.get("qtdCompleted");
+                    @SuppressWarnings("unchecked")
+                    ArrayList<Claim> notCompleted = (ArrayList<Claim>) infos.get("notCompleted");
+                    @SuppressWarnings("unchecked")
+                    ArrayList<Claim> completed = (ArrayList<Claim>) infos.get("completed");
+
+                    PendingService pendingService = new PendingService();
+                    ArrayList<Pending> pendingList = pendingService.getPendingPlayer(player.getUniqueId().toString());
+
+                    Component.text("=========").color(NamedTextColor.GOLD);
+                    //CLAIMS EM CONSTRUÇÃO - 
+                    player.sendMessage(Component.text(MessageUtils.getMessage("claimsunderconstruction", player)).color(NamedTextColor.DARK_BLUE)
+                    .append(Component.text(qtdClaim).color(NamedTextColor.GOLD)));
+                    ClaimUtils.printClaimsMinecraft(notCompleted,player,pageNum);
+
+                    //CLAIMS EM ANALISE -
+                    if(!pendingList.isEmpty()) {
+                        player.sendMessage(Component.text(MessageUtils.getMessage("claiminfopending", player)).color(NamedTextColor.YELLOW)
+                        .append(Component.text(pendingList.size()).color(NamedTextColor.GOLD)));
+                        PendingUtils.printPendingMinecraft(pendingList, player, pageNum);
+                    }
+
+                    //CLAIMS COMPLETOS -
+                    player.sendMessage(Component.text(MessageUtils.getMessage("claiminfocompleted", player)).color(NamedTextColor.GREEN)
+                    .append(Component.text(qtdCompleted).color(NamedTextColor.GOLD)));
+                    ClaimUtils.printClaimsMinecraft(completed,player,pageNum);
+                    Component.text("=========").color(NamedTextColor.GOLD);
+                    return true;
+                }
             return false;
     }
     

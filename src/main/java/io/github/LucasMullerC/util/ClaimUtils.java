@@ -6,7 +6,9 @@ import java.net.URL;
 import java.text.Normalizer;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.bukkit.entity.Player;
 
@@ -185,9 +187,69 @@ public static void removeImage(Claim claim, String imageId, Player player, Claim
     } catch (NumberFormatException e) {
         player.sendMessage(Component.text(MessageUtils.getMessage("imageidnotfound", player)).color(NamedTextColor.RED));
     }
-}
+    }
+    
+    public static Map<String, Object> getClaimInfos(String playerId) {
+        int qtdArea = 0;
+        int qtdAreaCompleta = 0;
+        ArrayList<Claim> notCompleted = new ArrayList<>();
+        ArrayList<Claim> completed = new ArrayList<>();
+        ArrayList<Claim> claims = new ArrayList<>();
+        ClaimService claimService = new ClaimService();
+        claims = claimService.getClaimList();
 
+        for (Claim claim : claims) {
+            if (claim.getPlayer() != null && claim.getPlayer().contains(playerId)) {
+                if (claim.getStatus().equals("F")) {
+                    qtdArea++;
+                    notCompleted.add(claim);
+                } else if (claim.getStatus().equals("T")) {
+                    qtdAreaCompleta++;
+                    completed.add(claim);
+                }
+            }
+        }
+    
+        Map<String, Object> result = new HashMap<>();
+        result.put("qtdClaim", qtdArea);
+        result.put("qtdCompleted", qtdAreaCompleta);
+        result.put("notCompleted", notCompleted);
+        result.put("completed", completed);
+    
+        return result;
+    }
 
+    public static void printClaimsMinecraft(ArrayList<Claim> claims,Player player,int infoPage){
+        int itemsPerPage = 5;
+        int totalItems = claims.size();
+        int totalPages = (int) Math.ceil((double) totalItems / itemsPerPage);
+    
+        int startIndex = (infoPage - 1) * itemsPerPage;
+        int endIndex = Math.min(startIndex + itemsPerPage, totalItems);
+
+        if(totalItems < 1){
+            return;
+        }
+
+        if (infoPage > totalPages) {
+            player.sendMessage(Component.text(MessageUtils.getMessage("claiminfopageinvalid", player) + totalPages).color(NamedTextColor.RED));
+            return;
+        }
+
+        for (int i = startIndex; i < endIndex; i++) {
+            Claim claim = claims.get(i);
+            player.sendMessage(Component.text(MessageUtils.getMessage("claiminfoid", player))
+                .color(NamedTextColor.RED)
+                .append(Component.text(claim.getClaim()))
+                .color(NamedTextColor.GOLD));
+        }
+
+        if (infoPage < totalPages) {
+            player.sendMessage(Component.text(MessageUtils.getMessage("claiminfopagecommand1", player) +" "+ (infoPage + 1) + " "+MessageUtils.getMessage("claiminfopagecommand2", player))
+                .color(NamedTextColor.GREEN));
+        }
+    }
+    
     public static boolean isNumeric(String str) {
         try {
             Double.parseDouble(str);

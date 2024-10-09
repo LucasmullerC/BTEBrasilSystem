@@ -1,6 +1,7 @@
 package io.github.LucasMullerC.service.pending;
 
 import java.io.File;
+import java.util.ArrayList;
 
 import io.github.LucasMullerC.BTEBrasilSystem.BTEBrasilSystem;
 import io.github.LucasMullerC.model.Pending;
@@ -55,6 +56,18 @@ public class PendingService {
             }
         }
         return count;
+    }
+
+    public ArrayList<Pending> getPendingPlayer(String UUID){
+        ArrayList<Pending> pendingPlayer = new ArrayList<>();
+        for (Pending pending : pending.getValues()) {
+            if (pending.getUUID() != null && pending.getUUID().contains(UUID)) {
+                if (pending.getisApplication() == false) {
+                    pendingPlayer.add(pending);
+                }
+            }
+        }
+        return pendingPlayer;
     }
 
     public Pending getPendingApplication(String UUID) {
