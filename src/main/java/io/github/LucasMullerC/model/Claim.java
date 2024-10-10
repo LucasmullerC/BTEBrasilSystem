@@ -3,7 +3,8 @@ package io.github.LucasMullerC.model;
 public class Claim implements Comparable<Claim>{
     private String Claim,Name,Points,Player,Participants,Image,Status;
     private Integer Builds;
-
+    private boolean event = false;
+    private String Award = "nulo";
     public Claim() {
     }
     public Claim (String A){
@@ -77,6 +78,20 @@ public class Claim implements Comparable<Claim>{
 
     public void setBuilds(Integer builds) {
         Builds = builds;
+    }
+
+    public boolean isEvent() {
+        return event;
+    }
+    public void setEvent(boolean event) {
+        this.event = event;
+    }
+
+    public String getAward() {
+        return Award;
+    }
+    public void setAward(String award) {
+        Award = award;
     }
 
         @Override

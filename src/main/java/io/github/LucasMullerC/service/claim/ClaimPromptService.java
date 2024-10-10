@@ -23,7 +23,8 @@ import net.kyori.adventure.text.format.NamedTextColor;
 public class ClaimPromptService {
     Player player;
     OfflinePlayer participant;
-    String selectionPoints,builds;
+    String selectionPoints,builds,awardId = "nulo";
+    boolean event = false;
     int size, participantCont = 0;
     String[] participants;
     Claim claim;
@@ -32,6 +33,11 @@ public class ClaimPromptService {
     public ClaimPromptService(Player player, String selectionPoints) {
         this.player = player;
         this.selectionPoints = selectionPoints;
+    }
+
+    public void setEvent(boolean event,String awardId){
+        this.awardId = awardId;
+        this.event = event;
     }
 
     // CLAIM ADD
@@ -43,7 +49,7 @@ public class ClaimPromptService {
 
     @Override
     public Prompt acceptInput(ConversationContext context, String input) {
-            String claimId =ClaimUtils.buildClaim(player, input, selectionPoints);
+            String claimId =ClaimUtils.buildClaim(player, input, selectionPoints,event,awardId);
             player.sendMessage(Component.text(MessageUtils.getMessage("AddAreas1", player)).color(NamedTextColor.GOLD)
             .append(Component.text(claimId)).color(NamedTextColor.GREEN));
             player.sendMessage(Component.text(MessageUtils.getMessage("AddAreas2", player)).color(NamedTextColor.GOLD));

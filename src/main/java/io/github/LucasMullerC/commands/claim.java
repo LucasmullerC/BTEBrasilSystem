@@ -20,6 +20,7 @@ import io.github.LucasMullerC.model.Pending;
 import io.github.LucasMullerC.service.builder.BuilderService;
 import io.github.LucasMullerC.service.claim.ClaimLimitService;
 import io.github.LucasMullerC.service.claim.ClaimPromptService;
+import io.github.LucasMullerC.service.claim.ClaimService;
 import io.github.LucasMullerC.service.pending.PendingService;
 import io.github.LucasMullerC.util.ClaimUtils;
 import io.github.LucasMullerC.util.MessageUtils;
@@ -54,6 +55,24 @@ public class claim implements CommandExecutor {
 
             //ADD CLAIM
             if(arg3[0].equalsIgnoreCase("add")){
+                boolean event = false;
+                String awardId = "nulo";
+                if(arg3.length == 3){
+                    if(player.hasPermission("btebrasil.evento")){
+                        if(arg3[1].equals("evento") || arg3[1].equals("event")){
+                            event = true;
+                            awardId = arg3[2];
+                            player.sendMessage(Component.text(MessageUtils.getMessage("eventident", player)).color(NamedTextColor.GREEN));
+                        }
+                        else{
+                            player.sendMessage(Component.text(MessageUtils.getMessage("addeventcommand", player)).color(NamedTextColor.YELLOW));
+                            return true;
+                        }
+                    } else{
+                        player.sendMessage(Component.text(MessageUtils.getMessage("Perm1", player)).color(NamedTextColor.RED));
+                        return true;
+                    }
+                }
                 Builder builder = builderService.getBuilderUuid(id.toString());
                 ClaimLimitService claimLimitService = new ClaimLimitService(player);
                 if(claimLimitService.getLimitTier(builder.getTier(), player) == false || player.hasPermission("group.nolimit")){
@@ -73,8 +92,10 @@ public class claim implements CommandExecutor {
                                 return true;
                         }
                     } else{
-                        Conversation conv = cf.withFirstPrompt(new ClaimPromptService(player, selectionPoints).Add).withLocalEcho(true)
+                        ClaimPromptService claimPromptService = new ClaimPromptService(player, selectionPoints);
+                        Conversation conv = cf.withFirstPrompt(claimPromptService.Add).withLocalEcho(true)
                         .buildConversation(player);
+                        claimPromptService.setEvent(event, awardId);
                         conv.begin();
                         return true;
                     }
@@ -189,6 +210,28 @@ public class claim implements CommandExecutor {
                     ClaimUtils.printClaimsMinecraft(completed,player,pageNum);
                     Component.text("=========").color(NamedTextColor.GOLD);
                     return true;
+
+                }  else if (arg3[0].equalsIgnoreCase("evento") || arg3[0].equals("event")) {
+                    if(arg3.length == 2){
+                        ClaimService claimService = new ClaimService();
+                        Claim claim = claimService.getClaim(arg3[1]);
+                        if(claim != null){
+                            if(claim.isEvent()){
+                                ClaimUtils.addParticipant(claim, player, claimService);
+                                return true;
+                            } else {
+                                player.sendMessage(Component.text(MessageUtils.getMessage("ClaimNotFound", player)).color(NamedTextColor.RED));
+                                return true;
+                            }
+                        }
+                        else{
+                            player.sendMessage(Component.text(MessageUtils.getMessage("ClaimNotFound", player)).color(NamedTextColor.RED));
+                            return true;
+                        }
+                    } else{
+                        player.sendMessage(Component.text(MessageUtils.getMessage("eventcommand", player)).color(NamedTextColor.YELLOW));
+                        return true;
+                    }
                 }
             return false;
     }

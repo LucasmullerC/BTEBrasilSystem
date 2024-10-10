@@ -23,7 +23,7 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 
 public class ClaimUtils {
-    public static String buildClaim(Player player,String input,String selectionPoints){
+    public static String buildClaim(Player player,String input,String selectionPoints,boolean event,String AwardUrl){
         String claimId;
         UUID id = player.getUniqueId();
         Integer cont = 0;
@@ -44,6 +44,8 @@ public class ClaimUtils {
         claim.setStatus("F");
         claim.setParticipants("nulo");
         claim.setBuilds(0);
+        claim.setEvent(event);
+        claim.setAward(AwardUrl);
         claimService.addClaim(claim,player);
 
         return claimId;
@@ -88,6 +90,10 @@ public class ClaimUtils {
     public static void addParticipant(Claim claim, Player player, ClaimService claimService){
         String id = player.getUniqueId().toString();
         String participants = claim.getParticipants();
+        if(id.equals(claim.getPlayer())){
+            player.sendMessage(Component.text(MessageUtils.getMessage("Equipe2", player)).color(NamedTextColor.RED));
+            return;
+        }
         if(participants.equals("nulo")){
             claim.setParticipants(id);
         } else{
