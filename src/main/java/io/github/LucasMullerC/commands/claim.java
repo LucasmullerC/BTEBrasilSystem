@@ -210,7 +210,8 @@ public class claim implements CommandExecutor {
                     ClaimUtils.printClaimsMinecraft(completed,player,pageNum);
                     Component.text("=========").color(NamedTextColor.GOLD);
                     return true;
-
+                    
+                //EVENT ID
                 }  else if (arg3[0].equalsIgnoreCase("evento") || arg3[0].equals("event")) {
                     if(arg3.length == 2){
                         ClaimService claimService = new ClaimService();

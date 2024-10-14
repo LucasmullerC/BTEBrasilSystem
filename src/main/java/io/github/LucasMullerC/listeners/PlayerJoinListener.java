@@ -19,6 +19,7 @@ import io.github.LucasMullerC.util.BuilderUtils;
 import io.github.LucasMullerC.util.MessageUtils;
 import github.scarsz.discordsrv.dependencies.jda.api.entities.User;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.format.NamedTextColor;
 
 public class PlayerJoinListener implements Listener {
@@ -38,7 +39,8 @@ public class PlayerJoinListener implements Listener {
 					event.getPlayer()
 							.sendMessage(Component.text(MessageUtils.getMessage("Link2", event.getPlayer()))
 									.color(NamedTextColor.YELLOW)
-									.append(Component.text(MessageUtils.getMessage("InviteDiscord", event.getPlayer()))
+									.append(Component.text(MessageUtils.getMessage("clickevent", event.getPlayer()))
+									.clickEvent(ClickEvent.openUrl(MessageUtils.getMessage("InviteDiscord", event.getPlayer())))
 											.color(NamedTextColor.BLUE)));
 					event.getPlayer()
 							.sendMessage(Component.text(MessageUtils.getMessage("Link3", event.getPlayer()))
@@ -61,7 +63,9 @@ public class PlayerJoinListener implements Listener {
 						event.getPlayer()
 								.sendMessage(Component.text(MessageUtils.getMessage("Link6", event.getPlayer())).color(NamedTextColor.YELLOW));
 						event.getPlayer().sendMessage(
-							Component.text(MessageUtils.getMessage("InviteDiscord", event.getPlayer())).color(NamedTextColor.BLUE));
+							Component.text(MessageUtils.getMessage("clickevent", event.getPlayer()))
+							.clickEvent(ClickEvent.openUrl(MessageUtils.getMessage("InviteDiscord", event.getPlayer())))
+							.color(NamedTextColor.BLUE));
 						return;
 					}
 				}, 30L);
