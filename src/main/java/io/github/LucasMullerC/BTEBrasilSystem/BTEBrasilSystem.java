@@ -11,6 +11,7 @@ import io.github.LucasMullerC.commands.completed;
 import io.github.LucasMullerC.commands.map;
 import io.github.LucasMullerC.commands.next;
 import io.github.LucasMullerC.commands.previous;
+import io.github.LucasMullerC.commands.tag;
 import io.github.LucasMullerC.commands.team;
 import io.github.LucasMullerC.discord.DiscordSrvListener;
 import io.github.LucasMullerC.listeners.PlayerJoinListener;
@@ -33,8 +34,8 @@ public class BTEBrasilSystem extends JavaPlugin {
 		getCommand("map").setExecutor(new map());
 		getCommand("claim").setExecutor(new claim());
 		getCommand("time").setExecutor(new team());
-		/*
 		getCommand("tag").setExecutor(new tag());
+		/*
 		getCommand("analisar").setExecutor(new analisar());
 		getCommand("salvar").setExecutor(new salvar());
 		getCommand("link").setExecutor(new link());

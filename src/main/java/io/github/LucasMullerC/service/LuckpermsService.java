@@ -97,4 +97,54 @@ public class LuckpermsService {
             e.printStackTrace();
         }
     }
+
+    //tags
+    public void addTagLuckPerms(UUID uid, String permission){
+        UserManager userManager = luckPerms.getUserManager();
+        User user = userManager.getUser(uid);
+        removeTagLuckPerms(uid);
+        user.data().add(Node.builder(permission).build());
+        userManager.saveUser(user);
+    }
+
+    public void removeTagLuckPerms(UUID uid){
+        UserManager userManager = luckPerms.getUserManager();
+        User user = userManager.getUser(uid);
+        // TAGS ANTIGAS
+        user.data().remove(Node.builder("prefix.0.&9Construtor_SP").build());
+        user.data().remove(Node.builder("prefix.0.&9Construtor_ES").build());
+        user.data().remove(Node.builder("prefix.0.&9Construtor_RJ_ES").build());
+        user.data().remove(Node.builder("prefix.0.&9Construtor_MG").build());
+        user.data().remove(Node.builder("prefix.0.&9Construtor_SUL").build());
+        user.data().remove(Node.builder("prefix.0.&9Construtor_NE").build());
+        user.data().remove(Node.builder("prefix.0.&9Construtor_CO_N").build());
+        // TAGS NOVAS
+        user.data().remove(Node.builder("prefix.0.&9Construtor SP").build());
+        user.data().remove(Node.builder("prefix.0.&9Construtor ES").build());
+        user.data().remove(Node.builder("prefix.0.&9Construtor RJ & ES").build());
+        user.data().remove(Node.builder("prefix.0.&9Construtor RJ").build());
+        user.data().remove(Node.builder("prefix.0.&9Construtor ES").build());
+        user.data().remove(Node.builder("prefix.0.&9Construtor MG").build());
+        user.data().remove(Node.builder("prefix.0.&9Construtor SUL").build());
+        user.data().remove(Node.builder("prefix.0.&9Construtor NE").build());
+        user.data().remove(Node.builder("prefix.0.&9Construtor C-O").build());
+        user.data().remove(Node.builder("prefix.0.&9Construtor NORTE").build());
+        user.data().remove(Node.builder("prefix.0.&9Construtor BR").build());
+        user.data().remove(Node.builder("prefix.0.&9Construtor Brasil").build());
+        // OUTROS
+        user.data().remove(Node.builder("prefix.0.&dApoiador").build());
+        user.data().remove(Node.builder("prefix.0.&5BTE Staff").build());
+        user.data().remove(Node.builder("prefix.0.&6Staff SUL").build());
+        user.data().remove(Node.builder("prefix.0.&6Staff SP").build());
+        user.data().remove(Node.builder("prefix.0.&6Staff RJ & ES").build());
+        user.data().remove(Node.builder("prefix.0.&6Staff NE").build());
+        user.data().remove(Node.builder("prefix.0.&6Staff MG").build());
+        user.data().remove(Node.builder("prefix.0.&6Staff CO & N").build());
+        user.data().remove(Node.builder("prefix.0.&bReviewer").build());
+        user.data().remove(Node.builder("prefix.0.&eSuporte").build());
+        user.data().remove(Node.builder("prefix.0.&2Moderador").build());
+        user.data().remove(Node.builder("prefix.0.&4Admin").build());
+
+        userManager.saveUser(user);
+    }
 }
