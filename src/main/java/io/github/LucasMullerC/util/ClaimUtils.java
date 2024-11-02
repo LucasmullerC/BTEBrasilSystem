@@ -61,9 +61,20 @@ public class ClaimUtils {
         pending.setbuilds(builds);
         pendingService.addPending(pending);
 
-        DiscordActions.sendLogMessage("<@&826599049297264640> "+MessageUtils.getMessageConsole("alertadminuser")+
+        //DiscordActions.sendLogMessage("<@&826599049297264640> "+MessageUtils.getMessageConsole("alertadminuser")+
+        //" **"+discordName+"** "+MessageUtils.getMessageConsole("PendenteMsgClaim1")+"**"+claim.getClaim()+"**"+
+        //MessageUtils.getMessageConsole("PendenteMsgClaim2"));
+
+        DiscordActions.sendLogMessage("<@&teste60> "+MessageUtils.getMessageConsole("alertadminuser")+
         " **"+discordName+"** "+MessageUtils.getMessageConsole("PendenteMsgClaim1")+"**"+claim.getClaim()+"**"+
         MessageUtils.getMessageConsole("PendenteMsgClaim2"));
+    }
+
+    public static void CompleteClaim(Claim claim, ClaimService claimService){
+        claim.setStatus("T");
+        claimService.updateClaim(claim);
+        WorldGuardService worldguardService = new WorldGuardService();
+        worldguardService.AddFlags(claim);
     }
 
     public static boolean verifyClaimProperties(Claim claim,Player player,Boolean edit){
@@ -193,6 +204,12 @@ public static void removeImage(Claim claim, String imageId, Player player, Claim
     } catch (NumberFormatException e) {
         player.sendMessage(Component.text(MessageUtils.getMessage("imageidnotfound", player)).color(NamedTextColor.RED));
     }
+    }
+
+    public static void addBuilds(Claim claim,ClaimService claimService,int newBuilds){
+        int builds = claim.getBuilds();
+        claim.setBuilds(newBuilds+builds);
+        claimService.updateClaim(claim);
     }
     
     public static Map<String, Object> getClaimInfos(String playerId) {

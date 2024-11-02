@@ -1,0 +1,136 @@
+package io.github.LucasMullerC.commands;
+
+import java.util.UUID;
+
+import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
+import org.bukkit.World;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandExecutor;
+import org.bukkit.command.CommandSender;
+import org.bukkit.conversations.Conversation;
+import org.bukkit.conversations.ConversationFactory;
+import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
+
+import io.github.LucasMullerC.BTEBrasilSystem.BTEBrasilSystem;
+import io.github.LucasMullerC.discord.DiscordActions;
+import io.github.LucasMullerC.model.Builder;
+import io.github.LucasMullerC.model.Claim;
+import io.github.LucasMullerC.model.Pending;
+import io.github.LucasMullerC.service.builder.BuilderService;
+import io.github.LucasMullerC.service.claim.ClaimService;
+import io.github.LucasMullerC.service.pending.PendingPromptService;
+import io.github.LucasMullerC.service.pending.PendingService;
+import io.github.LucasMullerC.util.LocationUtil;
+import io.github.LucasMullerC.util.MessageUtils;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
+
+public class analyse implements CommandExecutor {
+
+    @Override
+    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command arg1, @NotNull String arg2,
+            @NotNull String[] arg3) {
+                if(arg3.length == 0){
+                    return false;
+                }
+                Player player = (Player) sender;
+                if (arg3[0].equalsIgnoreCase("claim") && player.hasPermission("group.reviewer")) {
+                    analyseClaim(arg3, player);
+                    return true;
+                } else if(arg3[0].equalsIgnoreCase("app") && player.hasPermission("group.reviewer")){
+                    return true;
+                } else{
+                    player.sendMessage(Component.text(MessageUtils.getMessage("Analisar404", player)).color(NamedTextColor.GOLD));
+                    player.sendMessage(Component.text(MessageUtils.getMessage("Analisar4041", player)).color(NamedTextColor.GOLD));
+                    return false;
+                }
+    }
+
+    private void analyseClaim(String[] command,Player player) {
+        PendingService pendingService = new PendingService();
+        Pending pending = null;
+        if(player.hasPermission("btebrasil.bypass"))
+            //FOR TESTS ONLY
+            pending = pendingService.getNextPendingClaim("bypass");
+         else {
+            pending = pendingService.getNextPendingClaim(player.getUniqueId().toString());
+        }
+
+        if(pending != null){
+            BuilderService builderService = new BuilderService();
+            Builder builder = builderService.getBuilderUuid(pending.getUUID());
+
+            ClaimService claimService = new ClaimService();
+            Claim claim = claimService.getClaim(pending.getregionId());
+            if(command.length <= 1){
+                player.chat("/region select "+pending.getregionId());
+                player.sendMessage(Component.text(MessageUtils.getMessage("AnaliseClaim1", player)+
+                pending.getregionId()+
+                MessageUtils.getMessage("VoceAnalisa2", player)+
+                DiscordActions.getDiscordName(builder.getDiscord())).color(NamedTextColor.GOLD));
+
+                player.teleport(LocationUtil.getLocationFromPoints(claim.getPoints(), player.getWorld()));
+                player.sendMessage(Component.text(MessageUtils.getMessage("Analisar1", player)).color(NamedTextColor.GOLD));
+                player.sendMessage(Component.text(MessageUtils.getMessage("Analisar2", player)).color(NamedTextColor.GOLD));
+                return;
+            }
+            if(command[1].equalsIgnoreCase("confirmar")){
+                World world = player.getWorld();
+                OfflinePlayer claimOwner = Bukkit.getOfflinePlayer(UUID.fromString(claim.getPlayer()));
+                BTEBrasilSystem plugin = BTEBrasilSystem.getPlugin();
+                ConversationFactory cf = new ConversationFactory(plugin);
+                PendingPromptService pendingPromptService = new PendingPromptService(claim, pending, claimOwner, player, world,claimService);
+                Conversation conv = cf.withFirstPrompt(pendingPromptService.Builds).withLocalEcho(true)
+                        .buildConversation(player);
+                conv.begin();
+
+                pendingService.removePending(pending);
+            } else if(command[1].equalsIgnoreCase("recusar")){
+                String reason = "";
+                for (int i = 2; i < command.length; i++) {
+                    reason += command[i] + " ";
+                }
+                reason = reason.trim();
+
+                DiscordActions.sendPrivateMessage(builder.getDiscord(),MessageUtils.getMessageConsole("ClaimRecusada1")+ 
+                claim.getClaim() + 
+                MessageUtils.getMessageConsole("ClaimRecusada2") +
+                reason +
+                MessageUtils.getMessageConsole("ClaimRecusada3")
+                );
+
+                if(!claim.getParticipants().equals("nulo")){
+                    String[] participants = claim.getParticipants().split(",");
+                    for (int i = 0; i < participants.length; i++) {
+                        String participantDiscord = builderService.getBuilderUuid(participants[i]).getDiscord();
+                        if(!participantDiscord.equals("nulo")){
+                            DiscordActions.sendPrivateMessage(participantDiscord,MessageUtils.getMessageConsole("ClaimRecusada1")+ 
+                            claim.getClaim() + 
+                            MessageUtils.getMessageConsole("ClaimRecusada2") +
+                            reason +
+                            MessageUtils.getMessageConsole("ClaimRecusada3")
+                            );
+                        }
+                    }
+                }
+                pendingService.removePending(pending);
+                player.sendMessage(Component.text(MessageUtils.getMessage("ClaimRecusada4", player)).color(NamedTextColor.GOLD));
+            } else{
+                player.chat("/region select "+pending.getregionId());
+                player.sendMessage(Component.text(MessageUtils.getMessage("AnaliseClaim1", player)+
+                pending.getregionId()+
+                MessageUtils.getMessage("VoceAnalisa2", player)+
+                DiscordActions.getDiscordName(builder.getDiscord())).color(NamedTextColor.GOLD));
+
+                player.teleport(LocationUtil.getLocationFromPoints(claim.getPoints(), player.getWorld()));
+                player.sendMessage(Component.text(MessageUtils.getMessage("Analisar1", player)).color(NamedTextColor.GOLD));
+                player.sendMessage(Component.text(MessageUtils.getMessage("Analisar2", player)).color(NamedTextColor.GOLD));
+            }
+        } else{
+            player.sendMessage(Component.text(MessageUtils.getMessage("NotClaim", player)).color(NamedTextColor.GOLD));
+        }
+    }
+}
+

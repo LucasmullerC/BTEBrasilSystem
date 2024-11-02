@@ -3,6 +3,7 @@ package io.github.LucasMullerC.BTEBrasilSystem;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import github.scarsz.discordsrv.DiscordSRV;
+import io.github.LucasMullerC.commands.analyse;
 import io.github.LucasMullerC.commands.application;
 import io.github.LucasMullerC.commands.back;
 import io.github.LucasMullerC.commands.cancel;
@@ -35,8 +36,8 @@ public class BTEBrasilSystem extends JavaPlugin {
 		getCommand("claim").setExecutor(new claim());
 		getCommand("time").setExecutor(new team());
 		getCommand("tag").setExecutor(new tag());
+		getCommand("analisar").setExecutor(new analyse());
 		/*
-		getCommand("analisar").setExecutor(new analisar());
 		getCommand("salvar").setExecutor(new salvar());
 		getCommand("link").setExecutor(new link());
 		getCommand("deslink").setExecutor(new deslink());

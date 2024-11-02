@@ -64,7 +64,7 @@ public class BuilderService {
         this.builder.save();
     }
 
-    public void updateClaim(Builder builder){
+    public void updateBuilder(Builder builder){
        Builder oldBuilder = getBuilderUuid(builder.getUUID());
        if(oldBuilder != null){
         oldBuilder = builder;

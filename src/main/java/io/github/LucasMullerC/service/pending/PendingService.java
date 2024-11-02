@@ -92,5 +92,16 @@ public class PendingService {
         return null;
     }
 
+    public Pending getNextPendingClaim(String UUID){
+        for (Pending pending : pending.getValues()) {
+            if (pending.getUUID() != null && !pending.getUUID().contains(UUID)) {
+                if (pending.getisApplication() == false) {
+                    return pending;
+                }
+            }
+        }
+        return null;
+    }
+
 
 }

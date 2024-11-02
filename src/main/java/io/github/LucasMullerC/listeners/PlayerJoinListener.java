@@ -93,7 +93,7 @@ public class PlayerJoinListener implements Listener {
 						BuilderService builderService = new BuilderService();
 						Builder builder = builderService.getBuilderUuid(player.getUniqueId().toString());
 						if(builder != null){
-							BuilderUtils.checkRank(builder);
+							BuilderUtils.checkRank(builder,builderService);
 						}
 					}
 				}, 30L);

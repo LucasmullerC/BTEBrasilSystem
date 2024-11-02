@@ -33,6 +33,9 @@ public class claim implements CommandExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command arg1, @NotNull String arg2,
             @NotNull String[] arg3) {
+            if(arg3.length == 0){
+                return false;
+            }
             Player player = (Player) sender;
             if (player.hasPermission("group.b_br") == false && player.hasPermission("group.builder_not") == false) {
                 player.sendMessage(Component.text(MessageUtils.getMessage("notabuilder1", player)).color(NamedTextColor.GOLD));

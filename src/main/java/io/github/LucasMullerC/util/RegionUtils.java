@@ -17,6 +17,7 @@ import com.noahhusby.sledgehammer.datasets.projection.ScaleProjection;
 import com.sk89q.worldedit.EditSession;
 import com.sk89q.worldedit.LocalSession;
 import com.sk89q.worldedit.WorldEdit;
+import com.sk89q.worldedit.bukkit.BukkitAdapter;
 import com.sk89q.worldedit.extent.clipboard.Clipboard;
 import com.sk89q.worldedit.extent.clipboard.io.ClipboardFormat;
 import com.sk89q.worldedit.extent.clipboard.io.ClipboardFormats;
@@ -114,6 +115,14 @@ public class RegionUtils {
                 editSession.close(); // We now close it to flush the buffers and run the cleanup tasks.
             }
         }
+    }
+
+    public static double getDistance(String claimId, org.bukkit.World world) {
+        com.sk89q.worldedit.world.World w = BukkitAdapter.adapt(world);
+        ProtectedRegion protectedRegion = getRegion(w, claimId);
+        Integer distanceX = protectedRegion.getMaximumPoint().getBlockX() - protectedRegion.getMinimumPoint().getBlockX();
+        Integer distanceZ = protectedRegion.getMaximumPoint().getBlockZ() - protectedRegion.getMinimumPoint().getBlockZ();
+        return distanceX + distanceZ;
     }
 
     public static double[] toGeo(final double x, final double z) {

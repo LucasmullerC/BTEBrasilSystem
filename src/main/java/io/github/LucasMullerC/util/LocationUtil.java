@@ -1,6 +1,7 @@
 package io.github.LucasMullerC.util;
 
 import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.Bukkit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -22,6 +23,19 @@ public class LocationUtil {
         } else {
             throw new IllegalArgumentException("Invalid location format: " + locationString);
         }
+    }
+
+    public static Location getLocationFromPoints(String coordinatePoints, World world) {
+        String[] ary = coordinatePoints.split(",");
+
+        int spawnY = world.getHighestBlockYAt(Integer.parseInt(ary[0].split("\\.")[0]),
+                Integer.parseInt(ary[1].split("\\.")[0]));
+
+        int x = Integer.parseInt(ary[0].split("\\.")[0]);
+        int y = spawnY + 10;
+        int z = Integer.parseInt(ary[1].split("\\.")[0]);
+        Location loc = new Location(world, x, y, z);
+        return loc;
     }
 }
 

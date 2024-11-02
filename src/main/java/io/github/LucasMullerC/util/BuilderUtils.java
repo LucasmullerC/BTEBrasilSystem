@@ -6,13 +6,16 @@ import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
+import io.github.LucasMullerC.model.Awards;
 import io.github.LucasMullerC.model.Builder;
+import io.github.LucasMullerC.service.AwardService;
+import io.github.LucasMullerC.service.builder.BuilderService;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;
 
 public class BuilderUtils {
-    public static void checkRank(Builder builder){
+    public static void checkRank(Builder builder, BuilderService builderService){
         OfflinePlayer Offplayer = Bukkit.getOfflinePlayer(UUID.fromString(builder.getUUID()));
         if (builder != null) {
             boolean leveledUp = false;
@@ -26,6 +29,7 @@ public class BuilderUtils {
                 if (builder.getPoints() >= NextLvl) {
                     Integer newtier = tier + 1;
                     builder.setTier(newtier);
+                    builderService.updateBuilder(builder);
                     leveledUp = true;
                 }
                 else{
@@ -48,10 +52,75 @@ public class BuilderUtils {
                     player.sendMessage(Component.text(MessageUtils.getMessage("NextLevel1", player)).color(NamedTextColor.GREEN));
                     player.sendMessage(Component.text(MessageUtils.getMessage("NextLevel2", player)).color(NamedTextColor.GOLD));
 
-                    //TODO: ENVIAR MSG NO DISCORD
+                    //TODO: ENVIAR MSG NO DISCORD (webhook)
                     //DiscordPonte.NextLevel(newtier.toString(), B.getDiscord(), player);
                 }
             }
+        }
+    }
+
+    public static void CheckAwardsBuilds(Builder builder,BuilderService builderService){
+        if (builder.getBuilds() >= 1) {
+            addAward(builder,builderService,"1build");
+        }
+        if (builder.getBuilds() >= 10) {
+            addAward(builder,builderService,"10build");
+        }
+        if (builder.getBuilds() >= 30) {
+            addAward(builder,builderService,"30build");
+        }
+        if (builder.getBuilds() >= 50) {
+            addAward(builder,builderService,"50build");
+        }
+        if (builder.getBuilds() >= 100) {
+            addAward(builder,builderService,"100build");
+        }
+        if (builder.getBuilds() >= 300) {
+            addAward(builder,builderService,"300build");
+        }
+        if (builder.getBuilds() >= 500) {
+            addAward(builder,builderService,"500build");
+        }
+        if (builder.getBuilds() >= 500) {
+            addAward(builder,builderService,"1000build");
+        }
+    }
+
+    public static void addBuilds(Builder builder, BuilderService builderService,int newBuilds){
+        Integer oldBuilds = builder.getBuilds();
+        builder.setBuilds(oldBuilds+newBuilds);
+        builderService.updateBuilder(builder);
+    }
+
+    public static void addPoints(Builder builder, BuilderService builderService,double newPoints){
+        double oldPoints = builder.getPoints();
+        builder.setPoints(oldPoints+newPoints);
+        builderService.updateBuilder(builder);
+    }
+
+    public static void addAward(Builder builder, BuilderService builderService, String award){
+        String awards = builder.getAwards();
+        String[] awardList = awards.split(",");
+        Boolean hasAward = false;
+        for (int i = 0; i < awardList.length; i++) {
+            if (awardList[i].equals(award)) {
+                hasAward = true;
+                break;
+            }
+        }
+        if(hasAward == false){
+            AwardService awardService = new AwardService();
+            Awards singleAward = awardService.getAward(award);
+            if(awards.equals("nulo")){
+                builder.setAwards(award);
+            } else{
+                awards = awards + "," + award;
+                builder.setAwards(awards);
+            }
+            //Saving(Updating) inside addPoints
+            addPoints(builder, builderService, singleAward.getPoints());
+            //TODO: ENVIAR MSG NO DISCORD (webhook) 
+            //DiscordPonte.Awards(C, B.getDiscord(), UUID);
         }
     }
 }
