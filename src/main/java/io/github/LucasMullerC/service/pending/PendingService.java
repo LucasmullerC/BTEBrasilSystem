@@ -103,5 +103,14 @@ public class PendingService {
         return null;
     }
 
+    public Pending getNextPendingApplication() {
+        for (Pending pending : pending.getValues()) {
+            if (pending.getisApplication() == true) {
+                return pending;
+            }
+        }
+        return null;
+    }
+
 
 }

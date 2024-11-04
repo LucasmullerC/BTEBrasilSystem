@@ -3,6 +3,7 @@ package io.github.LucasMullerC.commands;
 import java.util.UUID;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.World;
 import org.bukkit.command.Command;
@@ -11,19 +12,27 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.conversations.Conversation;
 import org.bukkit.conversations.ConversationFactory;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.PlayerInventory;
+import org.bukkit.potion.PotionEffectType;
 import org.jetbrains.annotations.NotNull;
 
 import io.github.LucasMullerC.BTEBrasilSystem.BTEBrasilSystem;
 import io.github.LucasMullerC.discord.DiscordActions;
+import io.github.LucasMullerC.model.Applicant;
+import io.github.LucasMullerC.model.ApplicationZone;
 import io.github.LucasMullerC.model.Builder;
 import io.github.LucasMullerC.model.Claim;
 import io.github.LucasMullerC.model.Pending;
+import io.github.LucasMullerC.service.WorldGuardService;
+import io.github.LucasMullerC.service.applicant.ApplicantService;
+import io.github.LucasMullerC.service.applicant.ApplicationZoneService;
 import io.github.LucasMullerC.service.builder.BuilderService;
 import io.github.LucasMullerC.service.claim.ClaimService;
 import io.github.LucasMullerC.service.pending.PendingPromptService;
 import io.github.LucasMullerC.service.pending.PendingService;
 import io.github.LucasMullerC.util.LocationUtil;
 import io.github.LucasMullerC.util.MessageUtils;
+import io.github.LucasMullerC.util.ZoneUtils;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 
@@ -40,6 +49,7 @@ public class analyse implements CommandExecutor {
                     analyseClaim(arg3, player);
                     return true;
                 } else if(arg3[0].equalsIgnoreCase("app") && player.hasPermission("group.reviewer")){
+                    analyseApplication(arg3, player);
                     return true;
                 } else{
                     player.sendMessage(Component.text(MessageUtils.getMessage("Analisar404", player)).color(NamedTextColor.GOLD));
@@ -131,6 +141,87 @@ public class analyse implements CommandExecutor {
         } else{
             player.sendMessage(Component.text(MessageUtils.getMessage("NotClaim", player)).color(NamedTextColor.GOLD));
         }
+    }
+
+    public void analyseApplication(String[] command, Player player){
+        PendingService pendingService = new PendingService();
+        Pending pending = null;
+
+        pending = pendingService.getNextPendingApplication();
+        if(pending != null){
+            ApplicantService applicantService = new ApplicantService();
+            Applicant applicant = applicantService.getApplicant(pending.getUUID());
+            ApplicationZoneService applicationZoneService = new ApplicationZoneService();
+            ApplicationZone applicationZone = applicationZoneService.getApplicationZone(applicant.getgetZone());
+            OfflinePlayer applicationPlayer = Bukkit.getOfflinePlayer(UUID.fromString(applicant.getUUID()));
+            if(command.length <= 1){
+                Location location = applicationZone.getLocationD();
+                player.sendMessage(Component.text(MessageUtils.getMessage("VoceAnalisa", player) +" "+ applicationPlayer.getName() +
+                MessageUtils.getMessage("VoceAnalisa2", player) + DiscordActions.getDiscordName(applicant.getDiscord())));
+
+                player.teleport(location);
+                player.sendMessage(Component.text(MessageUtils.getMessage("Analisar1", player)).color(NamedTextColor.GOLD));
+                player.sendMessage(Component.text(MessageUtils.getMessage("Analisar2", player)).color(NamedTextColor.GOLD));
+                return;
+            }
+            if(command[1].equalsIgnoreCase("confirmar")){
+                //remove regions
+                WorldGuardService worldGuardService = new WorldGuardService();
+                worldGuardService.RemoveRegion("apply" + applicant.getgetZone() + "d", player);
+                worldGuardService.RemoveRegion("apply" + applicant.getgetZone() + "c", player);
+                worldGuardService.RemoveRegion("apply" + applicant.getgetZone() + "b", player);
+                worldGuardService.RemoveRegion("apply" + applicant.getgetZone() + "a", player);
+
+                //remove from lists
+                applicationZoneService.removeApplicationZone(applicationZone);
+                applicantService.removeApplicant(applicant);
+                pendingService.removePending(pending);
+
+                //add builder role on discord
+                DiscordActions.addRole(applicant.getDiscord(),"721861941517353021");
+
+                //teleport player to spawn
+                World world = player.getWorld();
+                Location location = new Location(world, -1163, 80, 300);
+                if (applicationPlayer != null || applicationPlayer.isOnline() == true) {
+                    Player applicantionOnlinePlayer = Bukkit.getPlayer(UUID.fromString(applicant.getUUID()));
+                    applicantionOnlinePlayer.teleport(location);
+                    applicantionOnlinePlayer.removePotionEffect(PotionEffectType.NIGHT_VISION);
+                    PlayerInventory inventoryp = applicantionOnlinePlayer.getInventory();
+                    inventoryp.clear();
+                }
+                //remove zone from map
+                player.sendMessage(Component.text(MessageUtils.getMessage("ZonaDel", player)).color(NamedTextColor.RED));
+                ZoneUtils.removeRegion(player, applicationZone);
+                player.sendMessage(Component.text(MessageUtils.getMessage("ZonaDel1", player)).color(NamedTextColor.GREEN));
+
+                //teleport reviewer
+                player.teleport(location);
+                player.sendMessage(Component.text(MessageUtils.getMessage("AppAprov", player)).color(NamedTextColor.GOLD));
+                DiscordActions.sendPrivateMessage(applicant.getDiscord(), MessageUtils.getMessageConsole("AppAprovBuilder"));
+            } else if(command[1].equalsIgnoreCase("recusar")){
+                String reason = "";
+                for (int i = 2; i < command.length; i++) {
+                    reason += command[i] + " ";
+                }
+                reason = reason.trim();
+                pendingService.removePending(pending);
+                DiscordActions.sendPrivateMessage(applicant.getDiscord(), MessageUtils.getMessageConsole("AppRecusada1")+reason+
+                MessageUtils.getMessageConsole("AppRecusada2"));
+
+                World world = player.getWorld();
+                Location location = new Location(world, -1163, 80, 300);
+                player.teleport(location);
+                if (applicationPlayer != null || applicationPlayer.isOnline() == true) {
+                    WorldGuardService worldGuardService = new WorldGuardService();
+                    worldGuardService.addPermissionWG("apply"+applicant.getgetZone()+"d",applicationPlayer.getPlayer(),applicationPlayer.getUniqueId());
+                }
+                player.sendMessage(Component.text(MessageUtils.getMessage("AppRecusada3", player)).color(NamedTextColor.GOLD));
+            }
+        } else{
+            player.sendMessage(Component.text(MessageUtils.getMessage("NotAnalisar", player)).color(NamedTextColor.GOLD));
+        }
+
     }
 }
 

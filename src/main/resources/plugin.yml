@@ -30,7 +30,7 @@ commands:
     usage: /tag
   analisar:
     description: Analisar uma Aplicacao.
-    usage: /analisar
+    usage: /analisar [app|claim]
     permission: btebrasil.lider
   cancelar:
     description: Cancelar uma Aplicacao.
