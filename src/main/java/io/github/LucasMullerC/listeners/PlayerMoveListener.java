@@ -39,7 +39,9 @@ public class PlayerMoveListener implements Listener {
                         return;
                     } else if (player.hasPermission("group.app")) {
                         luckpermsService.removeGroup(player, "app");
-                        player.setGameMode(GameMode.SPECTATOR);
+                        if(player.getGameMode() == GameMode.CREATIVE){
+                            player.setGameMode(GameMode.SPECTATOR);
+                        }
                     }
                 } else {
                     for (ProtectedRegion region : playerRegion.getRegions()) {
@@ -54,10 +56,12 @@ public class PlayerMoveListener implements Listener {
                                     }
                                     return;
                                 } else if (!player.hasPermission("group.builder_not")
-                                        || !player.hasPermission("group.b_br")) {
+                                        && !player.hasPermission("group.b_br")) {
                                     LuckpermsService luckpermsService = new LuckpermsService();
                                     luckpermsService.addGroup(player, "app");
-                                    player.setGameMode(GameMode.CREATIVE);
+                                    if(player.getGameMode() == GameMode.SPECTATOR){
+                                        player.setGameMode(GameMode.CREATIVE);
+                                    }
                                     return;
                                 } else {
                                     return;
@@ -78,7 +82,9 @@ public class PlayerMoveListener implements Listener {
                     if (player.hasPermission("group.app")) {
                         LuckpermsService luckpermsService = new LuckpermsService();
                         luckpermsService.removeGroup(player, "app");
-                        player.setGameMode(GameMode.SPECTATOR);
+                        if(player.getGameMode() == GameMode.CREATIVE){
+                            player.setGameMode(GameMode.SPECTATOR);
+                        }
                     }
                 }
             }
