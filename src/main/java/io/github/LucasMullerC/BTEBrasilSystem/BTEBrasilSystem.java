@@ -92,7 +92,9 @@ public final class BTEBrasilSystem extends JavaPlugin implements Listener {
 					} else if (player.hasPermission("group.app")) {
 						GroupManager gp = new GroupManager();
 						gp.removeGroup(player, "app");
-						player.setGameMode(GameMode.SPECTATOR);
+						if(player.getGameMode() == GameMode.CREATIVE){
+							player.setGameMode(GameMode.SPECTATOR);
+						}
 					}
 				} else {
 					for (ProtectedRegion region : playerRegion.getRegions()) {
@@ -103,11 +105,12 @@ public final class BTEBrasilSystem extends JavaPlugin implements Listener {
 									gp.removeGroup(player, "builder_not");
 									gp.addGroup(player, "b_br");
 									return;
-								} else if (!player.hasPermission("group.builder_not")
-										|| !player.hasPermission("group.b_br")) {
+								} else if (!player.hasPermission("group.builder_not") && !player.hasPermission("group.b_br")) {
 									GroupManager gp = new GroupManager();
 									gp.addGroup(player, "app");
-									player.setGameMode(GameMode.CREATIVE);
+									if(player.getGameMode() == GameMode.SPECTATOR){
+										player.setGameMode(GameMode.CREATIVE);
+									}
 									return;
 								} else {
 									return;
@@ -125,7 +128,9 @@ public final class BTEBrasilSystem extends JavaPlugin implements Listener {
 					if (player.hasPermission("group.app")) {
 						GroupManager gp = new GroupManager();
 						gp.removeGroup(player, "app");
-						player.setGameMode(GameMode.SPECTATOR);
+						if(player.getGameMode() == GameMode.CREATIVE){
+							player.setGameMode(GameMode.SPECTATOR);
+						}
 					}
 				}
 			}
