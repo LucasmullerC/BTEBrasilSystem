@@ -35,16 +35,6 @@ commands:
   cancelar:
     description: Cancelar uma Aplicacao.
     usage: /cancelar
-  salvar:
-    description: Salvar Plugin.
-    usage: /salvar
-    permission: btebrasil.adm
-  link:
-    description: Linkar sua conta do Discord.
-    usage: /link
-  deslink:
-    description: Deslinkar sua conta do Discord.
-    usage: /deslink
   perfil:
     description: Seu Perfil.
     usage: /perfil

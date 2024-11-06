@@ -2,6 +2,7 @@ package io.github.LucasMullerC.listeners;
 
 import java.util.UUID;
 
+import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -32,9 +33,13 @@ public class PlayerMoveListener implements Listener {
                     if (player.hasPermission("group.builder_not")) {
                         luckpermsService.removeGroup(player, "builder_not");
                         luckpermsService.addGroup(player, "b_br");
+                        if (player.hasPermission("group.app")) {
+                            luckpermsService.removeGroup(player, "app");
+                        }
                         return;
                     } else if (player.hasPermission("group.app")) {
                         luckpermsService.removeGroup(player, "app");
+                        player.setGameMode(GameMode.SPECTATOR);
                     }
                 } else {
                     for (ProtectedRegion region : playerRegion.getRegions()) {
@@ -44,11 +49,15 @@ public class PlayerMoveListener implements Listener {
                                     LuckpermsService luckpermsService = new LuckpermsService();
                                     luckpermsService.removeGroup(player, "builder_not");
                                     luckpermsService.addGroup(player, "b_br");
+                                    if (player.hasPermission("group.app")) {
+                                        luckpermsService.removeGroup(player, "app");
+                                    }
                                     return;
                                 } else if (!player.hasPermission("group.builder_not")
                                         || !player.hasPermission("group.b_br")) {
                                     LuckpermsService luckpermsService = new LuckpermsService();
                                     luckpermsService.addGroup(player, "app");
+                                    player.setGameMode(GameMode.CREATIVE);
                                     return;
                                 } else {
                                     return;
@@ -60,12 +69,16 @@ public class PlayerMoveListener implements Listener {
                             LuckpermsService luckpermsService = new LuckpermsService();
                             luckpermsService.addGroup(player, "builder_not");
                             luckpermsService.removeGroup(player, "b_br");
+                            if (player.hasPermission("group.app")) {
+                                luckpermsService.removeGroup(player, "app");
+                            }
                             return;
                         }
                     }
                     if (player.hasPermission("group.app")) {
                         LuckpermsService luckpermsService = new LuckpermsService();
                         luckpermsService.removeGroup(player, "app");
+                        player.setGameMode(GameMode.SPECTATOR);
                     }
                 }
             }

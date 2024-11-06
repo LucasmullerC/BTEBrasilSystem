@@ -61,13 +61,13 @@ public class ClaimUtils {
         pending.setbuilds(builds);
         pendingService.addPending(pending);
 
-        //DiscordActions.sendLogMessage("<@&826599049297264640> "+MessageUtils.getMessageConsole("alertadminuser")+
-        //" **"+discordName+"** "+MessageUtils.getMessageConsole("PendenteMsgClaim1")+"**"+claim.getClaim()+"**"+
-        //MessageUtils.getMessageConsole("PendenteMsgClaim2"));
-
-        DiscordActions.sendLogMessage("<@&teste60> "+MessageUtils.getMessageConsole("alertadminuser")+
+        DiscordActions.sendLogMessage("<@&826599049297264640> "+MessageUtils.getMessageConsole("alertadminuser")+
         " **"+discordName+"** "+MessageUtils.getMessageConsole("PendenteMsgClaim1")+"**"+claim.getClaim()+"**"+
         MessageUtils.getMessageConsole("PendenteMsgClaim2"));
+
+        //DiscordActions.sendLogMessage("<@&teste60> "+MessageUtils.getMessageConsole("alertadminuser")+
+        //" **"+discordName+"** "+MessageUtils.getMessageConsole("PendenteMsgClaim1")+"**"+claim.getClaim()+"**"+
+        //MessageUtils.getMessageConsole("PendenteMsgClaim2"));
     }
 
     public static void CompleteClaim(Claim claim, ClaimService claimService){

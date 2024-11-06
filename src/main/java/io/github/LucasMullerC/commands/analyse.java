@@ -165,6 +165,7 @@ public class analyse implements CommandExecutor {
                 return;
             }
             if(command[1].equalsIgnoreCase("confirmar")){
+
                 //remove regions
                 WorldGuardService worldGuardService = new WorldGuardService();
                 worldGuardService.RemoveRegion("apply" + applicant.getgetZone() + "d", player);

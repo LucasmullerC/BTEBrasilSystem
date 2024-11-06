@@ -15,6 +15,7 @@ import org.jetbrains.annotations.NotNull;
 import io.github.LucasMullerC.model.Applicant;
 import io.github.LucasMullerC.model.ApplicationZone;
 import io.github.LucasMullerC.model.Pending;
+import io.github.LucasMullerC.service.LuckpermsService;
 import io.github.LucasMullerC.service.WorldGuardService;
 import io.github.LucasMullerC.service.applicant.ApplicantService;
 import io.github.LucasMullerC.service.applicant.ApplicationZoneService;
@@ -52,6 +53,11 @@ public class cancel implements CommandExecutor{
         if(applicant != null){
             ApplicationZoneService applicationZoneService = new ApplicationZoneService();
             ApplicationZone applicationZone = applicationZoneService.getApplicationZone(applicant.getgetZone());
+
+            if (player.hasPermission("group.app")) {
+                LuckpermsService luckpermsService = new LuckpermsService();
+                luckpermsService.removeGroup(player, "app");
+            }
 
             //removing Worldguard and Luckperms Regions
             WorldGuardService worldGuardService = new WorldGuardService();

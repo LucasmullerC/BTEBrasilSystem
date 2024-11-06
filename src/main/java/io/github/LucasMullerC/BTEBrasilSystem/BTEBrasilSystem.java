@@ -38,9 +38,6 @@ public class BTEBrasilSystem extends JavaPlugin {
 		getCommand("tag").setExecutor(new tag());
 		getCommand("analisar").setExecutor(new analyse());
 		/*
-		getCommand("salvar").setExecutor(new salvar());
-		getCommand("link").setExecutor(new link());
-		getCommand("deslink").setExecutor(new deslink());
 		getCommand("perfil").setExecutor(new perfil());
 		getCommand("status").setExecutor(new status());
 		*/
