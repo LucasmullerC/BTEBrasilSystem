@@ -4,6 +4,7 @@ import java.util.UUID;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -91,6 +92,7 @@ public final class BTEBrasilSystem extends JavaPlugin implements Listener {
 					} else if (player.hasPermission("group.app")) {
 						GroupManager gp = new GroupManager();
 						gp.removeGroup(player, "app");
+						player.setGameMode(GameMode.SPECTATOR);
 					}
 				} else {
 					for (ProtectedRegion region : playerRegion.getRegions()) {
@@ -105,6 +107,7 @@ public final class BTEBrasilSystem extends JavaPlugin implements Listener {
 										|| !player.hasPermission("group.b_br")) {
 									GroupManager gp = new GroupManager();
 									gp.addGroup(player, "app");
+									player.setGameMode(GameMode.CREATIVE);
 									return;
 								} else {
 									return;
@@ -122,6 +125,7 @@ public final class BTEBrasilSystem extends JavaPlugin implements Listener {
 					if (player.hasPermission("group.app")) {
 						GroupManager gp = new GroupManager();
 						gp.removeGroup(player, "app");
+						player.setGameMode(GameMode.SPECTATOR);
 					}
 				}
 			}
