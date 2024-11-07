@@ -12,6 +12,8 @@ import io.github.LucasMullerC.commands.completed;
 import io.github.LucasMullerC.commands.map;
 import io.github.LucasMullerC.commands.next;
 import io.github.LucasMullerC.commands.previous;
+import io.github.LucasMullerC.commands.profile;
+import io.github.LucasMullerC.commands.status;
 import io.github.LucasMullerC.commands.tag;
 import io.github.LucasMullerC.commands.team;
 import io.github.LucasMullerC.discord.DiscordSrvListener;
@@ -37,10 +39,9 @@ public class BTEBrasilSystem extends JavaPlugin {
 		getCommand("time").setExecutor(new team());
 		getCommand("tag").setExecutor(new tag());
 		getCommand("analisar").setExecutor(new analyse());
-		/*
-		getCommand("perfil").setExecutor(new perfil());
+		getCommand("perfil").setExecutor(new profile());
 		getCommand("status").setExecutor(new status());
-		*/
+
 		// Inicializa Listener
 		DiscordSRV.api.subscribe(discordsrvListener);
 		getServer().getPluginManager().registerEvents(new PlayerMoveListener(), this);

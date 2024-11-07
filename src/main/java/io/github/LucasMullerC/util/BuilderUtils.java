@@ -59,6 +59,12 @@ public class BuilderUtils {
         }
     }
 
+    public static String toNextLevel(Builder builder){
+        int tier = builder.getTier();
+        double nextLevel = (tier * 150) * 2.25;
+        return String.valueOf(nextLevel);
+    }
+
     public static void CheckAwardsBuilds(Builder builder,BuilderService builderService){
         if (builder.getBuilds() >= 1) {
             addAward(builder,builderService,"1build");
