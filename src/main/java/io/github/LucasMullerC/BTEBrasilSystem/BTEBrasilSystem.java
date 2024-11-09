@@ -2,6 +2,7 @@ package io.github.LucasMullerC.BTEBrasilSystem;
 
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -10,6 +11,7 @@ import github.scarsz.discordsrv.api.commands.PluginSlashCommand;
 import github.scarsz.discordsrv.api.commands.SlashCommand;
 import github.scarsz.discordsrv.api.commands.SlashCommandProvider;
 import github.scarsz.discordsrv.dependencies.jda.api.entities.MessageEmbed;
+import github.scarsz.discordsrv.dependencies.jda.api.entities.Role;
 import github.scarsz.discordsrv.dependencies.jda.api.entities.User;
 import github.scarsz.discordsrv.dependencies.jda.api.events.interaction.SlashCommandEvent;
 import github.scarsz.discordsrv.dependencies.jda.api.interactions.commands.OptionType;
@@ -32,6 +34,7 @@ import io.github.LucasMullerC.commands.status;
 import io.github.LucasMullerC.commands.tag;
 import io.github.LucasMullerC.commands.team;
 import io.github.LucasMullerC.discord.DiscordSrvListener;
+import io.github.LucasMullerC.discord.commands.AddBuilds;
 import io.github.LucasMullerC.discord.commands.DiscordProfile;
 import io.github.LucasMullerC.listeners.PlayerJoinListener;
 import io.github.LucasMullerC.listeners.PlayerMoveListener;
@@ -80,16 +83,22 @@ public class BTEBrasilSystem extends JavaPlugin implements SlashCommandProvider{
 	}
 
 	@Override
-    public Set<PluginSlashCommand> getSlashCommands() {
-        return new HashSet<>(Arrays.asList(
-                new PluginSlashCommand(this, new CommandData("perfil", MessageUtils.getMessageConsole("slashprofile"))
+	public Set<PluginSlashCommand> getSlashCommands() {
+		return new HashSet<>(Arrays.asList(
+				//perfil
+				new PluginSlashCommand(this, new CommandData("perfil", MessageUtils.getMessageConsole("slashprofile"))
 				.addOption(OptionType.MENTIONABLE, "mention", MessageUtils.getMessageConsole("profiledescription2"), false)
-				.addOption(OptionType.INTEGER, "userid", MessageUtils.getMessageConsole("profiledescription3"), false))
-        ));
-    }
+				.addOption(OptionType.STRING, "userid", MessageUtils.getMessageConsole("profiledescription3"), false)),
 
-    @SlashCommand(path = "perfil")
-    public void perfilCommand(SlashCommandEvent event) {
+				//addbuilds
+				new PluginSlashCommand(this, new CommandData("addbuilds", MessageUtils.getMessageConsole("slashaddbuilds"))
+				.addOption(OptionType.INTEGER, "builds", MessageUtils.getMessageConsole("slashaddbuildsdescription"), true)
+				.addOption(OptionType.STRING, "userid", MessageUtils.getMessageConsole("slashaddbuildsdescription2"), true))
+		));
+	}
+
+	@SlashCommand(path = "perfil")
+	public void perfilCommand(SlashCommandEvent event) {
 		User mention = null;
 
 		if(event.getOption("userid") != null){
@@ -99,7 +108,20 @@ public class BTEBrasilSystem extends JavaPlugin implements SlashCommandProvider{
 		}
 		DiscordProfile discordProfile = new DiscordProfile();
 		MessageEmbed messageEmbed = discordProfile.getCommand(event.getUser(), mention);
-		Button button = new ButtonImpl("award", "Conquistas", ButtonStyle.SECONDARY, false,null);
-		event.replyEmbeds(messageEmbed).addActionRow(button).queue();
-    }
+
+		Button awardButton = new ButtonImpl("award", "Conquistas", ButtonStyle.SECONDARY, false,null);
+		Button claimButton = new ButtonImpl("claim", "Claims", ButtonStyle.SECONDARY, false,null);
+		Button leaderboardButton = new ButtonImpl("leaderboard", "Leaderboard", ButtonStyle.SECONDARY, false,null);
+		event.replyEmbeds(messageEmbed).addActionRow(awardButton,claimButton,leaderboardButton).queue();
+	}
+
+	@SlashCommand(path = "addbuilds")
+	public void addbuildsCommand(SlashCommandEvent event) {
+		List<Role> roles = event.getMember().getRoles();
+		int builds = Integer.parseInt(event.getOption("builds").getAsString());
+
+		AddBuilds addBuilds = new AddBuilds();
+		String response = addBuilds.getCommand(roles, builds, event.getOption("userid").getAsString());
+		event.reply(response).queue();
+	}
 }

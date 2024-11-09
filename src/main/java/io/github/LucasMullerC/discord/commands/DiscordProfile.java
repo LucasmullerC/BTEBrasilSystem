@@ -1,6 +1,5 @@
 package io.github.LucasMullerC.discord.commands;
 
-import github.scarsz.discordsrv.DiscordSRV;
 import github.scarsz.discordsrv.dependencies.jda.api.entities.MessageEmbed;
 import github.scarsz.discordsrv.dependencies.jda.api.entities.MessageEmbed.Footer;
 import github.scarsz.discordsrv.dependencies.jda.api.entities.MessageEmbed.ImageInfo;
