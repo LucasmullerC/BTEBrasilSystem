@@ -25,4 +25,14 @@ public class AwardService {
         }
         return null;
     }
+
+    public int totalAwards(){
+        int totalAwards = 0;
+        for (Awards award : awards.getValues()) {
+            if (award.getID() != null){
+                totalAwards++;
+            }
+        }
+        return totalAwards;
+    }
 }
