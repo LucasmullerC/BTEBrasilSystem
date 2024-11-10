@@ -35,6 +35,8 @@ import io.github.LucasMullerC.commands.tag;
 import io.github.LucasMullerC.commands.team;
 import io.github.LucasMullerC.discord.DiscordSrvListener;
 import io.github.LucasMullerC.discord.commands.AddBuilds;
+import io.github.LucasMullerC.discord.commands.AddPoints;
+import io.github.LucasMullerC.discord.commands.CreateAward;
 import io.github.LucasMullerC.discord.commands.DiscordProfile;
 import io.github.LucasMullerC.listeners.PlayerJoinListener;
 import io.github.LucasMullerC.listeners.PlayerMoveListener;
@@ -90,10 +92,23 @@ public class BTEBrasilSystem extends JavaPlugin implements SlashCommandProvider{
 				.addOption(OptionType.MENTIONABLE, "mention", MessageUtils.getMessageConsole("profiledescription2"), false)
 				.addOption(OptionType.STRING, "userid", MessageUtils.getMessageConsole("profiledescription3"), false)),
 
+				//ADMIN COMMANDS
 				//addbuilds
 				new PluginSlashCommand(this, new CommandData("addbuilds", MessageUtils.getMessageConsole("slashaddbuilds"))
 				.addOption(OptionType.INTEGER, "builds", MessageUtils.getMessageConsole("slashaddbuildsdescription"), true)
-				.addOption(OptionType.STRING, "userid", MessageUtils.getMessageConsole("slashaddbuildsdescription2"), true))
+				.addOption(OptionType.STRING, "userid", MessageUtils.getMessageConsole("slashaddbuildsdescription2"), true)),
+
+				//addpontos
+				new PluginSlashCommand(this, new CommandData("addpontos", MessageUtils.getMessageConsole("slashaddpoints"))
+				.addOption(OptionType.INTEGER, "pontos", MessageUtils.getMessageConsole("slashaddpointsdescription"), true)
+				.addOption(OptionType.STRING, "userid", MessageUtils.getMessageConsole("slashaddbuildsdescription2"), true)),
+
+				//createaward
+				new PluginSlashCommand(this, new CommandData("createaward", MessageUtils.getMessageConsole("slashcreateaward"))
+				.addOption(OptionType.INTEGER, "pontos", MessageUtils.getMessageConsole("slashaddpointsdescription"), true)
+				.addOption(OptionType.STRING, "awardid", MessageUtils.getMessageConsole("slashcreateawarddescription1"), true)
+				.addOption(OptionType.STRING, "url", MessageUtils.getMessageConsole("slashcreateawarddescription2"), true)
+				.addOption(OptionType.STRING, "nome", MessageUtils.getMessageConsole("slashcreateawarddescription3"), true))
 		));
 	}
 
@@ -122,6 +137,29 @@ public class BTEBrasilSystem extends JavaPlugin implements SlashCommandProvider{
 
 		AddBuilds addBuilds = new AddBuilds();
 		String response = addBuilds.getCommand(roles, builds, event.getOption("userid").getAsString());
+		event.reply(response).queue();
+	}
+
+	@SlashCommand(path = "addpontos")
+	public void addpointsCommand(SlashCommandEvent event) {
+		List<Role> roles = event.getMember().getRoles();
+		int points = Integer.parseInt(event.getOption("pontos").getAsString());
+
+		AddPoints addPoints = new AddPoints();
+		String response = addPoints.getCommand(roles, points, event.getOption("userid").getAsString());
+		event.reply(response).queue();
+	}
+
+	@SlashCommand(path = "createaward")
+	public void createawardCommand(SlashCommandEvent event) {
+		List<Role> roles = event.getMember().getRoles();
+		int points = Integer.parseInt(event.getOption("pontos").getAsString());
+		String awardID = event.getOption("awardid").getAsString();
+		String url = event.getOption("url").getAsString();
+		String name = event.getOption("nome").getAsString();
+
+		CreateAward createAward = new CreateAward();
+		String response = createAward.getCommand(roles, points, awardID, url, name);
 		event.reply(response).queue();
 	}
 }

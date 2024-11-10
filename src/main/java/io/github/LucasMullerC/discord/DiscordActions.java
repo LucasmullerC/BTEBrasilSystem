@@ -8,6 +8,8 @@ import github.scarsz.discordsrv.dependencies.jda.api.entities.Member;
 import github.scarsz.discordsrv.dependencies.jda.api.entities.Role;
 import github.scarsz.discordsrv.dependencies.jda.api.entities.TextChannel;
 import github.scarsz.discordsrv.dependencies.jda.api.entities.User;
+
+import java.util.List;
 import java.util.UUID;
 
 public class DiscordActions {
@@ -27,6 +29,18 @@ public class DiscordActions {
         } else {
             return false;
         }
+    }
+
+    public static boolean checkAdmin(List<Role> roles) {
+        boolean hasPermission = false;
+        for (int i = 0; i < roles.size(); i++) {
+            Role r = roles.get(i);
+            if (r.getId().equals("716735505840209950")) {
+                hasPermission = true;
+                break;
+            }
+        }
+        return hasPermission;
     }
     
     public static void sendPrivateMessage(String id, String content) { 

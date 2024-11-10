@@ -17,6 +17,11 @@ public class AwardService {
         awards.load(Awards.class);
     }
 
+    public void addAward(Awards award) {
+        this.awards.add(award);
+        this.awards.save();
+    }
+
     public Awards getAward(String awardId){
         for (Awards award : awards.getValues()) {
             if (award.getID() != null && award.getID().contains(awardId)) {
