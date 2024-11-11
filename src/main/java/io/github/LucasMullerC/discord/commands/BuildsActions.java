@@ -9,8 +9,8 @@ import io.github.LucasMullerC.service.builder.BuilderService;
 import io.github.LucasMullerC.util.BuilderUtils;
 import io.github.LucasMullerC.util.MessageUtils;
 
-public class AddPoints {
-    public String getCommand(List<Role> roles,int points,String discordId){
+public class BuildsActions {
+    public String getCommand(List<Role> roles,int builds,String discordId,boolean remove){
         boolean hasPermission = DiscordActions.checkAdmin(roles);
         if(hasPermission){
             BuilderService builderService = new BuilderService();
@@ -18,7 +18,11 @@ public class AddPoints {
             if(builder == null){
                 return MessageUtils.getMessageConsole("EquipeNotBuilder");
             } else{
-                BuilderUtils.addPoints(builder, builderService, points);
+                if(remove){
+                    BuilderUtils.removeBuilds(builder, builderService, builds);
+                } else{
+                    BuilderUtils.addBuilds(builder, builderService, builds);
+                }
                 return MessageUtils.getMessageConsole("Sucesso");
             }
         } else {

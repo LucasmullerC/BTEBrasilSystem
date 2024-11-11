@@ -34,8 +34,8 @@ import io.github.LucasMullerC.commands.status;
 import io.github.LucasMullerC.commands.tag;
 import io.github.LucasMullerC.commands.team;
 import io.github.LucasMullerC.discord.DiscordSrvListener;
-import io.github.LucasMullerC.discord.commands.AddBuilds;
-import io.github.LucasMullerC.discord.commands.AddPoints;
+import io.github.LucasMullerC.discord.commands.BuildsActions;
+import io.github.LucasMullerC.discord.commands.PointsActions;
 import io.github.LucasMullerC.discord.commands.CreateAward;
 import io.github.LucasMullerC.discord.commands.DiscordProfile;
 import io.github.LucasMullerC.listeners.PlayerJoinListener;
@@ -93,15 +93,17 @@ public class BTEBrasilSystem extends JavaPlugin implements SlashCommandProvider{
 				.addOption(OptionType.STRING, "userid", MessageUtils.getMessageConsole("profiledescription3"), false)),
 
 				//ADMIN COMMANDS
-				//addbuilds
-				new PluginSlashCommand(this, new CommandData("addbuilds", MessageUtils.getMessageConsole("slashaddbuilds"))
+				//buildactions
+				new PluginSlashCommand(this, new CommandData("buildsactions", MessageUtils.getMessageConsole("slashaddbuilds"))
 				.addOption(OptionType.INTEGER, "builds", MessageUtils.getMessageConsole("slashaddbuildsdescription"), true)
-				.addOption(OptionType.STRING, "userid", MessageUtils.getMessageConsole("slashaddbuildsdescription2"), true)),
+				.addOption(OptionType.STRING, "userid", MessageUtils.getMessageConsole("slashaddbuildsdescription2"), true)
+				.addOption(OptionType.BOOLEAN, "remover", MessageUtils.getMessageConsole("slashaddbuildsdescription3"), true)),
 
-				//addpontos
-				new PluginSlashCommand(this, new CommandData("addpontos", MessageUtils.getMessageConsole("slashaddpoints"))
+				//pointsactions
+				new PluginSlashCommand(this, new CommandData("pointsactions", MessageUtils.getMessageConsole("slashaddpoints"))
 				.addOption(OptionType.INTEGER, "pontos", MessageUtils.getMessageConsole("slashaddpointsdescription"), true)
-				.addOption(OptionType.STRING, "userid", MessageUtils.getMessageConsole("slashaddbuildsdescription2"), true)),
+				.addOption(OptionType.STRING, "userid", MessageUtils.getMessageConsole("slashaddbuildsdescription2"), true)
+				.addOption(OptionType.BOOLEAN, "remover", MessageUtils.getMessageConsole("slashaddpointsdescription2"), true)),
 
 				//createaward
 				new PluginSlashCommand(this, new CommandData("createaward", MessageUtils.getMessageConsole("slashcreateaward"))
@@ -130,23 +132,25 @@ public class BTEBrasilSystem extends JavaPlugin implements SlashCommandProvider{
 		event.replyEmbeds(messageEmbed).addActionRow(awardButton,claimButton,leaderboardButton).queue();
 	}
 
-	@SlashCommand(path = "addbuilds")
-	public void addbuildsCommand(SlashCommandEvent event) {
+	@SlashCommand(path = "buildsactions")
+	public void buildsactionsCommand(SlashCommandEvent event) {
 		List<Role> roles = event.getMember().getRoles();
 		int builds = Integer.parseInt(event.getOption("builds").getAsString());
+		boolean remove = event.getOption("remover").getAsBoolean();
 
-		AddBuilds addBuilds = new AddBuilds();
-		String response = addBuilds.getCommand(roles, builds, event.getOption("userid").getAsString());
+		BuildsActions addBuilds = new BuildsActions();
+		String response = addBuilds.getCommand(roles, builds, event.getOption("userid").getAsString(),remove);
 		event.reply(response).queue();
 	}
 
-	@SlashCommand(path = "addpontos")
-	public void addpointsCommand(SlashCommandEvent event) {
+	@SlashCommand(path = "pointsactions")
+	public void pointsactionsCommand(SlashCommandEvent event) {
 		List<Role> roles = event.getMember().getRoles();
 		int points = Integer.parseInt(event.getOption("pontos").getAsString());
+		boolean remove = event.getOption("remover").getAsBoolean();
 
-		AddPoints addPoints = new AddPoints();
-		String response = addPoints.getCommand(roles, points, event.getOption("userid").getAsString());
+		PointsActions addPoints = new PointsActions();
+		String response = addPoints.getCommand(roles, points, event.getOption("userid").getAsString(),remove);
 		event.reply(response).queue();
 	}
 

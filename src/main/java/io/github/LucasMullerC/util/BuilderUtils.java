@@ -98,9 +98,21 @@ public class BuilderUtils {
         builderService.updateBuilder(builder);
     }
 
+    public static void removeBuilds(Builder builder, BuilderService builderService,int removedBuilds){
+        Integer oldBuilds = builder.getBuilds();
+        builder.setBuilds(oldBuilds-removedBuilds);
+        builderService.updateBuilder(builder);
+    }
+
     public static void addPoints(Builder builder, BuilderService builderService,double newPoints){
         double oldPoints = builder.getPoints();
         builder.setPoints(oldPoints+newPoints);
+        builderService.updateBuilder(builder);
+    }
+
+    public static void removePoints(Builder builder, BuilderService builderService,double removedPoints){
+        double oldPoints = builder.getPoints();
+        builder.setPoints(oldPoints-removedPoints);
         builderService.updateBuilder(builder);
     }
 
