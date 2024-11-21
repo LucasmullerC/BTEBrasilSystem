@@ -34,6 +34,7 @@ import io.github.LucasMullerC.commands.status;
 import io.github.LucasMullerC.commands.tag;
 import io.github.LucasMullerC.commands.team;
 import io.github.LucasMullerC.discord.DiscordSrvListener;
+import io.github.LucasMullerC.discord.commands.AwardActions;
 import io.github.LucasMullerC.discord.commands.BuildsActions;
 import io.github.LucasMullerC.discord.commands.PointsActions;
 import io.github.LucasMullerC.discord.commands.CreateAward;
@@ -105,6 +106,12 @@ public class BTEBrasilSystem extends JavaPlugin implements SlashCommandProvider{
 				.addOption(OptionType.STRING, "userid", MessageUtils.getMessageConsole("slashaddbuildsdescription2"), true)
 				.addOption(OptionType.BOOLEAN, "remover", MessageUtils.getMessageConsole("slashaddpointsdescription2"), true)),
 
+				//awardactions
+				new PluginSlashCommand(this, new CommandData("awardactions", MessageUtils.getMessageConsole("slashawardactions"))
+				.addOption(OptionType.STRING, "awardid", MessageUtils.getMessageConsole("slashcreateawarddescription1"), true)
+				.addOption(OptionType.STRING, "userid", MessageUtils.getMessageConsole("slashaddbuildsdescription2"), true)
+				.addOption(OptionType.BOOLEAN, "remover", MessageUtils.getMessageConsole("slashawardactionsdescription"), true)),
+
 				//createaward
 				new PluginSlashCommand(this, new CommandData("createaward", MessageUtils.getMessageConsole("slashcreateaward"))
 				.addOption(OptionType.INTEGER, "pontos", MessageUtils.getMessageConsole("slashaddpointsdescription"), true)
@@ -151,6 +158,17 @@ public class BTEBrasilSystem extends JavaPlugin implements SlashCommandProvider{
 
 		PointsActions addPoints = new PointsActions();
 		String response = addPoints.getCommand(roles, points, event.getOption("userid").getAsString(),remove);
+		event.reply(response).queue();
+	}
+
+	@SlashCommand(path = "awardactions")
+	public void awardactionsCommand(SlashCommandEvent event) {
+		List<Role> roles = event.getMember().getRoles();
+		String awardID = event.getOption("awardid").getAsString();
+		boolean remove = event.getOption("remover").getAsBoolean();
+
+		AwardActions awardActions = new AwardActions();
+		String response = awardActions.getCommand(roles, awardID, event.getOption("userid").getAsString(), remove);
 		event.reply(response).queue();
 	}
 

@@ -1,5 +1,8 @@
 package io.github.LucasMullerC.util;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.UUID;
 
 import org.bukkit.Bukkit;
@@ -139,6 +142,28 @@ public class BuilderUtils {
             addPoints(builder, builderService, singleAward.getPoints());
             //TODO: ENVIAR MSG NO DISCORD (webhook) 
             //DiscordPonte.Awards(C, B.getDiscord(), UUID);
+        }
+    }
+
+    public static void removeAward(Builder builder, BuilderService builderService, String award){
+        String awards = builder.getAwards();
+        if (awards == null || awards.equals("nulo")) {
+            return;
+        }
+
+        List<String> awardList = new ArrayList<>(Arrays.asList(awards.split(",")));
+        boolean hasAward = awardList.removeIf(a -> a.equals(award));
+
+        if(hasAward){
+            AwardService awardService = new AwardService();
+            Awards singleAward = awardService.getAward(award);
+            if(awards.equals("nulo")){
+                builder.setAwards("nulo");
+            } else{
+                builder.setAwards(String.join(",", awardList));
+            }
+            //Saving(Updating) inside removePoints
+            removePoints(builder, builderService, singleAward.getPoints());
         }
     }
 }
