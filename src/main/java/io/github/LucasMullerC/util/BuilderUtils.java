@@ -9,6 +9,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
+import io.github.LucasMullerC.discord.DiscordActions;
 import io.github.LucasMullerC.model.Awards;
 import io.github.LucasMullerC.model.Builder;
 import io.github.LucasMullerC.service.AwardService;
@@ -55,8 +56,8 @@ public class BuilderUtils {
                     player.sendMessage(Component.text(MessageUtils.getMessage("NextLevel1", player)).color(NamedTextColor.GREEN));
                     player.sendMessage(Component.text(MessageUtils.getMessage("NextLevel2", player)).color(NamedTextColor.GOLD));
 
-                    //TODO: ENVIAR MSG NO DISCORD (webhook)
-                    //DiscordPonte.NextLevel(newtier.toString(), B.getDiscord(), player);
+                    DiscordActions.sendBotMessage("<@" + builder.getDiscord() + ">");
+                    DiscordActions.sendBotEmbed(DiscordUtils.getNextLevelEmbed(String.valueOf(tier), player));
                 }
             }
         }
@@ -140,8 +141,8 @@ public class BuilderUtils {
             }
             //Saving(Updating) inside addPoints
             addPoints(builder, builderService, singleAward.getPoints());
-            //TODO: ENVIAR MSG NO DISCORD (webhook) 
-            //DiscordPonte.Awards(C, B.getDiscord(), UUID);
+            DiscordActions.sendBotMessage("<@" + builder.getDiscord() + ">");
+            DiscordActions.sendBotEmbed(DiscordUtils.getAwardEmbed(singleAward, builder.getUUID()));
         }
     }
 

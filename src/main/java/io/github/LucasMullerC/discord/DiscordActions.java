@@ -5,6 +5,7 @@ import github.scarsz.discordsrv.util.DiscordUtil;
 import io.github.LucasMullerC.util.MessageUtils;
 import github.scarsz.discordsrv.dependencies.jda.api.entities.Guild;
 import github.scarsz.discordsrv.dependencies.jda.api.entities.Member;
+import github.scarsz.discordsrv.dependencies.jda.api.entities.MessageEmbed;
 import github.scarsz.discordsrv.dependencies.jda.api.entities.Role;
 import github.scarsz.discordsrv.dependencies.jda.api.entities.TextChannel;
 import github.scarsz.discordsrv.dependencies.jda.api.entities.User;
@@ -15,6 +16,8 @@ import java.util.UUID;
 public class DiscordActions {
     static TextChannel chatbr = DiscordUtil.getTextChannelById("717528858777354272");
     static TextChannel chatbrlog = DiscordUtil.getTextChannelById("921811170086776942");
+    //static TextChannel chatbrbot = DiscordUtil.getTextChannelById("717528314423803974"); //OFICIAL
+    static TextChannel chatbrbot = DiscordUtil.getTextChannelById("1129556584469643276"); //TESTES
 
     public static boolean CheckDiscord(String id) {
         Guild guild = DiscordUtil.getJda().getGuildById("715528474655326238");
@@ -50,6 +53,14 @@ public class DiscordActions {
 
     public static void sendLogMessage(String content) {
         chatbrlog.sendMessage(content).queue();
+    }
+
+    public static void sendBotMessage(String content) {
+        chatbrbot.sendMessage(content).queue();
+    }
+
+    public static void sendBotEmbed(MessageEmbed content) {
+        chatbrbot.sendMessageEmbeds(content).queue();
     }
 
     public static String getDiscordId(UUID id){
