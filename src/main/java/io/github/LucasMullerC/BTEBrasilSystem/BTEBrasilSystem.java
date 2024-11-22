@@ -36,6 +36,7 @@ import io.github.LucasMullerC.commands.team;
 import io.github.LucasMullerC.discord.DiscordSrvListener;
 import io.github.LucasMullerC.discord.commands.AwardActions;
 import io.github.LucasMullerC.discord.commands.BuildsActions;
+import io.github.LucasMullerC.discord.commands.ClaimActions;
 import io.github.LucasMullerC.discord.commands.PointsActions;
 import io.github.LucasMullerC.discord.commands.CreateAward;
 import io.github.LucasMullerC.discord.commands.DiscordProfile;
@@ -112,6 +113,13 @@ public class BTEBrasilSystem extends JavaPlugin implements SlashCommandProvider{
 				.addOption(OptionType.STRING, "userid", MessageUtils.getMessageConsole("slashaddbuildsdescription2"), true)
 				.addOption(OptionType.BOOLEAN, "remover", MessageUtils.getMessageConsole("slashawardactionsdescription"), true)),
 
+				//claimactions
+				new PluginSlashCommand(this, new CommandData("claimactions", MessageUtils.getMessageConsole("slashclaimactions"))
+				.addOption(OptionType.STRING, "claimid", MessageUtils.getMessageConsole("slashclaimactionsdescription"), true)
+				.addOption(OptionType.BOOLEAN, "event", MessageUtils.getMessageConsole("slashclaimactionsdescription2"), true)
+				.addOption(OptionType.STRING, "awardid", MessageUtils.getMessageConsole("slashcreateawarddescription1"), true)
+				.addOption(OptionType.BOOLEAN, "remover", MessageUtils.getMessageConsole("slashclaimactionsdescription3"), true)),
+
 				//createaward
 				new PluginSlashCommand(this, new CommandData("createaward", MessageUtils.getMessageConsole("slashcreateaward"))
 				.addOption(OptionType.INTEGER, "pontos", MessageUtils.getMessageConsole("slashaddpointsdescription"), true)
@@ -169,6 +177,19 @@ public class BTEBrasilSystem extends JavaPlugin implements SlashCommandProvider{
 
 		AwardActions awardActions = new AwardActions();
 		String response = awardActions.getCommand(roles, awardID, event.getOption("userid").getAsString(), remove);
+		event.reply(response).queue();
+	}
+
+	@SlashCommand(path = "claimactions")
+	public void claimactionsCommand(SlashCommandEvent event) {
+		List<Role> roles = event.getMember().getRoles();
+		String claimId = event.getOption("claimid").getAsString();
+		String awardID = event.getOption("awardid").getAsString();
+		boolean isEvent = event.getOption("event").getAsBoolean();
+		boolean remove = event.getOption("remover").getAsBoolean();
+		
+		ClaimActions claimActions = new ClaimActions();
+		String response = claimActions.getCommand(roles, awardID, claimId, isEvent, remove);
 		event.reply(response).queue();
 	}
 
