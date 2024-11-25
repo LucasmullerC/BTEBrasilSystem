@@ -39,6 +39,7 @@ import io.github.LucasMullerC.discord.commands.BuildsActions;
 import io.github.LucasMullerC.discord.commands.ClaimActions;
 import io.github.LucasMullerC.discord.commands.PointsActions;
 import io.github.LucasMullerC.discord.commands.CreateAward;
+import io.github.LucasMullerC.discord.commands.Destacar;
 import io.github.LucasMullerC.discord.commands.DiscordProfile;
 import io.github.LucasMullerC.listeners.PlayerJoinListener;
 import io.github.LucasMullerC.listeners.PlayerMoveListener;
@@ -94,6 +95,10 @@ public class BTEBrasilSystem extends JavaPlugin implements SlashCommandProvider{
 				.addOption(OptionType.MENTIONABLE, "mention", MessageUtils.getMessageConsole("profiledescription2"), false)
 				.addOption(OptionType.STRING, "userid", MessageUtils.getMessageConsole("profiledescription3"), false)),
 
+				//destacar
+				new PluginSlashCommand(this, new CommandData("destacar", MessageUtils.getMessageConsole("slashdestacar"))
+				.addOption(OptionType.STRING, "awardid", MessageUtils.getMessageConsole("slashcreateawarddescription1"), true)),
+
 				//ADMIN COMMANDS
 				//buildactions
 				new PluginSlashCommand(this, new CommandData("buildsactions", MessageUtils.getMessageConsole("slashaddbuilds"))
@@ -147,6 +152,17 @@ public class BTEBrasilSystem extends JavaPlugin implements SlashCommandProvider{
 		event.replyEmbeds(messageEmbed).addActionRow(awardButton,claimButton,leaderboardButton).queue();
 	}
 
+	@SlashCommand(path = "destacar")
+	public void destacarCommand(SlashCommandEvent event) {
+		String awardID = event.getOption("awardid").getAsString();
+		User user = event.getUser();
+
+		Destacar destacar = new Destacar();
+		String response = destacar.getCommand(user, awardID);
+		event.reply(response).queue();
+	}
+
+	//ADMIN COMMANDS
 	@SlashCommand(path = "buildsactions")
 	public void buildsactionsCommand(SlashCommandEvent event) {
 		List<Role> roles = event.getMember().getRoles();
