@@ -15,7 +15,6 @@ import io.github.LucasMullerC.util.MessageUtils;
 
 public class DiscordProfile {
     public MessageEmbed getCommand(User sender,User mention) {
-        BuilderService builderService = new BuilderService();
         String discordId,userName;
         Thumbnail thumb;
         if(mention == null){
@@ -32,6 +31,7 @@ public class DiscordProfile {
             MessageEmbed messageEmbed = new MessageEmbed(null, null,notLinked,null, null, 52224, null, null, null, null, null,null, null);
             return messageEmbed;
         } else {
+            BuilderService builderService = new BuilderService();
             Builder builder = builderService.getBuilderDiscord(discordId);
             if(builder == null){
                 ImageInfo img = new ImageInfo(MessageUtils.getMessageConsole("PerfilNotBuilderDiscordlink"), null, 105, 30);

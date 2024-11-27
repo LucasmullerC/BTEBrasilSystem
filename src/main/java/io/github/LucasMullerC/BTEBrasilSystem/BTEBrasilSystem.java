@@ -13,6 +13,7 @@ import github.scarsz.discordsrv.api.commands.SlashCommandProvider;
 import github.scarsz.discordsrv.dependencies.jda.api.entities.MessageEmbed;
 import github.scarsz.discordsrv.dependencies.jda.api.entities.Role;
 import github.scarsz.discordsrv.dependencies.jda.api.entities.User;
+import github.scarsz.discordsrv.dependencies.jda.api.events.interaction.ButtonClickEvent;
 import github.scarsz.discordsrv.dependencies.jda.api.events.interaction.SlashCommandEvent;
 import github.scarsz.discordsrv.dependencies.jda.api.interactions.commands.OptionType;
 import github.scarsz.discordsrv.dependencies.jda.api.interactions.commands.build.CommandData;
@@ -37,6 +38,7 @@ import io.github.LucasMullerC.discord.DiscordSrvListener;
 import io.github.LucasMullerC.discord.commands.AwardActions;
 import io.github.LucasMullerC.discord.commands.BuildsActions;
 import io.github.LucasMullerC.discord.commands.ClaimActions;
+import io.github.LucasMullerC.discord.commands.Conquistas;
 import io.github.LucasMullerC.discord.commands.PointsActions;
 import io.github.LucasMullerC.discord.commands.CreateAward;
 import io.github.LucasMullerC.discord.commands.Destacar;
@@ -99,6 +101,12 @@ public class BTEBrasilSystem extends JavaPlugin implements SlashCommandProvider{
 				new PluginSlashCommand(this, new CommandData("destacar", MessageUtils.getMessageConsole("slashdestacar"))
 				.addOption(OptionType.STRING, "awardid", MessageUtils.getMessageConsole("slashcreateawarddescription1"), true)),
 
+				//conquistas
+				new PluginSlashCommand(this, new CommandData("conquistas", MessageUtils.getMessageConsole("slashawards"))
+				.addOption(OptionType.NUMBER, "page", MessageUtils.getMessageConsole("slashawardsdescription1"), false)
+				.addOption(OptionType.MENTIONABLE, "mention", MessageUtils.getMessageConsole("awardsdescription2"), false)
+				.addOption(OptionType.STRING, "userid", MessageUtils.getMessageConsole("awardsdescription3"), false)),
+
 				//ADMIN COMMANDS
 				//buildactions
 				new PluginSlashCommand(this, new CommandData("buildsactions", MessageUtils.getMessageConsole("slashaddbuilds"))
@@ -147,6 +155,7 @@ public class BTEBrasilSystem extends JavaPlugin implements SlashCommandProvider{
 		MessageEmbed messageEmbed = discordProfile.getCommand(event.getUser(), mention);
 
 		Button awardButton = new ButtonImpl("award", "Conquistas", ButtonStyle.SECONDARY, false,null);
+		//Button featuredButton = new ButtonImpl("destacar", "Destacar conquista", ButtonStyle.PRIMARY, false,null);
 		Button claimButton = new ButtonImpl("claim", "Claims", ButtonStyle.SECONDARY, false,null);
 		Button leaderboardButton = new ButtonImpl("leaderboard", "Leaderboard", ButtonStyle.SECONDARY, false,null);
 		event.replyEmbeds(messageEmbed).addActionRow(awardButton,claimButton,leaderboardButton).queue();
@@ -160,6 +169,27 @@ public class BTEBrasilSystem extends JavaPlugin implements SlashCommandProvider{
 		Destacar destacar = new Destacar();
 		String response = destacar.getCommand(user, awardID);
 		event.reply(response).queue();
+	}
+
+	@SlashCommand(path = "conquistas")
+	public void conquistasCommand(SlashCommandEvent event) {
+		int page = 1;
+		if(event.getOption("page") != null){
+			page = (int)event.getOption("page").getAsDouble();
+		}
+		User mention = null;
+		
+		if(event.getOption("userid") != null){
+			mention = DiscordUtil.getUserById(event.getOption("userid").getAsString());
+		} else if(event.getOption("mention") != null){
+			mention = event.getOption("mention").getAsUser();
+		}
+
+		Conquistas conquistas = new Conquistas();
+		MessageEmbed messageEmbed =conquistas.getCommand(event.getUser(), page, mention);
+		Button awardButton = new ButtonImpl("allawards", "Todas as Conquistas", ButtonStyle.PRIMARY, false,null);
+		//TODO: Botão de proxima página / anterior?
+		event.replyEmbeds(messageEmbed).queue();
 	}
 
 	//ADMIN COMMANDS
