@@ -42,6 +42,7 @@ import io.github.LucasMullerC.discord.commands.Conquistas;
 import io.github.LucasMullerC.discord.commands.PointsActions;
 import io.github.LucasMullerC.discord.commands.CreateAward;
 import io.github.LucasMullerC.discord.commands.Destacar;
+import io.github.LucasMullerC.discord.commands.DiscordClaim;
 import io.github.LucasMullerC.discord.commands.DiscordProfile;
 import io.github.LucasMullerC.listeners.PlayerJoinListener;
 import io.github.LucasMullerC.listeners.PlayerMoveListener;
@@ -106,6 +107,13 @@ public class BTEBrasilSystem extends JavaPlugin implements SlashCommandProvider{
 				.addOption(OptionType.NUMBER, "page", MessageUtils.getMessageConsole("slashawardsdescription1"), false)
 				.addOption(OptionType.MENTIONABLE, "mention", MessageUtils.getMessageConsole("awardsdescription2"), false)
 				.addOption(OptionType.STRING, "userid", MessageUtils.getMessageConsole("awardsdescription3"), false)),
+
+				//claim
+				new PluginSlashCommand(this, new CommandData("claim", MessageUtils.getMessageConsole("slashclaim"))
+				.addOption(OptionType.NUMBER, "page", MessageUtils.getMessageConsole("slashawardsdescription1"), false)
+				.addOption(OptionType.STRING, "claimid", MessageUtils.getMessageConsole("claimdescription4"), false)
+				.addOption(OptionType.MENTIONABLE, "mention", MessageUtils.getMessageConsole("claimdescription2"), false)
+				.addOption(OptionType.STRING, "userid", MessageUtils.getMessageConsole("claimdescription3"), false)),
 
 				//ADMIN COMMANDS
 				//buildactions
@@ -187,8 +195,30 @@ public class BTEBrasilSystem extends JavaPlugin implements SlashCommandProvider{
 
 		Conquistas conquistas = new Conquistas();
 		MessageEmbed messageEmbed =conquistas.getCommand(event.getUser(), page, mention);
-		Button awardButton = new ButtonImpl("allawards", "Todas as Conquistas", ButtonStyle.PRIMARY, false,null);
+		//Button awardButton = new ButtonImpl("allawards", "Todas as Conquistas", ButtonStyle.PRIMARY, false,null);
 		//TODO: Botão de proxima página / anterior?
+		event.replyEmbeds(messageEmbed).queue();
+	}
+
+	@SlashCommand(path = "claim")
+	public void claimCommand(SlashCommandEvent event) {
+		int page = 1;
+		String claimid = null;
+		User mention = null;
+		if(event.getOption("page") != null){
+			page = (int)event.getOption("page").getAsDouble();
+		}
+		if(event.getOption("claimid") != null){
+			claimid = event.getOption("claimid").getAsString();
+		}
+		if(event.getOption("userid") != null){
+			mention = DiscordUtil.getUserById(event.getOption("userid").getAsString());
+		} else if(event.getOption("mention") != null){
+			mention = event.getOption("mention").getAsUser();
+		}
+
+		DiscordClaim discordClaim = new DiscordClaim();
+		MessageEmbed messageEmbed =discordClaim.getCommand(event.getUser(), page, mention,claimid);
 		event.replyEmbeds(messageEmbed).queue();
 	}
 

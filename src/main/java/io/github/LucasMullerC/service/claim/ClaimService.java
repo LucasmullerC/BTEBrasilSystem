@@ -71,6 +71,16 @@ public class ClaimService {
         return cont;
     }
 
+    public ArrayList<Claim> getClaimListByPlayer(String playerId) {
+        ArrayList<Claim> playerClaim = new ArrayList<>();
+        for (Claim claim : this.claim.getValues()) {
+            if (claim.getPlayer() != null && claim.getPlayer().contains(playerId) && claim.getStatus().equals("F")) {
+                playerClaim.add(claim);
+            }
+        }
+        return playerClaim;
+    }
+
     public int getCompletedClaimQtdByPlayer(String playerId) {
         int cont = 0;
         for (Claim claim : this.claim.getValues()) {
@@ -79,6 +89,16 @@ public class ClaimService {
             }
         }
         return cont;
+    }
+
+    public ArrayList<Claim> getCompletedClaimListByPlayer(String playerId) {
+        ArrayList<Claim> playerClaim = new ArrayList<>();
+        for (Claim claim : this.claim.getValues()) {
+            if (claim.getPlayer() != null && claim.getPlayer().contains(playerId) && claim.getStatus().equals("T")) {
+                playerClaim.add(claim);
+            }
+        }
+        return playerClaim;
     }
 
     public ArrayList<Claim> getClaimList(){

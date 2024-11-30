@@ -92,6 +92,16 @@ public class PendingService {
         return null;
     }
 
+    public ArrayList<Pending> getPendingPlayerListClaim(String UUID){
+        ArrayList<Pending> pendingList = new ArrayList<>();
+        for (Pending pending : pending.getValues()) {
+            if (pending.getisApplication() == false) {
+                pendingList.add(pending);
+            }
+        }
+        return pendingList;
+    }
+
     public Pending getNextPendingClaim(String UUID){
         for (Pending pending : pending.getValues()) {
             if (pending.getUUID() != null && !pending.getUUID().contains(UUID)) {

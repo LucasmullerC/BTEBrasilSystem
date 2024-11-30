@@ -272,6 +272,31 @@ public static void removeImage(Claim claim, String imageId, Player player, Claim
                 .color(NamedTextColor.GREEN));
         }
     }
+
+    public static String printClaimsDiscord(ArrayList<Claim> claims,int infoPage){
+        int itemsPerPage = 5;
+        int totalItems = claims.size();
+        int totalPages = (int) Math.ceil((double) totalItems / itemsPerPage);
+    
+        int startIndex = (infoPage - 1) * itemsPerPage;
+        int endIndex = Math.min(startIndex + itemsPerPage, totalItems);
+
+        String claimList = "";
+
+        if(totalItems < 1){
+            return "";
+        }
+
+        if (infoPage > totalPages) {
+            return "";
+        }
+
+        for (int i = startIndex; i < endIndex; i++) {
+            Claim claim = claims.get(i);
+            claimList += MessageUtils.getMessageConsole("claimbody4") + claim.getClaim();
+        }
+        return claimList;
+    }
     
     public static boolean isNumeric(String str) {
         try {

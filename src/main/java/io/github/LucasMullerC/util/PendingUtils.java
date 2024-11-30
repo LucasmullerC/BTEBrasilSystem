@@ -35,4 +35,25 @@ public class PendingUtils {
                 .color(NamedTextColor.GREEN));
         }
     }
+
+    public static String printPendingDiscord(ArrayList<Pending> pendings,int infoPage){
+        int itemsPerPage = 5;
+        int totalItems = pendings.size();
+        int totalPages = (int) Math.ceil((double) totalItems / itemsPerPage);
+    
+        int startIndex = (infoPage - 1) * itemsPerPage;
+        int endIndex = Math.min(startIndex + itemsPerPage, totalItems);
+
+        String pendingList = "";
+
+        if (infoPage < 1 || infoPage > totalPages) {
+            return "";
+        }
+
+        for (int i = startIndex; i < endIndex; i++) {
+            Pending pending = pendings.get(i);
+            pendingList += MessageUtils.getMessageConsole("claimbody4") + pending.getregionId();
+        }
+        return pendingList;
+    }
 }
