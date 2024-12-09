@@ -44,6 +44,7 @@ import io.github.LucasMullerC.discord.commands.CreateAward;
 import io.github.LucasMullerC.discord.commands.Destacar;
 import io.github.LucasMullerC.discord.commands.DiscordClaim;
 import io.github.LucasMullerC.discord.commands.DiscordProfile;
+import io.github.LucasMullerC.discord.commands.Leaderboard;
 import io.github.LucasMullerC.listeners.PlayerJoinListener;
 import io.github.LucasMullerC.listeners.PlayerMoveListener;
 import io.github.LucasMullerC.util.MessageUtils;
@@ -114,6 +115,10 @@ public class BTEBrasilSystem extends JavaPlugin implements SlashCommandProvider{
 				.addOption(OptionType.STRING, "claimid", MessageUtils.getMessageConsole("claimdescription4"), false)
 				.addOption(OptionType.MENTIONABLE, "mention", MessageUtils.getMessageConsole("claimdescription2"), false)
 				.addOption(OptionType.STRING, "userid", MessageUtils.getMessageConsole("claimdescription3"), false)),
+
+				//lb
+				new PluginSlashCommand(this, new CommandData("lb", MessageUtils.getMessageConsole("slashlb"))
+				.addOption(OptionType.NUMBER, "page", MessageUtils.getMessageConsole("slashawardsdescription1"), false)),
 
 				//ADMIN COMMANDS
 				//buildactions
@@ -219,6 +224,18 @@ public class BTEBrasilSystem extends JavaPlugin implements SlashCommandProvider{
 
 		DiscordClaim discordClaim = new DiscordClaim();
 		MessageEmbed messageEmbed =discordClaim.getCommand(event.getUser(), page, mention,claimid);
+		event.replyEmbeds(messageEmbed).queue();
+	}
+
+	@SlashCommand(path = "lb")
+	public void lbCommand(SlashCommandEvent event) {
+		int page = 1;
+		if(event.getOption("page") != null){
+			page = (int)event.getOption("page").getAsDouble();
+		}
+
+		Leaderboard leaderboard = new Leaderboard();
+		MessageEmbed messageEmbed =leaderboard.getCommand(page);
 		event.replyEmbeds(messageEmbed).queue();
 	}
 

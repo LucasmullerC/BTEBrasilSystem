@@ -1,6 +1,8 @@
 package io.github.LucasMullerC.service.builder;
 
 import java.io.File;
+import java.util.HashMap;
+import java.util.Map;
 
 import io.github.LucasMullerC.BTEBrasilSystem.BTEBrasilSystem;
 import io.github.LucasMullerC.model.Builder;
@@ -88,5 +90,13 @@ public class BuilderService {
             }
         }
         return null;
+    }
+
+    public Map<String, Double> getPointsMap() {
+        Map<String, Double> unsortedMap = new HashMap<String, Double>();
+        for (Builder builders : builder.getValues()) {
+            unsortedMap.put(builders.getDiscord(), builders.getPoints());
+        }
+        return unsortedMap;
     }
 }
