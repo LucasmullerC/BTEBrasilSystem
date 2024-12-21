@@ -13,7 +13,6 @@ import github.scarsz.discordsrv.api.commands.SlashCommandProvider;
 import github.scarsz.discordsrv.dependencies.jda.api.entities.MessageEmbed;
 import github.scarsz.discordsrv.dependencies.jda.api.entities.Role;
 import github.scarsz.discordsrv.dependencies.jda.api.entities.User;
-import github.scarsz.discordsrv.dependencies.jda.api.events.interaction.ButtonClickEvent;
 import github.scarsz.discordsrv.dependencies.jda.api.events.interaction.SlashCommandEvent;
 import github.scarsz.discordsrv.dependencies.jda.api.interactions.commands.OptionType;
 import github.scarsz.discordsrv.dependencies.jda.api.interactions.commands.build.CommandData;
@@ -40,6 +39,7 @@ import io.github.LucasMullerC.discord.commands.BuildsActions;
 import io.github.LucasMullerC.discord.commands.ClaimActions;
 import io.github.LucasMullerC.discord.commands.Conquistas;
 import io.github.LucasMullerC.discord.commands.PointsActions;
+import io.github.LucasMullerC.discord.commands.Ranks;
 import io.github.LucasMullerC.discord.commands.CreateAward;
 import io.github.LucasMullerC.discord.commands.Destacar;
 import io.github.LucasMullerC.discord.commands.DiscordClaim;
@@ -119,6 +119,9 @@ public class BTEBrasilSystem extends JavaPlugin implements SlashCommandProvider{
 				//lb
 				new PluginSlashCommand(this, new CommandData("lb", MessageUtils.getMessageConsole("slashlb"))
 				.addOption(OptionType.NUMBER, "page", MessageUtils.getMessageConsole("slashawardsdescription1"), false)),
+
+				//ranks
+				new PluginSlashCommand(this, new CommandData("ranks", MessageUtils.getMessageConsole("slashranks"))),
 
 				//ADMIN COMMANDS
 				//buildactions
@@ -236,6 +239,13 @@ public class BTEBrasilSystem extends JavaPlugin implements SlashCommandProvider{
 
 		Leaderboard leaderboard = new Leaderboard();
 		MessageEmbed messageEmbed =leaderboard.getCommand(page);
+		event.replyEmbeds(messageEmbed).queue();
+	}
+
+	@SlashCommand(path = "ranks")
+	public void ranksCommand(SlashCommandEvent event) {
+		Ranks ranks = new Ranks();
+		MessageEmbed messageEmbed = ranks.getCommand();
 		event.replyEmbeds(messageEmbed).queue();
 	}
 
