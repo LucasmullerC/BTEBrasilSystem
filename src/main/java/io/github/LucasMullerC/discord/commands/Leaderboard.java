@@ -19,13 +19,13 @@ import io.github.LucasMullerC.util.MessageUtils;
 
 public class Leaderboard {
     public MessageEmbed getCommand(int page) {
-        Thumbnail thumb = new Thumbnail(MessageUtils.getMessageConsole("slashlbthumb"), null, 100, 100);
-        Footer ft = new Footer(MessageUtils.getMessageConsole("footerbtebrasil"), null, null);
+        Thumbnail thumb = new Thumbnail(MessageUtils.getMessagePT("slashlbthumb"), null, 100, 100);
+        Footer ft = new Footer(MessageUtils.getMessagePT("footerbtebrasil"), null, null);
         int position = 0;
         if(page != 1 ){
             position = (page - 1) * 10;
         }
-        MessageEmbed emb2 = new MessageEmbed(null, MessageUtils.getMessageConsole("slashlbtitle"), formLb(position), null, null, 52224, thumb, null,
+        MessageEmbed emb2 = new MessageEmbed(null, MessageUtils.getMessagePT("slashlbtitle"), formLb(position), null, null, 52224, thumb, null,
                 null, null, ft, null,
                 null);
         return emb2;
@@ -69,7 +69,7 @@ public class Leaderboard {
             String pts = String.valueOf(builder.getPoints());
             pts = pts.substring(0, pts.indexOf(".") + 2);
 
-            lb += ":medal: "+MessageUtils.getMessageConsole("slashlbtier")+" `" + builder.getTier().toString() + "`\r\n :chart_with_upwards_trend: "+MessageUtils.getMessageConsole("slashlbpoints")+" `"
+            lb += ":medal: "+MessageUtils.getMessagePT("slashlbtier")+" `" + builder.getTier().toString() + "`\r\n :chart_with_upwards_trend: "+MessageUtils.getMessagePT("slashlbpoints")+" `"
                     + pts + "`\r\n\r\n";
     
             if (cont == 10) {

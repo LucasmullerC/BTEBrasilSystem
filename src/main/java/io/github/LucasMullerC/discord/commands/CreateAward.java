@@ -20,12 +20,12 @@ public class CreateAward {
                 newAward.setPoints(points);
                 newAward.setURL(url);
                 awardService.addAward(newAward);
-                return MessageUtils.getMessageConsole("conquistaAdd2");
+                return MessageUtils.getMessagePT("conquistaAdd2");
             } else {
-                return MessageUtils.getMessageConsole("conquistaAlreadyExist");
+                return MessageUtils.getMessagePT("conquistaAlreadyExist");
             }
         } else {
-            return MessageUtils.getMessageConsole("Perm1");
+            return MessageUtils.getMessagePT("Perm1");
         }
     }
 }

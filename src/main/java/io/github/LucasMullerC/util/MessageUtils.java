@@ -20,4 +20,11 @@ public class MessageUtils {
 
         return messages.getString(key);
     }
+    
+    public static String getMessagePT(String key) {
+        Locale.setDefault(new Locale("pt","BR"));
+        messages = ResourceBundle.getBundle("messages");
+
+        return messages.getString(key);
+    }
 }

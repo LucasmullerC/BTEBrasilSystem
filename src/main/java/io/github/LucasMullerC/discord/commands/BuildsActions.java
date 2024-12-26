@@ -16,17 +16,17 @@ public class BuildsActions {
             BuilderService builderService = new BuilderService();
             Builder builder = builderService.getBuilderDiscord(discordId);
             if(builder == null){
-                return MessageUtils.getMessageConsole("EquipeNotBuilder");
+                return MessageUtils.getMessagePT("EquipeNotBuilder");
             } else{
                 if(remove){
                     BuilderUtils.removeBuilds(builder, builderService, builds);
                 } else{
                     BuilderUtils.addBuilds(builder, builderService, builds);
                 }
-                return MessageUtils.getMessageConsole("Sucesso");
+                return MessageUtils.getMessagePT("Sucesso");
             }
         } else {
-            return MessageUtils.getMessageConsole("Perm1");
+            return MessageUtils.getMessagePT("Perm1");
         }
     }
 }

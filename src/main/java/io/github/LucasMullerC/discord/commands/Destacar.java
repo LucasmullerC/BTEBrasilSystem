@@ -14,19 +14,19 @@ public class Destacar {
 
         Builder builder = builderService.getBuilderDiscord(discordId);
         if(builder == null){
-            return MessageUtils.getMessageConsole("PerfilNotBuilderDiscord")+" \r\n"+MessageUtils.getMessageConsole("PerfilNotBuilderDiscordlink");
+            return MessageUtils.getMessagePT("PerfilNotBuilderDiscord")+" \r\n"+MessageUtils.getMessagePT("PerfilNotBuilderDiscordlink");
         } else{
             AwardService awardService = new AwardService();
             Awards award = awardService.getAward(awardId);
             if(award == null){
-                return MessageUtils.getMessageConsole("conquistaNotFound");
+                return MessageUtils.getMessagePT("conquistaNotFound");
             } else{
                 if(hasAward(builder, awardId)){
                     builder.setFeatured(awardId);
                     builderService.updateBuilder(builder);
-                    return MessageUtils.getMessageConsole("conquistaDestaque");
+                    return MessageUtils.getMessagePT("conquistaDestaque");
                 } else{
-                    return MessageUtils.getMessageConsole("conquistaPermission");
+                    return MessageUtils.getMessagePT("conquistaPermission");
                 }
             }
         }

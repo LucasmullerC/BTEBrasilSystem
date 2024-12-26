@@ -27,8 +27,8 @@ public class Conquistas {
         BuilderService builderService = new BuilderService();
         Builder builder = builderService.getBuilderDiscord(discordId);
             if(builder == null){
-                ImageInfo img = new ImageInfo(MessageUtils.getMessageConsole("PerfilNotBuilderDiscordlink"), null, 105, 30);
-                MessageEmbed messageEmbed = new MessageEmbed(null, null,MessageUtils.getMessageConsole("PerfilNotBuilderDiscord"),null, null, 52224, null, null, null, null, null,img, null);
+                ImageInfo img = new ImageInfo(MessageUtils.getMessagePT("PerfilNotBuilderDiscordlink"), null, 105, 30);
+                MessageEmbed messageEmbed = new MessageEmbed(null, null,MessageUtils.getMessagePT("PerfilNotBuilderDiscord"),null, null, 52224, null, null, null, null, null,img, null);
                 return messageEmbed;
             } else{
                 AwardService awardService = new AwardService();
@@ -37,8 +37,8 @@ public class Conquistas {
                     Awards award = awardService.getAward(builder.getFeatured());
                     img = new ImageInfo(award.getURL(), null, 105, 30);
                 }
-                Footer ft = new Footer(MessageUtils.getMessageConsole("awardsfooter1"), null, null);
-                String title = MessageUtils.getMessageConsole("awardstitle1");
+                Footer ft = new Footer(MessageUtils.getMessagePT("awardsfooter1"), null, null);
+                String title = MessageUtils.getMessagePT("awardstitle1");
                 MessageEmbed messageEmbed = new MessageEmbed(null, title + userName, listAwards(builder, page), null,
                     null, 52224, thumb, null, null, null, ft, img,
                     null);
@@ -48,7 +48,7 @@ public class Conquistas {
 
     private String listAwards(Builder builder,int pageNumber){
         if(builder.getAwards().equals("nulo")) {
-            return MessageUtils.getMessageConsole("conquistaList");
+            return MessageUtils.getMessagePT("conquistaList");
         }
 
         String[]awards=builder.getAwards().split(",");
@@ -59,7 +59,7 @@ public class Conquistas {
         int endIndex = Math.min(startIndex + itemsPerPage, awards.length);
 
         if (startIndex >= awards.length || pageNumber < 1) {
-            return MessageUtils.getMessageConsole("invalidpage") + 
+            return MessageUtils.getMessagePT("invalidpage") + 
                    ((awards.length + itemsPerPage - 1) / itemsPerPage) + ".";
         }
         AwardService awardService = new AwardService();
@@ -67,7 +67,7 @@ public class Conquistas {
             Awards award = awardService.getAward(awards[i]);
             result += "● [" + award.getName() + "](" + award.getURL() + ")\r\n";
         }
-        result += "\n**"+MessageUtils.getMessageConsole("pageawardsbody")+" " + pageNumber + " "+MessageUtils.getMessageConsole("frompageawardsbody")+" " + 
+        result += "\n**"+MessageUtils.getMessagePT("pageawardsbody")+" " + pageNumber + " "+MessageUtils.getMessagePT("frompageawardsbody")+" " + 
         ((awards.length + itemsPerPage - 1) / itemsPerPage) + "**";
 
         return result;

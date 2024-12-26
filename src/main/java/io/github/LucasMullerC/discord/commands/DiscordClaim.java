@@ -41,13 +41,13 @@ public class DiscordClaim {
             BuilderService builderService = new BuilderService();
             Builder builder = builderService.getBuilderDiscord(discordId);
             if(builder == null){
-                ImageInfo img = new ImageInfo(MessageUtils.getMessageConsole("PerfilNotBuilderDiscordlink"), null, 105, 30);
-                MessageEmbed messageEmbed = new MessageEmbed(null, null,MessageUtils.getMessageConsole("PerfilNotBuilderDiscord"),null, null, 52224, null, null, null, null, null,img, null);
+                ImageInfo img = new ImageInfo(MessageUtils.getMessagePT("PerfilNotBuilderDiscordlink"), null, 105, 30);
+                MessageEmbed messageEmbed = new MessageEmbed(null, null,MessageUtils.getMessagePT("PerfilNotBuilderDiscord"),null, null, 52224, null, null, null, null, null,img, null);
                 return messageEmbed;
             } else {
                 String senderUuid = builder.getUUID();
-                Footer ft = new Footer(MessageUtils.getMessageConsole("claimfooter1"), null, null);
-                String title = MessageUtils.getMessageConsole("claimtitle1");
+                Footer ft = new Footer(MessageUtils.getMessagePT("claimfooter1"), null, null);
+                String title = MessageUtils.getMessagePT("claimtitle1");
                 MessageEmbed messageEmbed = new MessageEmbed(null, title + userName, claimProfileBody(senderUuid, page), null,
                 null, 52224, thumb, null, null, null, ft, null,
                 null);
@@ -59,11 +59,11 @@ public class DiscordClaim {
             ClaimService claimService = new ClaimService();
             Claim claim = claimService.getClaim(claimId);
             if(claim == null){
-                MessageEmbed messageEmbed = new MessageEmbed(null, null,MessageUtils.getMessageConsole("ClaimNotFound"),null, null, 52224, null, null, null, null, null,null, null);
+                MessageEmbed messageEmbed = new MessageEmbed(null, null,MessageUtils.getMessagePT("ClaimNotFound"),null, null, 52224, null, null, null, null, null,null, null);
                 return messageEmbed;
             } else {
-                Footer ft = new Footer(MessageUtils.getMessageConsole("claimfooter1"), null, null);
-                String title = MessageUtils.getMessageConsole("claimtitle2");
+                Footer ft = new Footer(MessageUtils.getMessagePT("claimfooter1"), null, null);
+                String title = MessageUtils.getMessagePT("claimtitle2");
                 Thumbnail thumb = new Thumbnail(getCoordinateURL(claim), null, 100, 100);
 
                 ImageInfo img = null;
@@ -117,14 +117,14 @@ public class DiscordClaim {
         }
         String status = "";
         if(claim.getStatus().equals("T")){
-            status = MessageUtils.getMessageConsole("claiminfobody3");
+            status = MessageUtils.getMessagePT("claiminfobody3");
         } else{
-            status = MessageUtils.getMessageConsole("claiminfobody2");
+            status = MessageUtils.getMessagePT("claiminfobody2");
         }
         
-        return MessageUtils.getMessageConsole("claiminfobody4")+claim.getName()+status+MessageUtils.getMessageConsole("claiminfobody5")+claim.getBuilds()+
-        MessageUtils.getMessageConsole("claiminfobody6")+"["+MessageUtils.getMessageConsole("claiminfobody7")+"]("+getBlueMap(claim)+")"+
-        MessageUtils.getMessageConsole("claiminfobody1") +"\n"+ formattedParticipantList.toString();
+        return MessageUtils.getMessagePT("claiminfobody4")+claim.getName()+status+MessageUtils.getMessagePT("claiminfobody5")+claim.getBuilds()+
+        MessageUtils.getMessagePT("claiminfobody6")+"["+MessageUtils.getMessagePT("claiminfobody7")+"]("+getBlueMap(claim)+")"+
+        MessageUtils.getMessagePT("claiminfobody1") +"\n"+ formattedParticipantList.toString();
     }
 
     private void addFormattedParticipant(String playerUUID, StringBuilder participantList) {
@@ -154,10 +154,10 @@ public class DiscordClaim {
 
         String pendentesBody = "";
         if(!playerPending.isEmpty()){
-            pendentesBody = MessageUtils.getMessageConsole("claimbody1") + playerPending.size()+PendingUtils.printPendingDiscord(playerPending, page);
+            pendentesBody = MessageUtils.getMessagePT("claimbody1") + playerPending.size()+PendingUtils.printPendingDiscord(playerPending, page);
         }
 
-        return MessageUtils.getMessageConsole("claimbody2")+claimNum+ClaimUtils.printClaimsDiscord(playerClaim, page)+ pendentesBody+
-        MessageUtils.getMessageConsole("claimbody3")+completedClaimNum+ClaimUtils.printClaimsDiscord(playerCompletedClaim, page);
+        return MessageUtils.getMessagePT("claimbody2")+claimNum+ClaimUtils.printClaimsDiscord(playerClaim, page)+ pendentesBody+
+        MessageUtils.getMessagePT("claimbody3")+completedClaimNum+ClaimUtils.printClaimsDiscord(playerCompletedClaim, page);
     }
 }

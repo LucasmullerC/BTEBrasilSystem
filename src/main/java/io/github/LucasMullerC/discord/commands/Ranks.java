@@ -7,9 +7,9 @@ import io.github.LucasMullerC.util.MessageUtils;
 
 public class Ranks {
     public MessageEmbed getCommand() {
-        Thumbnail thumb = new Thumbnail(MessageUtils.getMessageConsole("slashlbthumb"), null, 100, 100);
-        Footer ft = new Footer(MessageUtils.getMessageConsole("footerbtebrasil"), null, null);
-        MessageEmbed emb2 = new MessageEmbed(null, MessageUtils.getMessageConsole("slashrankstitle"), MessageUtils.getMessageConsole("slasbranksbody"), null, null, 52224, thumb, null,
+        Thumbnail thumb = new Thumbnail(MessageUtils.getMessagePT("slashlbthumb"), null, 100, 100);
+        Footer ft = new Footer(MessageUtils.getMessagePT("footerbtebrasil"), null, null);
+        MessageEmbed emb2 = new MessageEmbed(null, MessageUtils.getMessagePT("slashrankstitle"), MessageUtils.getMessagePT("slasbranksbody"), null, null, 52224, thumb, null,
         null, null, ft, null,
         null);
 return emb2;

@@ -16,17 +16,17 @@ public class PointsActions {
             BuilderService builderService = new BuilderService();
             Builder builder = builderService.getBuilderDiscord(discordId);
             if(builder == null){
-                return MessageUtils.getMessageConsole("EquipeNotBuilder");
+                return MessageUtils.getMessagePT("EquipeNotBuilder");
             } else{
                 if(remove){
                     BuilderUtils.removePoints(builder, builderService, points);
                 } else{
                     BuilderUtils.addPoints(builder, builderService, points);
                 }
-                return MessageUtils.getMessageConsole("Sucesso");
+                return MessageUtils.getMessagePT("Sucesso");
             }
         } else {
-            return MessageUtils.getMessageConsole("Perm1");
+            return MessageUtils.getMessagePT("Perm1");
         }
     }
 }

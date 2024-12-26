@@ -3,15 +3,20 @@ package io.github.LucasMullerC.discord;
 import github.scarsz.discordsrv.DiscordSRV;
 import github.scarsz.discordsrv.util.DiscordUtil;
 import io.github.LucasMullerC.util.MessageUtils;
+import github.scarsz.discordsrv.dependencies.jda.api.EmbedBuilder;
 import github.scarsz.discordsrv.dependencies.jda.api.entities.Guild;
 import github.scarsz.discordsrv.dependencies.jda.api.entities.Member;
 import github.scarsz.discordsrv.dependencies.jda.api.entities.MessageEmbed;
 import github.scarsz.discordsrv.dependencies.jda.api.entities.Role;
 import github.scarsz.discordsrv.dependencies.jda.api.entities.TextChannel;
 import github.scarsz.discordsrv.dependencies.jda.api.entities.User;
+import github.scarsz.discordsrv.dependencies.jda.api.events.interaction.SlashCommandEvent;
 
+import java.awt.Color;
 import java.util.List;
 import java.util.UUID;
+
+import org.jetbrains.annotations.NotNull;
 
 public class DiscordActions {
     static TextChannel chatbr = DiscordUtil.getTextChannelById("717528858777354272");
@@ -61,6 +66,24 @@ public class DiscordActions {
 
     public static void sendBotEmbed(MessageEmbed content) {
         chatbrbot.sendMessageEmbeds(content).queue();
+    }
+
+    public static void sendError(@NotNull SlashCommandEvent event, String error) {
+        event.replyEmbeds(
+                new EmbedBuilder()
+                        .setColor(Color.RED)
+                        .setTitle(error)
+                        .build()
+        ).setEphemeral(true).queue();
+    }
+
+    public static void sendErrorHooked(@NotNull SlashCommandEvent event, String error) {
+        event.getHook().sendMessageEmbeds(
+                new EmbedBuilder()
+                        .setColor(Color.RED)
+                        .setTitle(error)
+                        .build()
+        ).setEphemeral(true).queue();
     }
 
     public static String getDiscordId(UUID id){

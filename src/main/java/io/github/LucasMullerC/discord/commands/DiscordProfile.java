@@ -27,15 +27,15 @@ public class DiscordProfile {
             thumb = new Thumbnail(mention.getAvatarUrl(), null, 100, 100);
         }
         if(discordId == null){
-            String notLinked = MessageUtils.getMessageConsole("discordnotlinked1")+" "+MessageUtils.getMessageConsole("discordnotlinked3");
+            String notLinked = MessageUtils.getMessagePT("discordnotlinked1")+" "+MessageUtils.getMessagePT("discordnotlinked3");
             MessageEmbed messageEmbed = new MessageEmbed(null, null,notLinked,null, null, 52224, null, null, null, null, null,null, null);
             return messageEmbed;
         } else {
             BuilderService builderService = new BuilderService();
             Builder builder = builderService.getBuilderDiscord(discordId);
             if(builder == null){
-                ImageInfo img = new ImageInfo(MessageUtils.getMessageConsole("PerfilNotBuilderDiscordlink"), null, 105, 30);
-                MessageEmbed messageEmbed = new MessageEmbed(null, null,MessageUtils.getMessageConsole("PerfilNotBuilderDiscord"),null, null, 52224, null, null, null, null, null,img, null);
+                ImageInfo img = new ImageInfo(MessageUtils.getMessagePT("PerfilNotBuilderDiscordlink"), null, 105, 30);
+                MessageEmbed messageEmbed = new MessageEmbed(null, null,MessageUtils.getMessagePT("PerfilNotBuilderDiscord"),null, null, 52224, null, null, null, null, null,img, null);
                 return messageEmbed;
             } else {
                 String senderUuid = builder.getUUID();
@@ -49,7 +49,7 @@ public class DiscordProfile {
                 String points = String.valueOf(builder.getPoints());
                 points = points.substring(0, points.indexOf(".") + 2);
 
-                Footer ft = new Footer(MessageUtils.getMessageConsole("profilefooter1"), null, null);
+                Footer ft = new Footer(MessageUtils.getMessagePT("profilefooter1"), null, null);
                 ImageInfo img = null;
                 Boolean description = false;
                 if(!builder.getFeatured().equals("nulo")){
@@ -58,7 +58,7 @@ public class DiscordProfile {
                     description = true;
                 }
 
-                String title = MessageUtils.getMessageConsole("profile1")+" "+userName+" "+MessageUtils.getMessageConsole("profiletitle1");
+                String title = MessageUtils.getMessagePT("profile1")+" "+userName+" "+MessageUtils.getMessagePT("profiletitle1");
                 String body = getEmbedBody(String.valueOf(builder.getTier()), String.valueOf(builder.getBuilds()), claimNum, completedClaimNum,
                  points, description, nextLevel,totalAwards,builderAwards.length);
 
@@ -75,19 +75,19 @@ public class DiscordProfile {
     private String getEmbedBody(String rank, String builds, String claimNum,String completedClaimNum,String points, Boolean featured, String nextLevel,
     int totalAwards, int builderAwards){
         if(featured == true){
-            return MessageUtils.getMessageConsole("profilebodytier")+rank+"\r\n\r\n "+MessageUtils.getMessageConsole("profilebodybuilds")+builds
-            +"\r\n\r\n "+MessageUtils.getMessageConsole("profilebodypoints")+points+" / "+nextLevel
-            +"\r\n\r\n "+MessageUtils.getMessageConsole("profilebodyclaimsunderconstruction")+claimNum
-            +"\r\n\r\n "+MessageUtils.getMessageConsole("profilebodycompletedclaims")+ completedClaimNum
-            +"\r\n\r\n "+MessageUtils.getMessageConsole("profilebodyawards")+builderAwards+" / "+totalAwards
-            +"\r\n **--------------------------\r\n\r\n "+MessageUtils.getMessageConsole("profilebodyfeatured");
+            return MessageUtils.getMessagePT("profilebodytier")+rank+"\r\n\r\n "+MessageUtils.getMessagePT("profilebodybuilds")+builds
+            +"\r\n\r\n "+MessageUtils.getMessagePT("profilebodypoints")+points+" / "+nextLevel
+            +"\r\n\r\n "+MessageUtils.getMessagePT("profilebodyclaimsunderconstruction")+claimNum
+            +"\r\n\r\n "+MessageUtils.getMessagePT("profilebodycompletedclaims")+ completedClaimNum
+            +"\r\n\r\n "+MessageUtils.getMessagePT("profilebodyawards")+builderAwards+" / "+totalAwards
+            +"\r\n **--------------------------\r\n\r\n "+MessageUtils.getMessagePT("profilebodyfeatured");
         } else{
-            return MessageUtils.getMessageConsole("profilebodytier")+rank+"\r\n\r\n "+MessageUtils.getMessageConsole("profilebodybuilds")+builds
-            +"\r\n\r\n "+MessageUtils.getMessageConsole("profilebodypoints")+points+" / "+nextLevel
-            +"\r\n\r\n "+MessageUtils.getMessageConsole("profilebodyclaimsunderconstruction")+claimNum
-            +"\r\n\r\n "+MessageUtils.getMessageConsole("profilebodycompletedclaims")+ completedClaimNum
-            +"\r\n\r\n "+MessageUtils.getMessageConsole("profilebodyawards")+builderAwards+" / "+totalAwards
-            +"\r\n **--------------------------\r\n\r\n "+MessageUtils.getMessageConsole("profilebodynotfeatured");
+            return MessageUtils.getMessagePT("profilebodytier")+rank+"\r\n\r\n "+MessageUtils.getMessagePT("profilebodybuilds")+builds
+            +"\r\n\r\n "+MessageUtils.getMessagePT("profilebodypoints")+points+" / "+nextLevel
+            +"\r\n\r\n "+MessageUtils.getMessagePT("profilebodyclaimsunderconstruction")+claimNum
+            +"\r\n\r\n "+MessageUtils.getMessagePT("profilebodycompletedclaims")+ completedClaimNum
+            +"\r\n\r\n "+MessageUtils.getMessagePT("profilebodyawards")+builderAwards+" / "+totalAwards
+            +"\r\n **--------------------------\r\n\r\n "+MessageUtils.getMessagePT("profilebodynotfeatured");
         }
     }
 }

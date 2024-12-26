@@ -15,10 +15,10 @@ public class ClaimActions {
             ClaimService claimService = new ClaimService();
             Claim claim = claimService.getClaim(claimId);
             if(claim == null){
-                return MessageUtils.getMessageConsole("ClaimNotFound");
+                return MessageUtils.getMessagePT("ClaimNotFound");
             } else{
                 if(remove){
-                    return MessageUtils.getMessageConsole("wip");
+                    return MessageUtils.getMessagePT("wip");
                 } else{
                     claim.setEvent(isEvent);
                     if(!awardId.equals("nulo")){
@@ -26,10 +26,10 @@ public class ClaimActions {
                     }
                     claimService.saveClaim();
                 }
-                return MessageUtils.getMessageConsole("Sucesso");
+                return MessageUtils.getMessagePT("Sucesso");
             }
         } else {
-            return MessageUtils.getMessageConsole("Perm1");
+            return MessageUtils.getMessagePT("Perm1");
         }
     }
     

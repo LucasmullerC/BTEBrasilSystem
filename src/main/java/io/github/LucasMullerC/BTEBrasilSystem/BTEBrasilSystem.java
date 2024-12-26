@@ -1,9 +1,12 @@
 package io.github.LucasMullerC.BTEBrasilSystem;
 
+import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
 import org.bukkit.plugin.java.JavaPlugin;
 
 import github.scarsz.discordsrv.DiscordSRV;
@@ -16,9 +19,7 @@ import github.scarsz.discordsrv.dependencies.jda.api.entities.User;
 import github.scarsz.discordsrv.dependencies.jda.api.events.interaction.SlashCommandEvent;
 import github.scarsz.discordsrv.dependencies.jda.api.interactions.commands.OptionType;
 import github.scarsz.discordsrv.dependencies.jda.api.interactions.commands.build.CommandData;
-import github.scarsz.discordsrv.dependencies.jda.api.interactions.components.Button;
-import github.scarsz.discordsrv.dependencies.jda.api.interactions.components.ButtonStyle;
-import github.scarsz.discordsrv.dependencies.jda.internal.interactions.ButtonImpl;
+import github.scarsz.discordsrv.dependencies.jda.api.interactions.commands.build.SubcommandData;
 import github.scarsz.discordsrv.util.DiscordUtil;
 import io.github.LucasMullerC.commands.analyse;
 import io.github.LucasMullerC.commands.application;
@@ -44,6 +45,7 @@ import io.github.LucasMullerC.discord.commands.CreateAward;
 import io.github.LucasMullerC.discord.commands.Destacar;
 import io.github.LucasMullerC.discord.commands.DiscordClaim;
 import io.github.LucasMullerC.discord.commands.DiscordProfile;
+import io.github.LucasMullerC.discord.commands.FindColor;
 import io.github.LucasMullerC.discord.commands.Leaderboard;
 import io.github.LucasMullerC.listeners.PlayerJoinListener;
 import io.github.LucasMullerC.listeners.PlayerMoveListener;
@@ -95,67 +97,85 @@ public class BTEBrasilSystem extends JavaPlugin implements SlashCommandProvider{
 	public Set<PluginSlashCommand> getSlashCommands() {
 		return new HashSet<>(Arrays.asList(
 				//perfil
-				new PluginSlashCommand(this, new CommandData("perfil", MessageUtils.getMessageConsole("slashprofile"))
-				.addOption(OptionType.MENTIONABLE, "mention", MessageUtils.getMessageConsole("profiledescription2"), false)
-				.addOption(OptionType.STRING, "userid", MessageUtils.getMessageConsole("profiledescription3"), false)),
+				new PluginSlashCommand(this, new CommandData("perfil", MessageUtils.getMessagePT("slashprofile"))
+				.addOption(OptionType.MENTIONABLE, "mention", MessageUtils.getMessagePT("profiledescription2"), false)
+				.addOption(OptionType.STRING, "userid", MessageUtils.getMessagePT("profiledescription3"), false)),
 
 				//destacar
-				new PluginSlashCommand(this, new CommandData("destacar", MessageUtils.getMessageConsole("slashdestacar"))
-				.addOption(OptionType.STRING, "awardid", MessageUtils.getMessageConsole("slashcreateawarddescription1"), true)),
+				new PluginSlashCommand(this, new CommandData("destacar", MessageUtils.getMessagePT("slashdestacar"))
+				.addOption(OptionType.STRING, "awardid", MessageUtils.getMessagePT("slashcreateawarddescription1"), true)),
 
 				//conquistas
-				new PluginSlashCommand(this, new CommandData("conquistas", MessageUtils.getMessageConsole("slashawards"))
-				.addOption(OptionType.NUMBER, "page", MessageUtils.getMessageConsole("slashawardsdescription1"), false)
-				.addOption(OptionType.MENTIONABLE, "mention", MessageUtils.getMessageConsole("awardsdescription2"), false)
-				.addOption(OptionType.STRING, "userid", MessageUtils.getMessageConsole("awardsdescription3"), false)),
+				new PluginSlashCommand(this, new CommandData("conquistas", MessageUtils.getMessagePT("slashawards"))
+				.addOption(OptionType.NUMBER, "page", MessageUtils.getMessagePT("slashawardsdescription1"), false)
+				.addOption(OptionType.MENTIONABLE, "mention", MessageUtils.getMessagePT("awardsdescription2"), false)
+				.addOption(OptionType.STRING, "userid", MessageUtils.getMessagePT("awardsdescription3"), false)),
 
 				//claim
-				new PluginSlashCommand(this, new CommandData("claim", MessageUtils.getMessageConsole("slashclaim"))
-				.addOption(OptionType.NUMBER, "page", MessageUtils.getMessageConsole("slashawardsdescription1"), false)
-				.addOption(OptionType.STRING, "claimid", MessageUtils.getMessageConsole("claimdescription4"), false)
-				.addOption(OptionType.MENTIONABLE, "mention", MessageUtils.getMessageConsole("claimdescription2"), false)
-				.addOption(OptionType.STRING, "userid", MessageUtils.getMessageConsole("claimdescription3"), false)),
+				new PluginSlashCommand(this, new CommandData("claim", MessageUtils.getMessagePT("slashclaim"))
+				.addOption(OptionType.NUMBER, "page", MessageUtils.getMessagePT("slashawardsdescription1"), false)
+				.addOption(OptionType.STRING, "claimid", MessageUtils.getMessagePT("claimdescription4"), false)
+				.addOption(OptionType.MENTIONABLE, "mention", MessageUtils.getMessagePT("claimdescription2"), false)
+				.addOption(OptionType.STRING, "userid", MessageUtils.getMessagePT("claimdescription3"), false)),
 
 				//lb
-				new PluginSlashCommand(this, new CommandData("lb", MessageUtils.getMessageConsole("slashlb"))
-				.addOption(OptionType.NUMBER, "page", MessageUtils.getMessageConsole("slashawardsdescription1"), false)),
+				new PluginSlashCommand(this, new CommandData("lb", MessageUtils.getMessagePT("slashlb"))
+				.addOption(OptionType.NUMBER, "page", MessageUtils.getMessagePT("slashawardsdescription1"), false)),
 
 				//ranks
-				new PluginSlashCommand(this, new CommandData("ranks", MessageUtils.getMessageConsole("slashranks"))),
+				new PluginSlashCommand(this, new CommandData("ranks", MessageUtils.getMessagePT("slashranks"))),
+				
+				//findcolor
+				new PluginSlashCommand(this,new CommandData("findcolor", MessageUtils.getMessagePT("slashfindcolortitle"))
+				.addSubcommands(new SubcommandData("image",MessageUtils.getMessagePT("slashfindcolorimagedescription")))
+				.addSubcommands(new SubcommandData("code",MessageUtils.getMessagePT("slashfindcolorcodedescription"))
+				.addOption(OptionType.STRING, "code", MessageUtils.getMessagePT("slashfindcolorcodedescription2"),true))),
 
 				//ADMIN COMMANDS
 				//buildactions
-				new PluginSlashCommand(this, new CommandData("buildsactions", MessageUtils.getMessageConsole("slashaddbuilds"))
-				.addOption(OptionType.INTEGER, "builds", MessageUtils.getMessageConsole("slashaddbuildsdescription"), true)
-				.addOption(OptionType.STRING, "userid", MessageUtils.getMessageConsole("slashaddbuildsdescription2"), true)
-				.addOption(OptionType.BOOLEAN, "remover", MessageUtils.getMessageConsole("slashaddbuildsdescription3"), true)),
+				new PluginSlashCommand(this, new CommandData("buildsactions", MessageUtils.getMessagePT("slashaddbuilds"))
+				.addOption(OptionType.INTEGER, "builds", MessageUtils.getMessagePT("slashaddbuildsdescription"), true)
+				.addOption(OptionType.STRING, "userid", MessageUtils.getMessagePT("slashaddbuildsdescription2"), true)
+				.addOption(OptionType.BOOLEAN, "remover", MessageUtils.getMessagePT("slashaddbuildsdescription3"), true)),
 
 				//pointsactions
-				new PluginSlashCommand(this, new CommandData("pointsactions", MessageUtils.getMessageConsole("slashaddpoints"))
-				.addOption(OptionType.INTEGER, "pontos", MessageUtils.getMessageConsole("slashaddpointsdescription"), true)
-				.addOption(OptionType.STRING, "userid", MessageUtils.getMessageConsole("slashaddbuildsdescription2"), true)
-				.addOption(OptionType.BOOLEAN, "remover", MessageUtils.getMessageConsole("slashaddpointsdescription2"), true)),
+				new PluginSlashCommand(this, new CommandData("pointsactions", MessageUtils.getMessagePT("slashaddpoints"))
+				.addOption(OptionType.INTEGER, "pontos", MessageUtils.getMessagePT("slashaddpointsdescription"), true)
+				.addOption(OptionType.STRING, "userid", MessageUtils.getMessagePT("slashaddbuildsdescription2"), true)
+				.addOption(OptionType.BOOLEAN, "remover", MessageUtils.getMessagePT("slashaddpointsdescription2"), true)),
 
 				//awardactions
-				new PluginSlashCommand(this, new CommandData("awardactions", MessageUtils.getMessageConsole("slashawardactions"))
-				.addOption(OptionType.STRING, "awardid", MessageUtils.getMessageConsole("slashcreateawarddescription1"), true)
-				.addOption(OptionType.STRING, "userid", MessageUtils.getMessageConsole("slashaddbuildsdescription2"), true)
-				.addOption(OptionType.BOOLEAN, "remover", MessageUtils.getMessageConsole("slashawardactionsdescription"), true)),
+				new PluginSlashCommand(this, new CommandData("awardactions", MessageUtils.getMessagePT("slashawardactions"))
+				.addOption(OptionType.STRING, "awardid", MessageUtils.getMessagePT("slashcreateawarddescription1"), true)
+				.addOption(OptionType.STRING, "userid", MessageUtils.getMessagePT("slashaddbuildsdescription2"), true)
+				.addOption(OptionType.BOOLEAN, "remover", MessageUtils.getMessagePT("slashawardactionsdescription"), true)),
 
 				//claimactions
-				new PluginSlashCommand(this, new CommandData("claimactions", MessageUtils.getMessageConsole("slashclaimactions"))
-				.addOption(OptionType.STRING, "claimid", MessageUtils.getMessageConsole("slashclaimactionsdescription"), true)
-				.addOption(OptionType.BOOLEAN, "event", MessageUtils.getMessageConsole("slashclaimactionsdescription2"), true)
-				.addOption(OptionType.STRING, "awardid", MessageUtils.getMessageConsole("slashcreateawarddescription1"), true)
-				.addOption(OptionType.BOOLEAN, "remover", MessageUtils.getMessageConsole("slashclaimactionsdescription3"), true)),
+				new PluginSlashCommand(this, new CommandData("claimactions", MessageUtils.getMessagePT("slashclaimactions"))
+				.addOption(OptionType.STRING, "claimid", MessageUtils.getMessagePT("slashclaimactionsdescription"), true)
+				.addOption(OptionType.BOOLEAN, "event", MessageUtils.getMessagePT("slashclaimactionsdescription2"), true)
+				.addOption(OptionType.STRING, "awardid", MessageUtils.getMessagePT("slashcreateawarddescription1"), true)
+				.addOption(OptionType.BOOLEAN, "remover", MessageUtils.getMessagePT("slashclaimactionsdescription3"), true)),
 
 				//createaward
-				new PluginSlashCommand(this, new CommandData("createaward", MessageUtils.getMessageConsole("slashcreateaward"))
-				.addOption(OptionType.INTEGER, "pontos", MessageUtils.getMessageConsole("slashaddpointsdescription"), true)
-				.addOption(OptionType.STRING, "awardid", MessageUtils.getMessageConsole("slashcreateawarddescription1"), true)
-				.addOption(OptionType.STRING, "url", MessageUtils.getMessageConsole("slashcreateawarddescription2"), true)
-				.addOption(OptionType.STRING, "nome", MessageUtils.getMessageConsole("slashcreateawarddescription3"), true))
+				new PluginSlashCommand(this, new CommandData("createaward", MessageUtils.getMessagePT("slashcreateaward"))
+				.addOption(OptionType.INTEGER, "pontos", MessageUtils.getMessagePT("slashaddpointsdescription"), true)
+				.addOption(OptionType.STRING, "awardid", MessageUtils.getMessagePT("slashcreateawarddescription1"), true)
+				.addOption(OptionType.STRING, "url", MessageUtils.getMessagePT("slashcreateawarddescription2"), true)
+				.addOption(OptionType.STRING, "nome", MessageUtils.getMessagePT("slashcreateawarddescription3"), true))
 		));
+	}
+	@SlashCommand(path= "findcolor/code")
+	@SlashCommand(path= "findcolor/image")
+	public void findcolorCommand(SlashCommandEvent event){
+		FindColor findColorCommand;
+        try {
+            findColorCommand = new FindColor(this);
+			findColorCommand.onSlashCommandInteraction(event);
+        } catch (URISyntaxException | IOException e) {
+            System.out.println("Plugin starting stopped. FindColor command startup failed.");
+			event.reply(MessageUtils.getMessagePT("ErrorGeneric")).queue();
+        }
 	}
 
 	@SlashCommand(path = "perfil")
@@ -170,11 +190,7 @@ public class BTEBrasilSystem extends JavaPlugin implements SlashCommandProvider{
 		DiscordProfile discordProfile = new DiscordProfile();
 		MessageEmbed messageEmbed = discordProfile.getCommand(event.getUser(), mention);
 
-		Button awardButton = new ButtonImpl("award", "Conquistas", ButtonStyle.SECONDARY, false,null);
-		//Button featuredButton = new ButtonImpl("destacar", "Destacar conquista", ButtonStyle.PRIMARY, false,null);
-		Button claimButton = new ButtonImpl("claim", "Claims", ButtonStyle.SECONDARY, false,null);
-		Button leaderboardButton = new ButtonImpl("leaderboard", "Leaderboard", ButtonStyle.SECONDARY, false,null);
-		event.replyEmbeds(messageEmbed).addActionRow(awardButton,claimButton,leaderboardButton).queue();
+		event.replyEmbeds(messageEmbed).queue();
 	}
 
 	@SlashCommand(path = "destacar")
