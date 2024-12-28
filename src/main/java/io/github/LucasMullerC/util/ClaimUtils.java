@@ -293,7 +293,9 @@ public static void removeImage(Claim claim, String imageId, Player player, Claim
 
         for (int i = startIndex; i < endIndex; i++) {
             Claim claim = claims.get(i);
-            claimList += MessageUtils.getMessageConsole("claimbody4") + claim.getClaim();
+            if(!claim.isEvent()){
+                claimList += MessageUtils.getMessageConsole("claimbody4") + claim.getClaim();
+            }
         }
         return claimList;
     }

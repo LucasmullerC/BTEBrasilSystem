@@ -99,7 +99,7 @@ public class DiscordClaim {
         Integer.parseInt(ary[1].split("\\.")[0]));
         ElevationService elevationService = new ElevationService();
         String elevation = elevationService.getElevationOpenElevation(coords[1], coords[0]);
-        String bluemapurl = String.format("http://btebrasil.wither.host:8578/#world:%s:%s:%s:0:-1.07:1.36:0:0:free",ary[0],elevation,ary[1]);
+        String bluemapurl = String.format("http://srv677577.hstgr.cloud:8185/#world:%s:%s:%s:0:-1.07:1.36:0:0:free",ary[0],elevation,ary[1]);
         return bluemapurl;
     }
 
