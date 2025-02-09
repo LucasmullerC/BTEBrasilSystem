@@ -92,7 +92,11 @@ public class DiscordActions {
 
     public static String getDiscordName(String id) {
         User user = DiscordUtil.getJda().getUserById(id);
-        return user.getName();
+        if(user == null){
+            return null;
+        } else{
+            return user.getName();
+        }
     }
 
     public static void addRole(String discordId,String roleId){

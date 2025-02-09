@@ -89,11 +89,15 @@ public class analyse implements CommandExecutor {
                 return;
             }
             if(command.length <= 1){
+                String name = DiscordActions.getDiscordName(builder.getDiscord());
+                if(name == null){
+                    pendingService.removePending(pending);
+                    player.sendMessage(Component.text(MessageUtils.getMessage("playerleave", player)).color(NamedTextColor.RED));
+                    return;
+                }
                 player.chat("/region select "+regionId);
                 player.sendMessage(Component.text(MessageUtils.getMessage("AnaliseClaim1", player)+
-                pending.getregionId()+
-                MessageUtils.getMessage("VoceAnalisa2", player)+
-                DiscordActions.getDiscordName(builder.getDiscord())).color(NamedTextColor.GOLD));
+                pending.getregionId()+MessageUtils.getMessage("VoceAnalisa2", player)+name).color(NamedTextColor.GOLD));
 
                 player.teleport(location);
                 player.sendMessage(Component.text(MessageUtils.getMessage("Analisar1", player)).color(NamedTextColor.GOLD));
@@ -142,11 +146,17 @@ public class analyse implements CommandExecutor {
                 pendingService.removePending(pending);
                 player.sendMessage(Component.text(MessageUtils.getMessage("ClaimRecusada4", player)).color(NamedTextColor.GOLD));
             } else{
+                String name = DiscordActions.getDiscordName(builder.getDiscord());
+                if(name == null){
+                    pendingService.removePending(pending);
+                    player.sendMessage(Component.text(MessageUtils.getMessage("playerleave", player)).color(NamedTextColor.RED));
+                    return;
+                }
+
                 player.chat("/region select "+regionId);
                 player.sendMessage(Component.text(MessageUtils.getMessage("AnaliseClaim1", player)+
                 pending.getregionId()+
-                MessageUtils.getMessage("VoceAnalisa2", player)+
-                DiscordActions.getDiscordName(builder.getDiscord())).color(NamedTextColor.GOLD));
+                MessageUtils.getMessage("VoceAnalisa2", player)+name).color(NamedTextColor.GOLD));
 
                 player.teleport(location);
                 player.sendMessage(Component.text(MessageUtils.getMessage("Analisar1", player)).color(NamedTextColor.GOLD));
@@ -199,7 +209,7 @@ public class analyse implements CommandExecutor {
                 //teleport player to spawn
                 World world = player.getWorld();
                 Location location = new Location(world, -1163, 80, 300);
-                if (applicationPlayer != null || applicationPlayer.isOnline() == true) {
+                if (applicationPlayer != null) {
                     Player applicantionOnlinePlayer = Bukkit.getPlayer(UUID.fromString(applicant.getUUID()));
                     applicantionOnlinePlayer.teleport(location);
                     applicantionOnlinePlayer.removePotionEffect(PotionEffectType.NIGHT_VISION);
@@ -228,7 +238,7 @@ public class analyse implements CommandExecutor {
                 World world = player.getWorld();
                 Location location = new Location(world, -1163, 80, 300);
                 player.teleport(location);
-                if (applicationPlayer != null || applicationPlayer.isOnline() == true) {
+                if (applicationPlayer != null) {
                     WorldGuardService worldGuardService = new WorldGuardService();
                     worldGuardService.addPermissionWG("apply"+applicant.getgetZone()+"d",applicationPlayer.getPlayer(),applicationPlayer.getUniqueId());
                 }
