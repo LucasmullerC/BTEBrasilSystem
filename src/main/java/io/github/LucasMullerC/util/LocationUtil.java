@@ -2,7 +2,16 @@ package io.github.LucasMullerC.util;
 
 import org.bukkit.Location;
 import org.bukkit.World;
+
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+
 import org.bukkit.Bukkit;
+
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -36,6 +45,42 @@ public class LocationUtil {
         int z = Integer.parseInt(ary[1].split("\\.")[0]);
         Location loc = new Location(world, x, y, z);
         return loc;
+    }
+
+    public static String getCityName(double latitude, double longitude) {
+        String cityName = null;
+        String url = String.format(
+            "https://nominatim.openstreetmap.org/reverse?format=json&lat=%f&lon=%f", 
+            latitude, longitude
+        );
+
+        try {
+            // Configurando o cliente HTTP
+            HttpClient client = HttpClient.newHttpClient();
+            HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(url))
+                .header("User-Agent", "JavaLocationApp/1.0")
+                .GET()
+                .build();
+
+            // Enviando a requisição e obtendo a resposta
+            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            JsonObject json = JsonParser.parseString(response.body()).getAsJsonObject();
+
+            // Obtendo o nome da cidade a partir da resposta JSON
+            JsonObject address = json.getAsJsonObject("address");
+            if (address != null && address.has("city_district")) {
+                cityName = address.get("city_district").getAsString();
+            } else if (address != null && address.has("town")) {
+                cityName = address.get("town").getAsString();
+            } else if (address != null && address.has("village")) {
+                cityName = address.get("village").getAsString();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return cityName != null ? cityName : "Brasil";
     }
 }
 

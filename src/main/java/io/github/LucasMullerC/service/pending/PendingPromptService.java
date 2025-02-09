@@ -15,10 +15,12 @@ import io.github.LucasMullerC.discord.DiscordActions;
 import io.github.LucasMullerC.model.Builder;
 import io.github.LucasMullerC.model.Claim;
 import io.github.LucasMullerC.model.Pending;
+import io.github.LucasMullerC.service.WorldGuardService;
 import io.github.LucasMullerC.service.builder.BuilderService;
 import io.github.LucasMullerC.service.claim.ClaimService;
 import io.github.LucasMullerC.util.BuilderUtils;
 import io.github.LucasMullerC.util.ClaimUtils;
+import io.github.LucasMullerC.util.LocationUtil;
 import io.github.LucasMullerC.util.MessageUtils;
 import io.github.LucasMullerC.util.RegionUtils;
 import net.kyori.adventure.text.Component;
@@ -183,6 +185,25 @@ public class PendingPromptService {
                 //PendingService pendingService = new PendingService();
                 ClaimUtils.addBuilds(claim, claimService, totalBuilds);
                 ClaimUtils.CompleteClaim(claim, claimService);
+
+                if(claim.getDifficulty() > 0){
+                    int[] dimensions = RegionUtils.getRegionDimensions(claim.getClaim(), reviewer);
+                    if (dimensions == null) {
+                        reviewer.sendMessage(Component.text(MessageUtils.getMessage("claimerror1", reviewer)).color(NamedTextColor.RED));
+                        return END_OF_CONVERSATION;
+                    }
+                    int maxDimension = Math.max(dimensions[0], dimensions[1]);
+                    boolean completed = RegionUtils.updateClaim(claim.getClaim(),reviewer,"copy"+claim.getClaim(),maxDimension);
+                    if(!completed){
+                        reviewer.sendMessage(Component.text(MessageUtils.getMessage("claimerror1", reviewer)).color(NamedTextColor.RED));
+                    }
+                    WorldGuardService worldGuardService = new WorldGuardService();
+                    worldGuardService.RemoveRegion("copy" + claim.getClaim(), reviewer);
+                    worldGuardService.addPermissionWG(claim.getClaim(), reviewer, UUID.fromString(claim.getPlayer()));
+                    //No support to teams yet. Sem suporte para equipes no momento.
+
+                    reviewer.teleport(LocationUtil.getLocationFromPoints(claim.getPoints(), reviewer.getWorld()));
+                }
                 //pendingService.removePending(pending);
                 reviewer.sendMessage(Component.text(MessageUtils.getMessage("ClaimAprovado",reviewer)).color(NamedTextColor.GREEN));
                 return END_OF_CONVERSATION;

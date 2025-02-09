@@ -32,6 +32,7 @@ import io.github.LucasMullerC.service.pending.PendingPromptService;
 import io.github.LucasMullerC.service.pending.PendingService;
 import io.github.LucasMullerC.util.LocationUtil;
 import io.github.LucasMullerC.util.MessageUtils;
+import io.github.LucasMullerC.util.RegionUtils;
 import io.github.LucasMullerC.util.ZoneUtils;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -74,14 +75,27 @@ public class analyse implements CommandExecutor {
 
             ClaimService claimService = new ClaimService();
             Claim claim = claimService.getClaim(pending.getregionId());
+            String regionId = "";
+            Location location;
+            if(claim.getDifficulty() > 0){
+                regionId = "copy"+pending.getregionId();
+                location = RegionUtils.getRegionCopyLocation(regionId, player);
+            } else{
+                regionId = pending.getregionId();
+                location = LocationUtil.getLocationFromPoints(claim.getPoints(), player.getWorld());
+            }
+            if(location==null){
+                player.sendMessage(Component.text(MessageUtils.getMessage("locationerror1", player)).color(NamedTextColor.RED));
+                return;
+            }
             if(command.length <= 1){
-                player.chat("/region select "+pending.getregionId());
+                player.chat("/region select "+regionId);
                 player.sendMessage(Component.text(MessageUtils.getMessage("AnaliseClaim1", player)+
                 pending.getregionId()+
                 MessageUtils.getMessage("VoceAnalisa2", player)+
                 DiscordActions.getDiscordName(builder.getDiscord())).color(NamedTextColor.GOLD));
 
-                player.teleport(LocationUtil.getLocationFromPoints(claim.getPoints(), player.getWorld()));
+                player.teleport(location);
                 player.sendMessage(Component.text(MessageUtils.getMessage("Analisar1", player)).color(NamedTextColor.GOLD));
                 player.sendMessage(Component.text(MessageUtils.getMessage("Analisar2", player)).color(NamedTextColor.GOLD));
                 return;
@@ -128,15 +142,16 @@ public class analyse implements CommandExecutor {
                 pendingService.removePending(pending);
                 player.sendMessage(Component.text(MessageUtils.getMessage("ClaimRecusada4", player)).color(NamedTextColor.GOLD));
             } else{
-                player.chat("/region select "+pending.getregionId());
+                player.chat("/region select "+regionId);
                 player.sendMessage(Component.text(MessageUtils.getMessage("AnaliseClaim1", player)+
                 pending.getregionId()+
                 MessageUtils.getMessage("VoceAnalisa2", player)+
                 DiscordActions.getDiscordName(builder.getDiscord())).color(NamedTextColor.GOLD));
 
-                player.teleport(LocationUtil.getLocationFromPoints(claim.getPoints(), player.getWorld()));
+                player.teleport(location);
                 player.sendMessage(Component.text(MessageUtils.getMessage("Analisar1", player)).color(NamedTextColor.GOLD));
                 player.sendMessage(Component.text(MessageUtils.getMessage("Analisar2", player)).color(NamedTextColor.GOLD));
+                return;
             }
         } else{
             player.sendMessage(Component.text(MessageUtils.getMessage("NotClaim", player)).color(NamedTextColor.GOLD));

@@ -1,5 +1,6 @@
 package io.github.LucasMullerC.commands;
 
+import java.util.ArrayList;
 import java.util.UUID;
 
 import org.bukkit.Location;
@@ -13,9 +14,15 @@ import org.jetbrains.annotations.NotNull;
 
 import io.github.LucasMullerC.model.Applicant;
 import io.github.LucasMullerC.model.ApplicationZone;
+import io.github.LucasMullerC.model.Builder;
+import io.github.LucasMullerC.model.Claim;
 import io.github.LucasMullerC.service.applicant.ApplicantService;
 import io.github.LucasMullerC.service.applicant.ApplicationZoneService;
+import io.github.LucasMullerC.service.builder.BuilderService;
+import io.github.LucasMullerC.service.claim.ClaimService;
+import io.github.LucasMullerC.util.ClaimUtils;
 import io.github.LucasMullerC.util.MessageUtils;
+import io.github.LucasMullerC.util.RegionUtils;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 
@@ -26,6 +33,21 @@ public class back implements CommandExecutor{
             @NotNull String[] arg3) {
         Player player = (Player) sender;
         UUID id = player.getUniqueId();
+
+        BuilderService builderService = new BuilderService();
+        Builder builder = builderService.getBuilderUuid(id.toString());
+        if(builder != null){
+            ClaimService claimService = new ClaimService();
+            ArrayList<Claim> claimList = claimService.getClaimListByPlayer(id.toString());
+            for(Claim claim:claimList){
+                if(claim.getDifficulty()>0 && ClaimUtils.verifyClaimProperties(claim, player, false) == true){
+                    Location location = RegionUtils.getRegionCopyLocation("copy"+claim.getClaim(), player);
+                    player.teleport(location);
+                    return true;
+                }
+            }
+        }
+
         ApplicantService applicantService = new ApplicantService();
         Applicant applicant = applicantService.getApplicant(id.toString());
         if(applicant == null){

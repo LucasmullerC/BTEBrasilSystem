@@ -5,6 +5,7 @@ public class Claim implements Comparable<Claim>{
     private Integer Builds;
     private boolean event = false;
     private String Award = "nulo";
+    private int difficulty = 0;
     public Claim() {
     }
     public Claim (String A){
@@ -92,6 +93,13 @@ public class Claim implements Comparable<Claim>{
     }
     public void setAward(String award) {
         Award = award;
+    }
+
+    public int getDifficulty() {
+        return difficulty;
+    }
+    public void setDifficulty(int difficulty) {
+        this.difficulty = difficulty;
     }
 
         @Override

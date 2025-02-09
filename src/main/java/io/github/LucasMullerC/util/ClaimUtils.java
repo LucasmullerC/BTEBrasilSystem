@@ -1,6 +1,7 @@
 package io.github.LucasMullerC.util;
 
 import java.util.UUID;
+import java.util.stream.Collectors;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.Normalizer;
@@ -9,6 +10,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 import org.bukkit.entity.Player;
 
@@ -51,6 +53,34 @@ public class ClaimUtils {
         return claimId;
     }
 
+    public static String buildPlayerClaim(Player player,String input,String selectionPoints,int difficulty){
+        String claimId;
+        Integer cont = 0;
+        ClaimService claimService = new ClaimService();
+        do {
+            cont++;
+            claimId = Normalizer.normalize(input, Normalizer.Form.NFD);
+            claimId = claimId.replaceAll("[\\p{InCombiningDiacriticalMarks}]", "");
+            claimId = claimId.replaceAll(" ", "") + cont.toString();
+            claimId = claimId.replaceAll("[\\[\\](){}]", "");
+            claimId = claimId.toLowerCase();
+        } while (claimService.getClaim(claimId) != null);
+        Claim claim = new Claim(claimId);
+        claim.setName(input);
+        claim.setPoints(selectionPoints);
+        claim.setPlayer("nulo");
+        claim.setImage("nulo");
+        claim.setStatus("F");
+        claim.setParticipants("nulo");
+        claim.setBuilds(0);
+        claim.setEvent(false);
+        claim.setAward("nulo");
+        claim.setDifficulty(difficulty);
+        claimService.addClaim(claim,player);
+
+        return claimId;
+    }
+
     public static void finalizeClaim(Player player,Claim claim, String builds){
         String discordId = DiscordSRV.getPlugin().getAccountLinkManager().getDiscordId(player.getUniqueId());
         String discordName = DiscordActions.getDiscordName(discordId);
@@ -61,13 +91,13 @@ public class ClaimUtils {
         pending.setbuilds(builds);
         pendingService.addPending(pending);
 
-        DiscordActions.sendLogMessage("<@&826599049297264640> "+MessageUtils.getMessageConsole("alertadminuser")+
-        " **"+discordName+"** "+MessageUtils.getMessageConsole("PendenteMsgClaim1")+"**"+claim.getClaim()+"**"+
-        MessageUtils.getMessageConsole("PendenteMsgClaim2"));
-
-        //DiscordActions.sendLogMessage("<@&teste60> "+MessageUtils.getMessageConsole("alertadminuser")+
+        //DiscordActions.sendLogMessage("<@&826599049297264640> "+MessageUtils.getMessageConsole("alertadminuser")+
         //" **"+discordName+"** "+MessageUtils.getMessageConsole("PendenteMsgClaim1")+"**"+claim.getClaim()+"**"+
         //MessageUtils.getMessageConsole("PendenteMsgClaim2"));
+
+        DiscordActions.sendLogMessage("<@&teste60> "+MessageUtils.getMessageConsole("alertadminuser")+
+        " **"+discordName+"** "+MessageUtils.getMessageConsole("PendenteMsgClaim1")+"**"+claim.getClaim()+"**"+
+        MessageUtils.getMessageConsole("PendenteMsgClaim2"));
     }
 
     public static void CompleteClaim(Claim claim, ClaimService claimService){
@@ -299,6 +329,34 @@ public static void removeImage(Claim claim, String imageId, Player player, Claim
         }
         return claimList;
     }
+
+    public static Claim chooseClaim(String name,int difficulty,UUID id){
+        ClaimService claimService = new ClaimService();
+        ArrayList<Claim> claimList = claimService.getClaimList();
+
+        
+        List<Claim> filteredClaims = claimList.stream()
+        .filter(claim -> claim.getDifficulty() == difficulty && "F".equalsIgnoreCase(claim.getStatus()))
+        .collect(Collectors.toList());
+
+        if (name != null && !name.isEmpty()) {
+            filteredClaims = filteredClaims.stream()
+                    .filter(claim -> claim.getName().contains(name.toLowerCase()))
+                    .collect(Collectors.toList());
+        }
+
+        if (filteredClaims.isEmpty()) {
+            return null;
+        }
+
+        Random random = new Random();
+        Claim chosenClaim = filteredClaims.get(random.nextInt(filteredClaims.size()));
+        chosenClaim.setPlayer(id.toString());
+        claimService.saveClaim();
+
+        return chosenClaim;
+        
+    }
     
     public static boolean isNumeric(String str) {
         try {
@@ -308,5 +366,6 @@ public static void removeImage(Claim claim, String imageId, Player player, Claim
             return false;
         }
     }
+
 
 }

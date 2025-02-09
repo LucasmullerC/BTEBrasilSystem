@@ -5,6 +5,7 @@ import java.util.Set;
 import java.util.UUID;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
@@ -12,10 +13,13 @@ import org.bukkit.entity.Player;
 import com.google.common.collect.Lists;
 import com.sk89q.worldedit.bukkit.BukkitAdapter;
 import com.sk89q.worldedit.math.BlockVector2;
+import com.sk89q.worldedit.math.BlockVector3;
 import com.sk89q.worldedit.world.World;
 import com.sk89q.worldguard.WorldGuard;
 import com.sk89q.worldguard.domains.DefaultDomain;
+import com.sk89q.worldguard.protection.ApplicableRegionSet;
 import com.sk89q.worldguard.protection.managers.RegionManager;
+import com.sk89q.worldguard.protection.regions.ProtectedCuboidRegion;
 import com.sk89q.worldguard.protection.regions.ProtectedPolygonalRegion;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import com.sk89q.worldguard.protection.regions.RegionContainer;
@@ -38,11 +42,35 @@ public class WorldGuardService {
         ProtectedRegion newRegion = new ProtectedPolygonalRegion(Id, points, minY, maxY);
         newRegion.setPriority(1);
         regions.addRegion(newRegion);
-        members = newRegion.getMembers();
-        members.addPlayer(player.getUniqueId());
+        if(player != null){
+            members = newRegion.getMembers();
+            members.addPlayer(player.getUniqueId());
+    
+            LuckpermsService Luckperms = new LuckpermsService();
+            Luckperms.addPermissionLuckPerms(Id, player.getUniqueId());
+        }
+    }
 
-        LuckpermsService Luckperms = new LuckpermsService();
-        Luckperms.addPermissionLuckPerms(Id, player.getUniqueId());
+    public void addClaimZone(Player player,Location location,String claimName,int totalSize){
+        int radius = 20 + totalSize;
+        RegionManager regions = getRegions(player);
+        DefaultDomain members;
+
+        BlockVector3 min = BlockVector3.at(
+                location.getBlockX() - radius,
+                0,                          
+                location.getBlockZ() - radius 
+        );
+        BlockVector3 max = BlockVector3.at(
+            location.getBlockX() + radius, 
+                255,                    
+                location.getBlockZ() + radius
+        );
+
+        ProtectedCuboidRegion region = new ProtectedCuboidRegion("copy"+claimName, min, max);
+        regions.addRegion(region);
+        members = region.getMembers();
+        members.addPlayer(player.getUniqueId());
     }
 
     public void addApplicationZone(Player player,String Id,List<BlockVector2> points,int minY,int maxY){
@@ -105,6 +133,20 @@ public class WorldGuardService {
 
         LuckpermsService Luckperms = new LuckpermsService();
         Luckperms.removePermissionLuckPerms(regionId, uid);
+    }
+
+    public boolean isRegionPresent(Player player, int x, int y, int z) {
+        com.sk89q.worldedit.entity.Player playerbukkit = BukkitAdapter.adapt(player);
+        World w = playerbukkit.getWorld();
+        RegionManager regionManager = WorldGuard.getInstance().getPlatform().getRegionContainer().get(w);
+        if (regionManager == null) {
+            return false;
+        }
+        BlockVector3 position = BlockVector3.at(x, y, z);
+
+        ApplicableRegionSet regionSet = regionManager.getApplicableRegions(position);
+
+        return regionSet.size() > 0;
     }
 
     private RegionManager getRegions(Player player){

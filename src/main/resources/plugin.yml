@@ -43,8 +43,7 @@ commands:
     usage: /status
   claim:
     description: Operações com claims.
-    usage: /claim [add|abandonar|completo|equipe|img|info|evento]
-    permission: btebrasil.builder
+    usage: /claim [iniciar|add|abandonar|completo|equipe|img|info|evento|criar]
   map:
     description: Gerar Mapa KML.
     usage: /map

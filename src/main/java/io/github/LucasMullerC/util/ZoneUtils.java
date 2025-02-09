@@ -28,6 +28,45 @@ import io.github.LucasMullerC.service.WorldGuardService;
 import io.github.LucasMullerC.service.applicant.ApplicationZoneService;
 
 public class ZoneUtils {
+    public static Location buildClaimCopy(Player player, int startX, int startY, int startZ,String claimName){
+                int x = startX;
+                int y = startY;
+                int z = startZ;
+
+                int[] dimensions = RegionUtils.getRegionDimensions(claimName, player);
+                if (dimensions == null) {
+                    return null;
+                }
+                org.bukkit.World w = player.getWorld();
+                Location finalLoc;
+
+                int xIncrement = 50 + dimensions[0];
+                int zIncrement = 50 + dimensions[1];
+
+                int maxAttemptsPerLine = 5;
+        
+                int attempts = 0;
+        
+                while (true) {
+                        WorldGuardService worldGuardService = new WorldGuardService();
+                    if (!worldGuardService.isRegionPresent(player, x, y, z)) {
+                        finalLoc = new Location(w, x, y, z);     
+                        int maxDimension = Math.max(dimensions[0], dimensions[1]);
+                        worldGuardService.addClaimZone(player, finalLoc, claimName,maxDimension);   
+                        return finalLoc;       
+                    }
+        
+                    x += xIncrement;
+                    attempts++;
+        
+                    if (attempts >= maxAttemptsPerLine) {
+                        x = startX;
+                        z += zIncrement;
+                        attempts = 0;
+                    }
+                }
+    }
+
     public static ApplicationZone buildApplicationZone(Player player){
         org.bukkit.World w = player.getWorld();
         ApplicationZone zoneold;

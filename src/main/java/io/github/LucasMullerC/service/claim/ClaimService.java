@@ -42,6 +42,15 @@ public class ClaimService {
         removePendentandParticipants(claim);
     }
 
+    public void removeCopyClaim(Claim claim, Player player){
+        claim.setPlayer("nulo");
+        claim.setParticipants("nulo");
+        this.claim.save();
+
+        WorldGuardService worldGuardService = new WorldGuardService();
+        worldGuardService.RemoveRegion("copy"+claim.getClaim(), player);
+    }
+
     public void updateClaim(Claim claim){
        Claim oldClaim = getClaim(claim.getClaim());
        if(oldClaim != null){

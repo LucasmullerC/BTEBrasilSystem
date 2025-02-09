@@ -9,7 +9,8 @@ public class MessageUtils {
     private static ResourceBundle messages;
 
     public static String getMessage(String key, Player player) {
-        Locale.setDefault(new Locale(player.getLocale()));
+        Locale.setDefault(new Locale("pt","BR")); //Investigar como implementar diferentes linguagens.
+        //Locale.setDefault(new Locale(player.getLocale()));
         messages = ResourceBundle.getBundle("messages");
 
         return messages.getString(key);
