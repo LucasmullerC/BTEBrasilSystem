@@ -1,7 +1,18 @@
 package io.github.LucasMullerC.model;
 
+import io.github.LucasMullerC.annotation.FieldOrder;
+
 public class Awards implements Comparable<Awards>{
-    String ID,Name,URL;
+    @FieldOrder(1)
+    String ID;
+
+    @FieldOrder(2)
+    String Name;
+
+    @FieldOrder(3)
+    String URL;
+
+    @FieldOrder(4)
     double Points;
 
     public Awards() {

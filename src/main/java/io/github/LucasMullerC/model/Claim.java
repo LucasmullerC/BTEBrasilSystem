@@ -1,10 +1,39 @@
 package io.github.LucasMullerC.model;
 
+import io.github.LucasMullerC.annotation.FieldOrder;
+
 public class Claim implements Comparable<Claim>{
-    private String Claim,Name,Points,Player,Participants,Image,Status;
+    @FieldOrder(1)
+    private String Claim;
+
+    @FieldOrder(2)
+    private String Name;
+
+    @FieldOrder(3)
+    private String Points;
+
+    @FieldOrder(4)
+    private String Player;
+
+    @FieldOrder(5)
+    private String Image;
+
+    @FieldOrder(6)
+    private String Status;
+
+    @FieldOrder(7)
+    private String Participants;
+
+    @FieldOrder(8)
     private Integer Builds;
+
+    @FieldOrder(9)
     private boolean event = false;
+
+    @FieldOrder(10)
     private String Award = "nulo";
+
+    @FieldOrder(11)
     private int difficulty = 0;
     public Claim() {
     }

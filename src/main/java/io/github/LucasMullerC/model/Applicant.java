@@ -1,7 +1,22 @@
 package io.github.LucasMullerC.model;
 
+import io.github.LucasMullerC.annotation.FieldOrder;
+
 public class Applicant implements Comparable<Applicant> {
-	private String UUID, Discord, Section, getZone, deadline;
+	@FieldOrder(1)
+	private String UUID;
+
+	@FieldOrder(2)
+	private String Discord;
+
+	@FieldOrder(3)
+	private String getZone;
+
+	@FieldOrder(4)
+	private String Section;
+	
+	@FieldOrder(5)
+	private String deadline;
 
 	public Applicant() {
     }

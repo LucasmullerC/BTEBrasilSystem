@@ -2,10 +2,41 @@ package io.github.LucasMullerC.model;
 
 import org.bukkit.Location;
 
+import io.github.LucasMullerC.annotation.FieldOrder;
+
 public class ApplicationZone implements Comparable<ApplicationZone> {
-	private String ApplicationZone, Name;
-	private Location LocationA,LocationB,LocationC,LocationD;
-	Boolean isBusy, IsAtZoneA, IsAtZoneb, IsAtZonec, IsAtZoned;
+	@FieldOrder(1)
+	private String ApplicationZone;
+
+	@FieldOrder(2)
+	private String Name;
+
+	@FieldOrder(3)
+	Boolean isBusy;
+
+	@FieldOrder(4)
+	Boolean IsAtZoneA;
+
+	@FieldOrder(5)
+	Boolean IsAtZoneb;
+	
+	@FieldOrder(6)
+	Boolean IsAtZonec;
+	
+	@FieldOrder(7)
+	Boolean IsAtZoned;
+
+	@FieldOrder(8)
+	private Location LocationA;
+
+	@FieldOrder(9)
+	private Location LocationB;
+
+	@FieldOrder(10)
+	private Location LocationC;
+
+	@FieldOrder(11)
+	private Location LocationD;
 
 	public ApplicationZone() {
 	}

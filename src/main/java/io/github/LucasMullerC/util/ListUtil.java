@@ -4,8 +4,12 @@ import java.io.*;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
 
 import org.bukkit.Location;
+
+import io.github.LucasMullerC.annotation.FieldOrder;
 
 
 public class ListUtil<T> {
@@ -28,7 +32,8 @@ public class ListUtil<T> {
         try {
             BufferedReader reader = new BufferedReader(new FileReader(this.storageFile));
             String line;
-            Field[] fields = clazz.getDeclaredFields();
+            //Field[] fields = clazz.getDeclaredFields();
+            Field[] fields = getOrderedFields(clazz);
             while ((line = reader.readLine()) != null) {
                 T obj = clazz.getDeclaredConstructor().newInstance();
                 String[] parts = line.split(";");
@@ -75,7 +80,8 @@ public class ListUtil<T> {
             int cont;
             for (T value : this.values) {
                 cont = 0;
-                for (Field field : value.getClass().getDeclaredFields()) {
+                //for (Field field : value.getClass().getDeclaredFields()) {
+                for (Field field : getOrderedFields(value.getClass())) {
                     if(cont != 0){
                         writer.write(";");
                     }
@@ -100,6 +106,13 @@ public class ListUtil<T> {
         } catch (IOException | IllegalAccessException e) {
             e.printStackTrace();
         }
+    }
+
+    private static <U> Field[] getOrderedFields(Class<U> clazz) {
+        return Arrays.stream(clazz.getDeclaredFields())
+                .filter(field -> field.isAnnotationPresent(FieldOrder.class))
+                .sorted(Comparator.comparingInt(field -> field.getAnnotation(FieldOrder.class).value()))
+                .toArray(Field[]::new);
     }
 
     public boolean contains(T value) {

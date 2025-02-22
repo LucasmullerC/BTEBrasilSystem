@@ -1,9 +1,28 @@
 package io.github.LucasMullerC.model;
 
+import io.github.LucasMullerC.annotation.FieldOrder;
+
 public class Builder implements Comparable<Builder> {
-    private String UUID,Discord,Awards,Featured;
-    private Integer Tier,Builds;
+    @FieldOrder(1)
+    private String UUID;
+
+    @FieldOrder(2)
+    private String Discord;
+
+    @FieldOrder(3)
+    private Integer Tier;
+
+    @FieldOrder(4)
     private double Points;
+
+    @FieldOrder(5)
+    private Integer Builds;
+    
+    @FieldOrder(6)
+    private String Awards;
+
+    @FieldOrder(7)
+    private String Featured;
 
     public Builder() {
     }

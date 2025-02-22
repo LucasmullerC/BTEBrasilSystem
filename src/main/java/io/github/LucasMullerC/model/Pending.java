@@ -1,8 +1,19 @@
 package io.github.LucasMullerC.model;
 
+import io.github.LucasMullerC.annotation.FieldOrder;
+
 public class Pending implements Comparable<Pending> {
-    String UUID, regionId, builds;
+    @FieldOrder(1)
+    String UUID;
+
+    @FieldOrder(2)
+    String regionId;
+
+    @FieldOrder(3)
     Boolean isApplication;
+
+    @FieldOrder(4)
+    String builds;
 
     public Pending() {
     }
