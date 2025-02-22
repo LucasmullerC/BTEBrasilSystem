@@ -81,13 +81,14 @@ public class PlayerJoinListener implements Listener {
 						if (event.getPlayer().hasPermission("group.reviewer")) {
 							PendingService pendingService = new PendingService();
 							int cont = pendingService.getTotalPendingCount(true);
+							int contClaim = pendingService.getTotalPendingCount(false); 
 
-							if (cont > 0) {
+							if (cont > 0 || contClaim > 0) {
 								player.sendMessage(Component.text(MessageUtils.getMessage("Atencao", event.getPlayer())).color(NamedTextColor.RED));
 
 								player.sendMessage(Component.text(MessageUtils.getMessage("SeuTime1", event.getPlayer()) 
-								+ cont + 
-								MessageUtils.getMessage("SeuTime2", event.getPlayer())).color(NamedTextColor.GOLD).append(Component.text(MessageUtils.getMessage("analisar", event.getPlayer())).color(NamedTextColor.BLUE)));
+								+ cont + " "+
+								MessageUtils.getMessage("SeuTime2", event.getPlayer()) +contClaim +" "+ MessageUtils.getMessage("SeuTime3", event.getPlayer())).color(NamedTextColor.GOLD).append(Component.text(MessageUtils.getMessage("analisar", event.getPlayer())).color(NamedTextColor.BLUE)));
 							}
 						}
 						BuilderService builderService = new BuilderService();
