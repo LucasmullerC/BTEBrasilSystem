@@ -12,6 +12,7 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -49,11 +50,10 @@ public class LocationUtil {
 
     public static String getCityName(double latitude, double longitude) {
         String cityName = null;
-        String url = String.format(
+        String url = String.format(Locale.ENGLISH,
             "https://nominatim.openstreetmap.org/reverse?format=json&lat=%f&lon=%f", 
             latitude, longitude
         );
-
         try {
             // Configurando o cliente HTTP
             HttpClient client = HttpClient.newHttpClient();
@@ -66,7 +66,6 @@ public class LocationUtil {
             // Enviando a requisição e obtendo a resposta
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
             JsonObject json = JsonParser.parseString(response.body()).getAsJsonObject();
-
             // Obtendo o nome da cidade a partir da resposta JSON
             JsonObject address = json.getAsJsonObject("address");
             if (address != null && address.has("city_district")) {
