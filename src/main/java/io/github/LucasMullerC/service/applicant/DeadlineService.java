@@ -3,6 +3,8 @@ package io.github.LucasMullerC.service.applicant;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -10,10 +12,15 @@ import org.bukkit.entity.Player;
 import io.github.LucasMullerC.discord.DiscordActions;
 import io.github.LucasMullerC.model.Applicant;
 import io.github.LucasMullerC.model.ApplicationZone;
+import io.github.LucasMullerC.model.Claim;
 import io.github.LucasMullerC.model.Pending;
 import io.github.LucasMullerC.service.WorldGuardService;
+import io.github.LucasMullerC.service.claim.ClaimService;
 import io.github.LucasMullerC.service.pending.PendingService;
 import io.github.LucasMullerC.util.MessageUtils;
+import io.github.LucasMullerC.util.RegionUtils;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
 
 public class DeadlineService {
     Player player;
@@ -54,6 +61,26 @@ public class DeadlineService {
         }
         if (cont > 0) {
             String logMessage = cont.toString() + MessageUtils.getMessageConsole("TimesUpAdm");
+            DiscordActions.sendLogMessage(logMessage);
+        }
+
+        ClaimService claimService = new ClaimService();
+        ArrayList<Claim> claimList = claimService.getClaimList();
+
+        Integer contClaim = 0;
+        List<Claim> filteredClaims = claimList.stream()
+        .filter(claim -> claim.getDeadLine() != "nulo")
+        .collect(Collectors.toList());
+
+        for (Claim claim:filteredClaims){
+            if(claim.getDeadLine().contains(date)){
+                RegionUtils.deleteCopyClaim("copy"+claim.getName(), player);
+                claimService.removeCopyClaim(claim, player);
+                contClaim++;
+            }
+        }
+        if (contClaim > 0){
+            String logMessage = cont.toString() + MessageUtils.getMessageConsole("TimesUpClaimAdm");
             DiscordActions.sendLogMessage(logMessage);
         }
     }

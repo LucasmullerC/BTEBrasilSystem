@@ -45,6 +45,7 @@ public class ClaimService {
     public void removeCopyClaim(Claim claim, Player player){
         claim.setPlayer("nulo");
         claim.setParticipants("nulo");
+        claim.setDeadline("nulo");
         this.claim.save();
 
         WorldGuardService worldGuardService = new WorldGuardService();

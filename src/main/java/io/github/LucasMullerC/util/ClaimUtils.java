@@ -5,6 +5,8 @@ import java.util.stream.Collectors;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.Normalizer;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -102,6 +104,7 @@ public class ClaimUtils {
 
     public static void CompleteClaim(Claim claim, ClaimService claimService){
         claim.setStatus("T");
+        claim.setDeadline("nulo");
         claimService.updateClaim(claim);
         WorldGuardService worldguardService = new WorldGuardService();
         worldguardService.AddFlags(claim);
@@ -336,7 +339,7 @@ public static void removeImage(Claim claim, String imageId, Player player, Claim
 
         
         List<Claim> filteredClaims = claimList.stream()
-        .filter(claim -> claim.getDifficulty() == difficulty && "F".equalsIgnoreCase(claim.getStatus()))
+        .filter(claim -> claim.getDifficulty() == difficulty && "F".equalsIgnoreCase(claim.getStatus()) && claim.getPlayer() != "nulo")
         .collect(Collectors.toList());
 
         if (name != null && !name.isEmpty()) {
@@ -352,10 +355,17 @@ public static void removeImage(Claim claim, String imageId, Player player, Claim
         Random random = new Random();
         Claim chosenClaim = filteredClaims.get(random.nextInt(filteredClaims.size()));
         chosenClaim.setPlayer(id.toString());
+        chosenClaim.setDeadline(createDeadline());
         claimService.saveClaim();
 
         return chosenClaim;
         
+    }
+
+    private static String createDeadline(){
+        LocalDate deadline = LocalDate.now().plusDays(30); // x = 10
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd LLLL yyyy");
+        return deadline.format(formatter);
     }
     
     public static boolean isNumeric(String str) {

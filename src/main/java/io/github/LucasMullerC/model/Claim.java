@@ -35,6 +35,9 @@ public class Claim implements Comparable<Claim>{
 
     @FieldOrder(11)
     private int difficulty = 0;
+
+    @FieldOrder(12)
+    private String deadline = "nulo";
     public Claim() {
     }
     public Claim (String A){
@@ -130,6 +133,14 @@ public class Claim implements Comparable<Claim>{
     public void setDifficulty(int difficulty) {
         this.difficulty = difficulty;
     }
+
+    public void setDeadline(String Dead) {
+		this.deadline = Dead;
+	}
+
+	public String getDeadLine() {
+		return this.deadline;
+	}
 
         @Override
 	public int compareTo(Claim A) {

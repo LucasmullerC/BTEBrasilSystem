@@ -43,6 +43,17 @@ public class cancel implements CommandExecutor{
         Builder builder = builderService.getBuilderUuid(id.toString());
         if(builder != null){
             ClaimService claimService = new ClaimService();
+
+            if(player.hasPermission("btebrasil.adm") && arg3.length != 0){
+                Claim claim = claimService.getClaim(arg3[0]);
+                if(claim != null){
+                    RegionUtils.deleteCopyClaim("copy"+claim.getName(), player);
+                    claimService.removeCopyClaim(claim, player);
+                    player.sendMessage(Component.text(MessageUtils.getMessage("ClaimRemoved", player)).color(NamedTextColor.GREEN));
+                }
+                return true;
+            }
+
             ArrayList<Claim> claimList = claimService.getClaimListByPlayer(id.toString());
             for(Claim claim:claimList){
                 if(claim.getDifficulty()>0 && ClaimUtils.verifyClaimProperties(claim, player, false) == true){
