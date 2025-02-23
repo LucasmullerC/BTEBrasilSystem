@@ -47,7 +47,7 @@ public class cancel implements CommandExecutor{
             if(player.hasPermission("btebrasil.adm") && arg3.length != 0){
                 Claim claim = claimService.getClaim(arg3[0]);
                 if(claim != null){
-                    RegionUtils.deleteCopyClaim("copy"+claim.getName(), player);
+                    RegionUtils.deleteCopyClaim("copy"+claim.getClaim(), player);
                     claimService.removeCopyClaim(claim, player);
                     player.sendMessage(Component.text(MessageUtils.getMessage("ClaimRemoved", player)).color(NamedTextColor.GREEN));
                 }

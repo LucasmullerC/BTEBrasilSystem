@@ -19,8 +19,6 @@ import io.github.LucasMullerC.service.claim.ClaimService;
 import io.github.LucasMullerC.service.pending.PendingService;
 import io.github.LucasMullerC.util.MessageUtils;
 import io.github.LucasMullerC.util.RegionUtils;
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.NamedTextColor;
 
 public class DeadlineService {
     Player player;
@@ -74,7 +72,7 @@ public class DeadlineService {
 
         for (Claim claim:filteredClaims){
             if(claim.getDeadLine().contains(date)){
-                RegionUtils.deleteCopyClaim("copy"+claim.getName(), player);
+                RegionUtils.deleteCopyClaim("copy"+claim.getClaim(), player);
                 claimService.removeCopyClaim(claim, player);
                 contClaim++;
             }

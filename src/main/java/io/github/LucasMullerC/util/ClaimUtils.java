@@ -342,7 +342,9 @@ public static void removeImage(Claim claim, String imageId, Player player, Claim
         .filter(claim -> claim.getDifficulty() == difficulty && "F".equalsIgnoreCase(claim.getStatus()) && claim.getPlayer() != "nulo")
         .collect(Collectors.toList());
 
+        System.out.println(name);
         if (name != null && !name.isEmpty()) {
+            System.out.println("entrou");
             filteredClaims = filteredClaims.stream()
                     .filter(claim -> claim.getName().contains(name.toLowerCase()))
                     .collect(Collectors.toList());
