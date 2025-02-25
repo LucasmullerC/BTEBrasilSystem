@@ -1,7 +1,5 @@
 package io.github.LucasMullerC.commands;
 
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -118,6 +116,7 @@ public class claim implements CommandExecutor {
                             MessageService messageService = new MessageService();
                             player.sendMessage(messageService.getMessageWithURL(input).color(NamedTextColor.GREEN));
                             createBook(player, input, claim);
+                            player.getInventory().addItem(new ItemStack(Material.getMaterial("COMPASS"), 1));
 
                             return true;
                         } else{

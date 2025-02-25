@@ -339,7 +339,7 @@ public static void removeImage(Claim claim, String imageId, Player player, Claim
 
         
         List<Claim> filteredClaims = claimList.stream()
-        .filter(claim -> claim.getDifficulty() == difficulty && "F".equalsIgnoreCase(claim.getStatus()) && claim.getPlayer() != "nulo")
+        .filter(claim -> claim.getDifficulty() == difficulty && "F".equalsIgnoreCase(claim.getStatus()) && "nulo".equalsIgnoreCase(claim.getPlayer()))
         .collect(Collectors.toList());
 
         if (name != null && !name.isEmpty()) {
