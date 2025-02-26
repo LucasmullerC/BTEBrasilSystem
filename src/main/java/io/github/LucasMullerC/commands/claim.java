@@ -115,6 +115,7 @@ public class claim implements CommandExecutor {
                             final String input = MessageUtils.getMessage("joinclaiminfo1", player)+" <a:https://www.google.com.br/maps/place/"+coordinates+">"+coordinates+"</a>";
                             MessageService messageService = new MessageService();
                             player.sendMessage(messageService.getMessageWithURL(input).color(NamedTextColor.GREEN));
+                            player.getInventory().addItem(new ItemStack(Material.getMaterial("WOOD_AXE"), 1));
                             createBook(player, input, claim);
                             player.getInventory().addItem(new ItemStack(Material.getMaterial("COMPASS"), 1));
 
