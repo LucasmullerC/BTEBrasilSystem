@@ -81,5 +81,31 @@ public class LocationUtil {
 
         return cityName != null ? cityName : "Brasil";
     }
+
+    public static int[] getCentralPoint(String[] coordinates) {
+        int[] centralCoordinate = new int[2];
+    
+        if (coordinates.length < 2) {
+            return new int[]{0, 0}; 
+        }
+    
+        int sumX = 0, sumZ = 0;
+        int count = 0;
+    
+        for (int i = 0; i < coordinates.length; i += 2) {
+            int x = Integer.parseInt(coordinates[i].split("\\.")[0]);
+            int z = Integer.parseInt(coordinates[i + 1].split("\\.")[0]);
+    
+            sumX += x;
+            sumZ += z;
+            count++;
+        }
+    
+        centralCoordinate[0] = sumX / count;
+        centralCoordinate[1] = sumZ / count;
+    
+        return centralCoordinate;
+    }
+    
 }
 

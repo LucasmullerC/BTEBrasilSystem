@@ -106,8 +106,10 @@ public class claim implements CommandExecutor {
                         boolean isCopied = RegionUtils.copyClaim(claim.getClaim(), player, areaLocation);
 
                         String[] ary = claim.getPoints().split(",");
-                        double[] coords = RegionUtils.toGeo(Integer.parseInt(ary[0].split("\\.")[0]),
-                        Integer.parseInt(ary[1].split("\\.")[0]));
+                        int[] centralCoordinate = LocationUtil.getCentralPoint(ary);
+                        double[] coords = RegionUtils.toGeo(centralCoordinate[0],centralCoordinate[1]);
+                        //double[] coords = RegionUtils.toGeo(Integer.parseInt(ary[0].split("\\.")[0]),
+                        //Integer.parseInt(ary[1].split("\\.")[0]));
                         String coordinates = coords[1]+","+coords[0];
     
                         if(isCopied){

@@ -152,12 +152,21 @@ public class DiscordClaim {
         ArrayList<Claim> playerCompletedClaim = claimService.getCompletedClaimListByPlayer(senderUuid);
         ArrayList<Pending> playerPending = pendingService.getPendingPlayerListClaim(senderUuid);
 
+        int itemsPerPage = 4;
+
+        int totalPagesClaims = (int) Math.ceil((double) playerClaim.size() / itemsPerPage);
+        int totalPagesCompleted = (int) Math.ceil((double) playerCompletedClaim.size() / itemsPerPage);
+        int totalPagesPending = (int) Math.ceil((double) playerPending.size() / itemsPerPage);
+    
+        int maxPages = Math.max(totalPagesClaims, Math.max(totalPagesCompleted, totalPagesPending));
+
         String pendentesBody = "";
         if(!playerPending.isEmpty()){
             pendentesBody = MessageUtils.getMessagePT("claimbody1") + playerPending.size()+PendingUtils.printPendingDiscord(playerPending, page);
         }
 
         return MessageUtils.getMessagePT("claimbody2")+claimNum+ClaimUtils.printClaimsDiscord(playerClaim, page)+ pendentesBody+
-        MessageUtils.getMessagePT("claimbody3")+completedClaimNum+ClaimUtils.printClaimsDiscord(playerCompletedClaim, page);
+        MessageUtils.getMessagePT("claimbody3")+completedClaimNum+ClaimUtils.printClaimsDiscord(playerCompletedClaim, page)+
+        MessageUtils.getMessagePT("claimbody5")+page+" "+MessageUtils.getMessagePT("claimbody6")+maxPages+"**";
     }
 }
