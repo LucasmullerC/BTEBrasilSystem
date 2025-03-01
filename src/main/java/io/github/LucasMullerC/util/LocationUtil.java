@@ -68,12 +68,12 @@ public class LocationUtil {
             JsonObject json = JsonParser.parseString(response.body()).getAsJsonObject();
             // Obtendo o nome da cidade a partir da resposta JSON
             JsonObject address = json.getAsJsonObject("address");
-            if (address != null && address.has("city_district")) {
-                cityName = address.get("city_district").getAsString();
-            } else if (address != null && address.has("town")) {
+            if (address != null && address.has("town")) {
                 cityName = address.get("town").getAsString();
             } else if (address != null && address.has("village")) {
                 cityName = address.get("village").getAsString();
+            } else if (address != null && address.has("city")) {
+                cityName = address.get("city").getAsString();
             }
         } catch (Exception e) {
             e.printStackTrace();

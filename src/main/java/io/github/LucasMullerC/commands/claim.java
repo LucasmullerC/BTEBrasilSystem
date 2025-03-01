@@ -1,6 +1,7 @@
 package io.github.LucasMullerC.commands;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -65,9 +66,9 @@ public class claim implements CommandExecutor {
                 if (arg3.length == 2) {
                     difficulty = arg3[1];
                 }
-                if (arg3.length == 3) {
+                if (arg3.length >= 3) {
                     difficulty = arg3[1];
-                    name = arg3[2];
+                    name = String.join(" ", Arrays.copyOfRange(arg3, 2, arg3.length));
                 }
             
                 try {
