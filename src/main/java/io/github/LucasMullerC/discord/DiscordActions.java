@@ -21,8 +21,8 @@ import org.jetbrains.annotations.NotNull;
 public class DiscordActions {
     static TextChannel chatbr = DiscordUtil.getTextChannelById("717528858777354272");
     static TextChannel chatbrlog = DiscordUtil.getTextChannelById("921811170086776942");
-    //static TextChannel chatbrbot = DiscordUtil.getTextChannelById("717528314423803974"); //OFICIAL
-    static TextChannel chatbrbot = DiscordUtil.getTextChannelById("1129556584469643276"); //TESTES
+    static TextChannel chatbrbot = DiscordUtil.getTextChannelById("717528314423803974"); //OFICIAL
+    //static TextChannel chatbrbot = DiscordUtil.getTextChannelById("1129556584469643276"); //TESTES
 
     public static boolean CheckDiscord(String id) {
         Guild guild = DiscordUtil.getJda().getGuildById("715528474655326238");
