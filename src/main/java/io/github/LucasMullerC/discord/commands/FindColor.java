@@ -99,6 +99,7 @@ public class FindColor{
                 for (Message message : messages) {
                     if(message.getAttachments() != null){
                         attachments = message.getAttachments();
+                        break;
                     }
                 }
 
