@@ -40,8 +40,9 @@ public class ZoneUtils {
                 org.bukkit.World w = player.getWorld();
                 Location finalLoc;
 
-                int xIncrement = 50 + dimensions[0];
-                int zIncrement = 50 + dimensions[1];
+                int regionSize = 20 + Math.max(dimensions[0], dimensions[1]); // Usa a mesma lógica do totalSize
+                int xIncrement = regionSize + 50; // Dobra o tamanho para evitar sobreposição
+                int zIncrement = regionSize + 50;
 
                 int maxAttemptsPerLine = 5;
         
@@ -49,7 +50,7 @@ public class ZoneUtils {
         
                 while (true) {
                         WorldGuardService worldGuardService = new WorldGuardService();
-                    if (!worldGuardService.isRegionPresent(player, x, y, z)) {
+                    if (!worldGuardService.isRegionIntersecting(player, x, y, z,regionSize)) {
                         finalLoc = new Location(w, x, y, z);     
                         int maxDimension = Math.max(dimensions[0], dimensions[1]);
                         worldGuardService.addClaimZone(player, finalLoc, claimName,maxDimension);   
@@ -346,7 +347,7 @@ public class ZoneUtils {
             maxY = 42;
 
             worldGuardService.addApplicationZone(player, "apply" + zoneNum.toString() + "b",
-            pointsanew, minY, maxY);
+            pointsbnew, minY, maxY);
 
             // c
             ProtectedPolygonalRegion polygonc = (ProtectedPolygonalRegion) regionpostc;
@@ -361,7 +362,7 @@ public class ZoneUtils {
             maxY = 42;
 
             worldGuardService.addApplicationZone(player, "apply" + zoneNum.toString() + "c",
-            pointsanew, minY, maxY);
+            pointscnew, minY, maxY);
 
             // d
             ProtectedPolygonalRegion polygond = (ProtectedPolygonalRegion) regionpostd;
@@ -376,7 +377,7 @@ public class ZoneUtils {
             maxY = 42;
 
             worldGuardService.addApplicationZone(player, "apply" + zoneNum.toString() + "d",
-            pointsanew, minY, maxY);
+            pointsdnew, minY, maxY);
         }
     } 
 }
