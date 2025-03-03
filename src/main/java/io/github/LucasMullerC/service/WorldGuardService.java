@@ -149,6 +149,41 @@ public class WorldGuardService {
         return regionSet.size() > 0;
     }
 
+    public boolean isRegionIntersecting(Player player, int x, int y, int z, int regionSize) {
+        RegionManager regions = getRegions(player);
+    
+        // Define the bounding box for the new region
+        BlockVector3 min = BlockVector3.at(x - regionSize, 0, z - regionSize);
+        BlockVector3 max = BlockVector3.at(x + regionSize, 255, z + regionSize);
+        ProtectedCuboidRegion newRegion = new ProtectedCuboidRegion("tempCheck", min, max);
+    
+        // Iterate through all existing regions and check for overlap
+        for (ProtectedRegion region : regions.getRegions().values()) {
+            if (isBoundingBoxIntersecting(newRegion, region)) {
+                return true; // Found intersection, position not valid
+            }
+        }
+    
+        return false; // No intersections, position is safe
+    }
+    
+    private boolean isBoundingBoxIntersecting(ProtectedCuboidRegion region1, ProtectedRegion region2) {
+        if (!(region2 instanceof ProtectedCuboidRegion)) {
+            return false;
+        }
+    
+        ProtectedCuboidRegion regionB = (ProtectedCuboidRegion) region2;
+    
+        BlockVector3 min1 = region1.getMinimumPoint();
+        BlockVector3 max1 = region1.getMaximumPoint();
+        BlockVector3 min2 = regionB.getMinimumPoint();
+        BlockVector3 max2 = regionB.getMaximumPoint();
+    
+        return !(min1.getX() > max2.getX() || max1.getX() < min2.getX() || // X-axis
+                 min1.getY() > max2.getY() || max1.getY() < min2.getY() || // Y-axis
+                 min1.getZ() > max2.getZ() || max1.getZ() < min2.getZ());  // Z-axis
+    }
+
     private RegionManager getRegions(Player player){
         com.sk89q.worldedit.entity.Player playerbukkit = BukkitAdapter.adapt(player);
         World w = playerbukkit.getWorld();
