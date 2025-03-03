@@ -20,6 +20,7 @@ import org.jetbrains.annotations.NotNull;
 
 import github.scarsz.discordsrv.DiscordSRV;
 import io.github.LucasMullerC.BTEBrasilSystem.BTEBrasilSystem;
+import io.github.LucasMullerC.discord.DiscordActions;
 import io.github.LucasMullerC.model.Builder;
 import io.github.LucasMullerC.model.Claim;
 import io.github.LucasMullerC.model.Pending;
@@ -116,6 +117,9 @@ public class claim implements CommandExecutor {
                         if(isCopied){
                             player.teleport(areaLocation);
                             final String input = MessageUtils.getMessage("joinclaiminfo1", player)+" <a:https://www.google.com.br/maps/place/"+coordinates+">"+coordinates+"</a>";
+                            if(!builder.getDiscord().equals("nulo")){
+                                DiscordActions.sendPrivateMessage(builder.getDiscord(),MessageUtils.getMessage("joinclaiminfo1", player)+" https://www.google.com.br/maps/place/"+coordinates);
+                            }
                             MessageService messageService = new MessageService();
                             player.sendMessage(messageService.getMessageWithURL(input).color(NamedTextColor.GREEN));
                             player.getInventory().addItem(new ItemStack(Material.getMaterial("WOOD_AXE"), 1));
