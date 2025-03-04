@@ -49,6 +49,12 @@ public class cancel implements CommandExecutor{
                 if(claim != null){
                     RegionUtils.deleteCopyClaim("copy"+claim.getClaim(), player);
                     claimService.removeCopyClaim(claim, player);
+                    PendingService pendingService = new PendingService();
+                    Pending pending = pendingService.getPendingClaim(claim.getClaim());
+                    if(pending != null){
+                        pendingService.removePending(pending);
+                    }
+
                     player.sendMessage(Component.text(MessageUtils.getMessage("ClaimRemoved", player)).color(NamedTextColor.GREEN));
                 }
                 return true;
@@ -60,6 +66,12 @@ public class cancel implements CommandExecutor{
                     RegionUtils.deleteCopyClaim("copy"+claim.getClaim(), player);
                     claimService.removeCopyClaim(claim, player);
                     player.sendMessage(Component.text(MessageUtils.getMessage("ClaimRemoved", player)).color(NamedTextColor.GREEN));
+
+                    PendingService pendingService = new PendingService();
+                    Pending pending = pendingService.getPendingClaim(claim.getClaim());
+                    if(pending != null){
+                        pendingService.removePending(pending);
+                    }
 
                     // Teleporta Player
                     World world = player.getWorld();

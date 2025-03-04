@@ -44,15 +44,8 @@ public class PendingService {
     public int getTotalPendingCount(boolean isApplication) {
         int count = 0;
         for (Pending pending : pending.getValues()) {
-            if(isApplication){
-                if (pending.getisApplication() == true) {
-                    count++;
-                }
-                else{
-                    if (pending.getisApplication() == false) {
-                        count++;
-                    }
-                }
+            if (pending.getisApplication() == isApplication) {
+                count++;
             }
         }
         return count;
@@ -95,7 +88,7 @@ public class PendingService {
     public ArrayList<Pending> getPendingPlayerListClaim(String UUID){
         ArrayList<Pending> pendingList = new ArrayList<>();
         for (Pending pending : pending.getValues()) {
-            if (pending.getisApplication() == false) {
+            if (pending.getisApplication() == false && pending.getUUID().equals(UUID)) {
                 pendingList.add(pending);
             }
         }
