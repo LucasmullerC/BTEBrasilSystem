@@ -14,17 +14,23 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.BookMeta;
 
 import github.scarsz.discordsrv.DiscordSRV;
 import io.github.LucasMullerC.discord.DiscordActions;
 import io.github.LucasMullerC.model.Claim;
 import io.github.LucasMullerC.model.Pending;
+import io.github.LucasMullerC.service.MessageService;
 import io.github.LucasMullerC.service.WorldGuardService;
 import io.github.LucasMullerC.service.claim.ClaimService;
 import io.github.LucasMullerC.service.pending.PendingService;
+import net.kyori.adventure.inventory.Book;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 
 public class ClaimUtils {
     public static String buildClaim(Player player,String input,String selectionPoints,boolean event,String AwardUrl){
@@ -368,6 +374,54 @@ public static void removeImage(Claim claim, String imageId, Player player, Claim
         LocalDate deadline = LocalDate.now().plusDays(30); // x = 10
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd LLLL yyyy");
         return deadline.format(formatter);
+    }
+
+    public static void createBook(Player player,String url,Claim claim){
+        Component bookTitle = Component.text(MessageUtils.getMessage("joinclaimBookTitle", player));
+        Component bookAuthor = Component.text("BTE Brasil");
+        List<Component> bookPages = new ArrayList<>();
+        MessageService messageService = new MessageService();
+    
+        Component pageOne = Component.text().append(Component.text(MessageUtils.getMessage("joinclaimbookIntro1", player))
+        .append(Component.newline()).append(Component.newline()).append(Component.text(MessageUtils.getMessage("joinclaimbookIntro2", player)+claim.getClaim())
+        .append(Component.newline()).append(Component.newline()).append(messageService.getMessageWithURL(url)))).build();
+
+        Component pageTwo = Component.text().append(Component.text(MessageUtils.getMessage("joinclaiminfo2", player))).build();
+        Component pageThree = Component.text().append(Component.text(MessageUtils.getMessage("joinclaiminfo3", player))).build();
+        Component pageFour = Component.text().append(Component.text(MessageUtils.getMessage("joinclaiminfo4", player))).build();
+        Component pageFive = Component.text().append(Component.text(MessageUtils.getMessage("joinclaiminfo5", player))).build();
+
+        Component pageSix = Component.text().append(Component.text(MessageUtils.getMessage("joinclaimbookEnding1", player))
+        .append(Component.newline()).append(Component.newline()).append(Component.text(MessageUtils.getMessage("joinclaimbookEnding2", player))
+        .append(Component.newline()).append(Component.text(MessageUtils.getMessage("joinclaimbookEnding3", player)))
+        .append(Component.newline()).append(Component.text(MessageUtils.getMessage("joinclaimbookEnding4", player))))).build();
+    
+        bookPages.add(pageOne);
+        bookPages.add(pageTwo);
+        bookPages.add(pageThree);
+        bookPages.add(pageFour);
+        bookPages.add(pageFive);
+        bookPages.add(pageSix);
+
+        Book myBook = Book.book(bookTitle, bookAuthor, bookPages);
+        player.openBook(myBook);
+    
+        ItemStack bookItem = new ItemStack(Material.WRITTEN_BOOK);
+        BookMeta bookMeta = (BookMeta) bookItem.getItemMeta();
+    
+        if (bookMeta != null) {
+            bookMeta.pages(bookPages);
+            
+            String titleText = PlainTextComponentSerializer.plainText().serialize(bookTitle);
+            String authorText = PlainTextComponentSerializer.plainText().serialize(bookAuthor);
+    
+            bookMeta.setTitle(titleText);
+            bookMeta.setAuthor(authorText);
+    
+            bookItem.setItemMeta(bookMeta);
+    
+            player.getInventory().addItem(bookItem);
+        }
     }
     
     public static boolean isNumeric(String str) {

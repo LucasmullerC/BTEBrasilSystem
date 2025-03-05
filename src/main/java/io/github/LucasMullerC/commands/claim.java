@@ -123,7 +123,7 @@ public class claim implements CommandExecutor {
                             MessageService messageService = new MessageService();
                             player.sendMessage(messageService.getMessageWithURL(input).color(NamedTextColor.GREEN));
                             player.getInventory().addItem(new ItemStack(Material.getMaterial("WOOD_AXE"), 1));
-                            createBook(player, input, claim);
+                            ClaimUtils.createBook(player, input, claim);
                             player.getInventory().addItem(new ItemStack(Material.getMaterial("COMPASS"), 1));
 
                             return true;
@@ -390,54 +390,6 @@ public class claim implements CommandExecutor {
                     }
                 }
             return false;
-    }
-
-    private void createBook(Player player,String url,Claim claim){
-        Component bookTitle = Component.text(MessageUtils.getMessage("joinclaimBookTitle", player));
-        Component bookAuthor = Component.text("BTE Brasil");
-        List<Component> bookPages = new ArrayList<>();
-        MessageService messageService = new MessageService();
-    
-        Component pageOne = Component.text().append(Component.text(MessageUtils.getMessage("joinclaimbookIntro1", player))
-        .append(Component.newline()).append(Component.newline()).append(Component.text(MessageUtils.getMessage("joinclaimbookIntro2", player)+claim.getClaim())
-        .append(Component.newline()).append(Component.newline()).append(messageService.getMessageWithURL(url)))).build();
-
-        Component pageTwo = Component.text().append(Component.text(MessageUtils.getMessage("joinclaiminfo2", player))).build();
-        Component pageThree = Component.text().append(Component.text(MessageUtils.getMessage("joinclaiminfo3", player))).build();
-        Component pageFour = Component.text().append(Component.text(MessageUtils.getMessage("joinclaiminfo4", player))).build();
-        Component pageFive = Component.text().append(Component.text(MessageUtils.getMessage("joinclaiminfo5", player))).build();
-
-        Component pageSix = Component.text().append(Component.text(MessageUtils.getMessage("joinclaimbookEnding1", player))
-        .append(Component.newline()).append(Component.newline()).append(Component.text(MessageUtils.getMessage("joinclaimbookEnding2", player))
-        .append(Component.newline()).append(Component.text(MessageUtils.getMessage("joinclaimbookEnding3", player)))
-        .append(Component.newline()).append(Component.text(MessageUtils.getMessage("joinclaimbookEnding4", player))))).build();
-    
-        bookPages.add(pageOne);
-        bookPages.add(pageTwo);
-        bookPages.add(pageThree);
-        bookPages.add(pageFour);
-        bookPages.add(pageFive);
-        bookPages.add(pageSix);
-
-        Book myBook = Book.book(bookTitle, bookAuthor, bookPages);
-        player.openBook(myBook);
-    
-        ItemStack bookItem = new ItemStack(Material.WRITTEN_BOOK);
-        BookMeta bookMeta = (BookMeta) bookItem.getItemMeta();
-    
-        if (bookMeta != null) {
-            bookMeta.pages(bookPages);
-            
-            String titleText = PlainTextComponentSerializer.plainText().serialize(bookTitle);
-            String authorText = PlainTextComponentSerializer.plainText().serialize(bookAuthor);
-    
-            bookMeta.setTitle(titleText);
-            bookMeta.setAuthor(authorText);
-    
-            bookItem.setItemMeta(bookMeta);
-    
-            player.getInventory().addItem(bookItem);
-        }
     }
     
 }
