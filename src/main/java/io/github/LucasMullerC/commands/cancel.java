@@ -44,34 +44,39 @@ public class cancel implements CommandExecutor{
         if(builder != null){
             ClaimService claimService = new ClaimService();
 
-            if(player.hasPermission("btebrasil.adm") && arg3.length != 0){
+            if(arg3.length != 0){
                 Claim claim = claimService.getClaim(arg3[0]);
                 if(claim != null){
-                    RegionUtils.deleteCopyClaim("copy"+claim.getClaim(), player);
-                    claimService.removeCopyClaim(claim, player);
-                    PendingService pendingService = new PendingService();
-                    Pending pending = pendingService.getPendingClaim(claim.getClaim());
-                    if(pending != null){
-                        pendingService.removePending(pending);
+                    if(claim.getPlayer().equals(id.toString()) || player.hasPermission("btebrasil.adm")){
+                        RegionUtils.deleteCopyClaim("copy"+claim.getClaim(), player);
+                        claimService.removeCopyClaim(claim, player);
+                        PendingService pendingService = new PendingService();
+                        Pending pending = pendingService.getPendingClaim(claim.getClaim());
+                        if(pending != null){
+                            pendingService.removePending(pending);
+                        }
+    
+                        player.sendMessage(Component.text(MessageUtils.getMessage("ClaimRemoved", player)).color(NamedTextColor.GREEN));
                     }
-
-                    player.sendMessage(Component.text(MessageUtils.getMessage("ClaimRemoved", player)).color(NamedTextColor.GREEN));
                 }
                 return true;
             }
 
             ArrayList<Claim> claimList = claimService.getClaimListByPlayer(id.toString());
+
             for(Claim claim:claimList){
                 if(claim.getDifficulty()>0 && ClaimUtils.verifyClaimProperties(claim, player, false) == true){
-                    RegionUtils.deleteCopyClaim("copy"+claim.getClaim(), player);
-                    claimService.removeCopyClaim(claim, player);
-                    player.sendMessage(Component.text(MessageUtils.getMessage("ClaimRemoved", player)).color(NamedTextColor.GREEN));
 
                     PendingService pendingService = new PendingService();
                     Pending pending = pendingService.getPendingClaim(claim.getClaim());
+
                     if(pending != null){
                         pendingService.removePending(pending);
                     }
+
+                    RegionUtils.deleteCopyClaim("copy"+claim.getClaim(), player);
+                    claimService.removeCopyClaim(claim, player);
+                    player.sendMessage(Component.text(MessageUtils.getMessage("ClaimRemoved", player)).color(NamedTextColor.GREEN));
 
                     // Teleporta Player
                     World world = player.getWorld();

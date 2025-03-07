@@ -4,12 +4,10 @@ import java.util.ArrayList;
 import java.util.UUID;
 
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.jetbrains.annotations.NotNull;
@@ -43,24 +41,21 @@ public class back implements CommandExecutor{
         Builder builder = builderService.getBuilderUuid(id.toString());
         if(builder != null){
             ClaimService claimService = new ClaimService();
+
+            if(arg3.length != 0){
+                Claim claim = claimService.getClaim(arg3[0]);
+                if(claim != null){
+                    if(claim.getPlayer().equals(id.toString()) || player.hasPermission("btebrasil.adm")){
+                        continuePlot(claim, player, builder);
+                    }
+                }
+                return true;
+            }
+
             ArrayList<Claim> claimList = claimService.getClaimListByPlayer(id.toString());
             for(Claim claim:claimList){
                 if(claim.getDifficulty()>0 && ClaimUtils.verifyClaimProperties(claim, player, false) == true){
-                    Location location = RegionUtils.getRegionCopyLocation("copy"+claim.getClaim(), player);
-                    player.teleport(location);
-
-                    String[] ary = claim.getPoints().split(",");
-                    int[] centralCoordinate = LocationUtil.getCentralPoint(ary);
-                    double[] coords = RegionUtils.toGeo(centralCoordinate[0],centralCoordinate[1]);
-                    String coordinates = coords[1]+","+coords[0];
-
-                    final String input = MessageUtils.getMessage("joinclaiminfo1", player)+" <a:https://www.google.com.br/maps/place/"+coordinates+">"+coordinates+"</a>";
-                    if(!builder.getDiscord().equals("nulo")){
-                        DiscordActions.sendPrivateMessage(builder.getDiscord(),MessageUtils.getMessage("joinclaiminfo1", player)+" https://www.google.com.br/maps/place/"+coordinates);
-                    }
-                    MessageService messageService = new MessageService();
-                    player.sendMessage(messageService.getMessageWithURL(input).color(NamedTextColor.GREEN));
-                    ClaimUtils.createBook(player, input, claim);
+                    continuePlot(claim, player, builder);
 
                     return true;
                 }
@@ -97,6 +92,24 @@ public class back implements CommandExecutor{
             player.teleport(location);
             return true;
         }
+    }
+
+    private void continuePlot(Claim claim,Player player,Builder builder){
+        Location location = RegionUtils.getRegionCopyLocation("copy"+claim.getClaim(), player);
+        player.teleport(location);
+        
+        String[] ary = claim.getPoints().split(",");
+        int[] centralCoordinate = LocationUtil.getCentralPoint(ary);
+        double[] coords = RegionUtils.toGeo(centralCoordinate[0],centralCoordinate[1]);
+        String coordinates = coords[1]+","+coords[0];
+
+        final String input = MessageUtils.getMessage("joinclaiminfo1", player)+" <a:https://www.google.com.br/maps/place/"+coordinates+">"+coordinates+"</a>";
+        if(!builder.getDiscord().equals("nulo")){
+            DiscordActions.sendPrivateMessage(builder.getDiscord(),MessageUtils.getMessage("joinclaiminfo1", player)+" https://www.google.com.br/maps/place/"+coordinates);
+        }
+        MessageService messageService = new MessageService();
+        player.sendMessage(messageService.getMessageWithURL(input).color(NamedTextColor.GREEN));
+        ClaimUtils.createBook(player, input, claim);
     }
     
 }

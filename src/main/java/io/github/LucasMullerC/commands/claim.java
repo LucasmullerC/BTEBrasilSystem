@@ -2,7 +2,6 @@ package io.github.LucasMullerC.commands;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -15,7 +14,6 @@ import org.bukkit.conversations.Conversation;
 import org.bukkit.conversations.ConversationFactory;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.BookMeta;
 import org.jetbrains.annotations.NotNull;
 
 import github.scarsz.discordsrv.DiscordSRV;
@@ -36,10 +34,8 @@ import io.github.LucasMullerC.util.MessageUtils;
 import io.github.LucasMullerC.util.PendingUtils;
 import io.github.LucasMullerC.util.RegionUtils;
 import io.github.LucasMullerC.util.ZoneUtils;
-import net.kyori.adventure.inventory.Book;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
-import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 
 public class claim implements CommandExecutor {
 
@@ -85,11 +81,19 @@ public class claim implements CommandExecutor {
                     if(builder != null){
                         ClaimService claimService = new ClaimService();
                         ArrayList<Claim> claimList = claimService.getClaimListByPlayer(id.toString());
-                        for(Claim claim:claimList){
-                            if(claim.getDifficulty()>0 && ClaimUtils.verifyClaimProperties(claim, player, false) == true){
-                                player.sendMessage(Component.text(MessageUtils.getMessage("claimrunning", player)).color(NamedTextColor.RED));
-                                return true;
+
+                        PendingService pendingService = new PendingService();
+                        ArrayList<Pending> pending = pendingService.getPendingPlayer(player.getUniqueId().toString());
+
+                        if(pending.isEmpty()){
+                            for(Claim claim:claimList){
+                                if(claim.getDifficulty()>0 && ClaimUtils.verifyClaimProperties(claim, player, false) == true){
+                                    player.sendMessage(Component.text(MessageUtils.getMessage("claimrunning", player)).color(NamedTextColor.RED));
+                                    return true;
+                                }
                             }
+                        } else{
+                            player.sendMessage(Component.text(MessageUtils.getMessage("joinclaimpending", player)).color(NamedTextColor.RED));
                         }
                     }
             

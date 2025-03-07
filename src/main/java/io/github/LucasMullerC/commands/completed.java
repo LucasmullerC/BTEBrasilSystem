@@ -36,11 +36,15 @@ public class completed implements CommandExecutor{
         if(builder != null){
             ClaimService claimService = new ClaimService();
             ArrayList<Claim> claimList = claimService.getClaimListByPlayer(id.toString());
+            PendingService pendingService = new PendingService();
             for(Claim claim:claimList){
                 if(claim.getDifficulty()>0){
-                    ClaimUtils.finalizeClaim(player, claim, "1");
-                    player.sendMessage(Component.text(MessageUtils.getMessage("ClaimCompleto", player)).color(NamedTextColor.GREEN));
-                    return true;
+                    Pending pending = pendingService.getPendingClaim(claim.getClaim());
+                    if (pending == null){
+                        ClaimUtils.finalizeClaim(player, claim, "1");
+                        player.sendMessage(Component.text(MessageUtils.getMessage("ClaimCompleto", player)).color(NamedTextColor.GREEN));
+                        return true;
+                    }
                 }
             }
         } 
