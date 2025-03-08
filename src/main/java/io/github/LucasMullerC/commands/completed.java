@@ -21,6 +21,7 @@ import io.github.LucasMullerC.service.claim.ClaimService;
 import io.github.LucasMullerC.service.pending.PendingService;
 import io.github.LucasMullerC.util.ClaimUtils;
 import io.github.LucasMullerC.util.MessageUtils;
+import io.github.LucasMullerC.util.RegionUtils;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 
@@ -35,6 +36,24 @@ public class completed implements CommandExecutor{
         Builder builder = builderService.getBuilderUuid(id.toString());
         if(builder != null){
             ClaimService claimService = new ClaimService();
+
+            if(arg3.length != 0){
+                Claim claim = claimService.getClaim(arg3[0]);
+                if(claim != null){
+                    if(claim.getPlayer().equals(id.toString()) || player.hasPermission("btebrasil.adm")){
+                    if(claim.getDifficulty()>0){
+                        PendingService pendingService = new PendingService();
+                        Pending pending = pendingService.getPendingClaim(claim.getClaim());
+                        if (pending == null){
+                            ClaimUtils.finalizeClaim(player, claim, "1");
+                            player.sendMessage(Component.text(MessageUtils.getMessage("ClaimCompleto", player)).color(NamedTextColor.GREEN));
+                        }
+                    }
+                }
+                return true;
+                }
+            }
+
             ArrayList<Claim> claimList = claimService.getClaimListByPlayer(id.toString());
             PendingService pendingService = new PendingService();
             for(Claim claim:claimList){

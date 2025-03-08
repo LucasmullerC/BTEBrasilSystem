@@ -309,10 +309,16 @@ public class ZoneUtils {
             com.sk89q.worldedit.entity.Player playerbukkit = BukkitAdapter.adapt(player);
             World world = playerbukkit.getWorld();
             Integer posteriorZone;
+            int xplus = 0;
+            int zplus = 0;
             if (up == true) {
                 posteriorZone = zoneNum - 5;
+                xplus = 90;
+                zplus = 0;
             } else{ //down
                 posteriorZone = zoneNum - 1;
+                xplus = 0;
+                zplus = 90;
             }
             ProtectedRegion regionposta = RegionUtils.getRegion(world,"apply" + posteriorZone.toString() + "a");
             ProtectedRegion regionpostb = RegionUtils.getRegion(world,"apply" + posteriorZone.toString() + "b");
@@ -325,8 +331,8 @@ public class ZoneUtils {
             List<BlockVector2> pointsanew = Lists.newArrayList(); 
             for (int i = 0; i < pointsaold.size(); i++) {
                 pointsaold.get(i).getBlockX();
-                pointsanew.add(BlockVector2.at(pointsaold.get(i).getBlockX() + 90,
-                        pointsaold.get(i).getBlockZ()));
+                pointsanew.add(BlockVector2.at(pointsaold.get(i).getBlockX() + xplus,
+                        pointsaold.get(i).getBlockZ() + zplus));
             }
             int minY = 31;
             int maxY = 42;
@@ -340,8 +346,8 @@ public class ZoneUtils {
             List<BlockVector2> pointsbnew = Lists.newArrayList();
             for (int i = 0; i < pointsbold.size(); i++) {
                 pointsbold.get(i).getBlockX();
-                pointsbnew.add(BlockVector2.at(pointsbold.get(i).getBlockX() + 90,
-                        pointsbold.get(i).getBlockZ()));
+                pointsbnew.add(BlockVector2.at(pointsbold.get(i).getBlockX() + xplus,
+                        pointsbold.get(i).getBlockZ() + zplus));
             }
             minY = 31;
             maxY = 42;
@@ -355,8 +361,8 @@ public class ZoneUtils {
             List<BlockVector2> pointscnew = Lists.newArrayList(); 
             for (int i = 0; i < pointscold.size(); i++) {
                 pointscold.get(i).getBlockX();
-                pointscnew.add(BlockVector2.at(pointscold.get(i).getBlockX() + 90,
-                        pointscold.get(i).getBlockZ()));
+                pointscnew.add(BlockVector2.at(pointscold.get(i).getBlockX() + xplus,
+                        pointscold.get(i).getBlockZ() + zplus));
             }
             minY = 30;
             maxY = 42;
@@ -370,8 +376,8 @@ public class ZoneUtils {
             List<BlockVector2> pointsdnew = Lists.newArrayList();
             for (int i = 0; i < pointsdold.size(); i++) {
                 pointsdold.get(i).getBlockX();
-                pointsdnew.add(BlockVector2.at(pointsdold.get(i).getBlockX() + 90,
-                        pointsdold.get(i).getBlockZ()));
+                pointsdnew.add(BlockVector2.at(pointsdold.get(i).getBlockX() + xplus,
+                        pointsdold.get(i).getBlockZ() + zplus));
             }
             minY = 31;
             maxY = 42;

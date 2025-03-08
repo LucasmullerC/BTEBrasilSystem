@@ -38,7 +38,7 @@ public class application implements CommandExecutor {
             ApplicantService applicantService = new ApplicantService();
             UUID id = player.getUniqueId();
             String discordId = DiscordActions.getDiscordId(id);
-            if(applicantService.getApplicant(id.toString()) != null){ //Already applying to the team
+            if(applicantService.getApplicant(id.toString()) != null && !player.hasPermission("btebrasil.adm")){ //Already applying to the team
                 player.sendMessage(Component.text(MessageUtils.getMessage("AplicacaoAndamento", player)).color(NamedTextColor.RED));
                 player.sendMessage(Component.text(MessageUtils.getMessage("AplicacaoAndamento2", player)).color(NamedTextColor.GOLD));
                 return true;
