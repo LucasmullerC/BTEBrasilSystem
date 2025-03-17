@@ -99,9 +99,13 @@ public class ClaimUtils {
         pending.setbuilds(builds);
         pendingService.addPending(pending);
 
-        DiscordActions.sendLogMessage("<@&826599049297264640> "+MessageUtils.getMessageConsole("alertadminuser")+
+        DiscordActions.sendLogMessage(MessageUtils.getMessageConsole("alertadminuser")+
         " **"+discordName+"** "+MessageUtils.getMessageConsole("PendenteMsgClaim1")+"**"+claim.getClaim()+"**"+
         MessageUtils.getMessageConsole("PendenteMsgClaim2"));
+
+        //DiscordActions.sendLogMessage("<@&826599049297264640> "+MessageUtils.getMessageConsole("alertadminuser")+
+        //" **"+discordName+"** "+MessageUtils.getMessageConsole("PendenteMsgClaim1")+"**"+claim.getClaim()+"**"+
+        //MessageUtils.getMessageConsole("PendenteMsgClaim2"));
 
         //DiscordActions.sendLogMessage("<@&teste60> "+MessageUtils.getMessageConsole("alertadminuser")+
         //" **"+discordName+"** "+MessageUtils.getMessageConsole("PendenteMsgClaim1")+"**"+claim.getClaim()+"**"+
@@ -371,7 +375,7 @@ public static void removeImage(Claim claim, String imageId, Player player, Claim
     }
 
     private static String createDeadline(){
-        LocalDate deadline = LocalDate.now().plusDays(30); // x = 10
+        LocalDate deadline = LocalDate.now().plusDays(10); // x = 10
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd LLLL yyyy");
         return deadline.format(formatter);
     }

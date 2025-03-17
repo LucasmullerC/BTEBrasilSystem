@@ -62,6 +62,10 @@ public class application implements CommandExecutor {
                     return true;
                 } else{
                     if (DiscordActions.CheckDiscord(discordId) == true) {
+                        if (player.getName().startsWith(".")) {
+                            player.chat("/claim iniciar 1");
+                            return true;
+                        }
                         ApplicationZone applicationZone = ZoneUtils.buildApplicationZone(player);
                         ApplicationZoneService applicationZoneService = new ApplicationZoneService();
                         applicationZoneService.addAppicationZone(applicationZone);
