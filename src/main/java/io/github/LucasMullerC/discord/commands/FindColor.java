@@ -27,6 +27,7 @@ import org.jetbrains.annotations.NotNull;
 
 import github.scarsz.discordsrv.dependencies.jda.api.EmbedBuilder;
 import github.scarsz.discordsrv.dependencies.jda.api.entities.Message;
+import github.scarsz.discordsrv.dependencies.jda.api.entities.User;
 import github.scarsz.discordsrv.dependencies.jda.api.events.interaction.SlashCommandEvent;
 import github.scarsz.discordsrv.dependencies.jda.api.interactions.commands.OptionMapping;
 import io.github.LucasMullerC.BTEBrasilSystem.BTEBrasilSystem;
@@ -91,20 +92,32 @@ public class FindColor{
             color = Color.decode("#" + code);
             generateTextures(color, event,false);
         } else {
+            User user = event.getUser();
             event.deferReply().queue();
             event.getChannel().getHistory().retrievePast(2).queue(messages -> {
                 Color colorImage;
-                Message.Attachment attachment;
                 List<Message.Attachment> attachments = new ArrayList<>();
+                /*
                 for (Message message : messages) {
                     if(message.getAttachments() != null){
                         attachments = message.getAttachments();
                         break;
                     }
                 }
+                */
+                Message.Attachment attachment = null;
+                for (Message message : messages) {
+                    if (!message.getAuthor().equals(user)) continue;
+                    
+                    List<Message.Attachment> atts = message.getAttachments();
+                    if (atts != null && !atts.isEmpty() && atts.get(0).isImage()) {
+                        attachment = atts.get(0);
+                        break;
+                    }
+                }
 
                 if (!attachments.isEmpty()) {
-                    attachment = attachments.get(0);
+                    //attachment = attachments.get(0);
                 } else{
                     DiscordActions.sendErrorHooked(event, MessageUtils.getMessagePT("slashfindcolor2"));
                     return;
