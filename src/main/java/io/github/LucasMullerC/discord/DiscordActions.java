@@ -50,6 +50,19 @@ public class DiscordActions {
         }
         return hasPermission;
     }
+
+    public static boolean checkAllAdminRoles(List<Role> roles) {
+        boolean hasPermission = false;
+        for (int i = 0; i < roles.size(); i++) {
+            Role r = roles.get(i);
+            if (r.getId().equals("716735505840209950") || r.getId().equals("716735440169861211") || r.getId().equals("716735299966992517") || 
+            r.getId().equals("716735247105917088")) {
+                hasPermission = true;
+                break;
+            }
+        }
+        return hasPermission;
+    }
     
     public static void sendPrivateMessage(String id, String content) { 
         User user = DiscordUtil.getJda().getUserById(id);
