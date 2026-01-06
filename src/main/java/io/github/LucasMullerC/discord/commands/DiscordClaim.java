@@ -4,12 +4,14 @@ import java.util.ArrayList;
 import java.util.UUID;
 
 import org.bukkit.Bukkit;
+import org.bukkit.plugin.java.JavaPlugin;
 
 import github.scarsz.discordsrv.dependencies.jda.api.entities.MessageEmbed;
 import github.scarsz.discordsrv.dependencies.jda.api.entities.MessageEmbed.Footer;
 import github.scarsz.discordsrv.dependencies.jda.api.entities.MessageEmbed.ImageInfo;
 import github.scarsz.discordsrv.dependencies.jda.api.entities.MessageEmbed.Thumbnail;
 import github.scarsz.discordsrv.dependencies.jda.api.entities.User;
+import io.github.LucasMullerC.BTEBrasilSystem.BTEBrasilSystem;
 import io.github.LucasMullerC.discord.DiscordActions;
 import io.github.LucasMullerC.model.Builder;
 import io.github.LucasMullerC.model.Claim;
@@ -94,12 +96,17 @@ public class DiscordClaim {
     }
 
     private static String getBlueMap(Claim claim){
+        JavaPlugin plugin = BTEBrasilSystem.getPlugin();
         String[] ary = claim.getPoints().split(",");
         double[] coords = RegionUtils.toGeo(Integer.parseInt(ary[0].split("\\.")[0]),
         Integer.parseInt(ary[1].split("\\.")[0]));
         ElevationService elevationService = new ElevationService();
         String elevation = elevationService.getElevationOpenElevation(coords[1], coords[0]);
-        String bluemapurl = String.format("http://srv677577.hstgr.cloud:8185/#world:%s:%s:%s:0:-1.07:1.36:0:0:free",ary[0],elevation,ary[1]);
+
+        String urlTemplate = plugin.getConfig().getString("bluemap.url-template", 
+        "http://#");
+
+        String bluemapurl = String.format(urlTemplate,ary[0],elevation,ary[1]);
         return bluemapurl;
     }
 

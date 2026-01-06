@@ -1,0 +1,3 @@
+# Configuração do BlueMap
+bluemap:
+  url-template: "http://BLUEMAPURL"

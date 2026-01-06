@@ -59,6 +59,8 @@ public class BTEBrasilSystem extends JavaPlugin implements SlashCommandProvider{
 	@Override
 	public void onEnable() {
 		instance = this;
+		saveDefaultConfig();
+		
 		// Comandos
 		getCommand("aplicacao").setExecutor(new application());
 		getCommand("cancelar").setExecutor(new cancel());

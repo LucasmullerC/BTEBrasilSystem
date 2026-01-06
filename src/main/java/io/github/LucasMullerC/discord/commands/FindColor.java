@@ -116,9 +116,7 @@ public class FindColor{
                     }
                 }
 
-                if (!attachments.isEmpty()) {
-                    //attachment = attachments.get(0);
-                } else{
+                if (attachment == null) {
                     DiscordActions.sendErrorHooked(event, MessageUtils.getMessagePT("slashfindcolor2"));
                     return;
                 }
