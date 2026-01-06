@@ -47,6 +47,7 @@ import io.github.LucasMullerC.discord.commands.DiscordClaim;
 import io.github.LucasMullerC.discord.commands.DiscordProfile;
 import io.github.LucasMullerC.discord.commands.FindColor;
 import io.github.LucasMullerC.discord.commands.Leaderboard;
+import io.github.LucasMullerC.discord.commands.Plots;
 import io.github.LucasMullerC.listeners.PlayerJoinListener;
 import io.github.LucasMullerC.listeners.PlayerMoveListener;
 import io.github.LucasMullerC.util.MessageUtils;
@@ -58,6 +59,8 @@ public class BTEBrasilSystem extends JavaPlugin implements SlashCommandProvider{
 	@Override
 	public void onEnable() {
 		instance = this;
+		saveDefaultConfig();
+		
 		// Comandos
 		getCommand("aplicacao").setExecutor(new application());
 		getCommand("cancelar").setExecutor(new cancel());
@@ -132,6 +135,9 @@ public class BTEBrasilSystem extends JavaPlugin implements SlashCommandProvider{
 				.addOption(OptionType.STRING, "code", MessageUtils.getMessagePT("slashfindcolorcodedescription2"),true))),
 
 				//ADMIN COMMANDS
+				//plots
+				new PluginSlashCommand(this, new CommandData("plots", MessageUtils.getMessagePT("slashplots"))),
+
 				//buildactions
 				new PluginSlashCommand(this, new CommandData("buildsactions", MessageUtils.getMessagePT("slashaddbuilds"))
 				.addOption(OptionType.INTEGER, "builds", MessageUtils.getMessagePT("slashaddbuildsdescription"), true)
@@ -266,6 +272,14 @@ public class BTEBrasilSystem extends JavaPlugin implements SlashCommandProvider{
 	}
 
 	//ADMIN COMMANDS
+    @SlashCommand(path = "plots")
+	public void plotsCommand(SlashCommandEvent event) {
+		List<Role> roles = event.getMember().getRoles();
+		Plots plots = new Plots();
+		MessageEmbed messageEmbed = plots.getCommand(roles);
+		event.replyEmbeds(messageEmbed).queue();
+	}
+
 	@SlashCommand(path = "buildsactions")
 	public void buildsactionsCommand(SlashCommandEvent event) {
 		List<Role> roles = event.getMember().getRoles();

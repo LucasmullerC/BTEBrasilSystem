@@ -38,7 +38,7 @@ public class ApplicationZoneService {
 
     public ApplicationZone getApplicationZone(String applicationZoneId){
         for (ApplicationZone applicationZone : applicationZone.getValues()) {
-            if (applicationZone.getApplicationZone() != null && applicationZone.getApplicationZone().contains(applicationZoneId)) {
+            if (applicationZone.getApplicationZone() != null && applicationZone.getApplicationZone().equals(applicationZoneId)) {
                 return applicationZone;
             }
         }

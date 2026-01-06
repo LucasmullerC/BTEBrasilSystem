@@ -23,6 +23,7 @@ import io.github.LucasMullerC.model.ApplicationZone;
 import io.github.LucasMullerC.model.Builder;
 import io.github.LucasMullerC.model.Claim;
 import io.github.LucasMullerC.model.Pending;
+import io.github.LucasMullerC.service.MessageService;
 import io.github.LucasMullerC.service.WorldGuardService;
 import io.github.LucasMullerC.service.applicant.ApplicantService;
 import io.github.LucasMullerC.service.applicant.ApplicationZoneService;
@@ -80,6 +81,15 @@ public class analyse implements CommandExecutor {
             if(claim.getDifficulty() > 0){
                 regionId = "copy"+pending.getregionId();
                 location = RegionUtils.getRegionCopyLocation(regionId, player);
+
+                String[] ary = claim.getPoints().split(",");
+                int[] centralCoordinate = LocationUtil.getCentralPoint(ary);
+                double[] coords = RegionUtils.toGeo(centralCoordinate[0],centralCoordinate[1]);
+                String coordinates = coords[1]+","+coords[0];
+                final String input = MessageUtils.getMessage("joinclaiminfo1", player)+" <a:https://www.google.com.br/maps/place/"+coordinates+">"+coordinates+"</a>";
+                
+                MessageService messageService = new MessageService();
+                player.sendMessage(messageService.getMessageWithURL(input).color(NamedTextColor.GREEN));
             } else{
                 regionId = pending.getregionId();
                 location = LocationUtil.getLocationFromPoints(claim.getPoints(), player.getWorld());

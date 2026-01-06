@@ -78,7 +78,7 @@ public class DeadlineService {
             }
         }
         if (contClaim > 0){
-            String logMessage = cont.toString() + MessageUtils.getMessageConsole("TimesUpClaimAdm");
+            String logMessage = contClaim.toString() + MessageUtils.getMessageConsole("TimesUpClaimAdm");
             DiscordActions.sendLogMessage(logMessage);
         }
     }
