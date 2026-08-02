@@ -45,7 +45,7 @@ public class completed implements CommandExecutor{
                         PendingService pendingService = new PendingService();
                         Pending pending = pendingService.getPendingClaim(claim.getClaim());
                         if (pending == null){
-                            ClaimUtils.finalizeClaim(player, claim, "1");
+                            ClaimUtils.finalizeClaim(player, claim, claimService, "1");
                             player.sendMessage(Component.text(MessageUtils.getMessage("ClaimCompleto", player)).color(NamedTextColor.GREEN));
                         }
                     }
@@ -60,7 +60,7 @@ public class completed implements CommandExecutor{
                 if(claim.getDifficulty()>0){
                     Pending pending = pendingService.getPendingClaim(claim.getClaim());
                     if (pending == null){
-                        ClaimUtils.finalizeClaim(player, claim, "1");
+                        ClaimUtils.finalizeClaim(player, claim, claimService, "1");
                         player.sendMessage(Component.text(MessageUtils.getMessage("ClaimCompleto", player)).color(NamedTextColor.GREEN));
                         return true;
                     }

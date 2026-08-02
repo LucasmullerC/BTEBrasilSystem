@@ -89,7 +89,7 @@ public class ClaimUtils {
         return claimId;
     }
 
-    public static void finalizeClaim(Player player,Claim claim, String builds){
+    public static void finalizeClaim(Player player,Claim claim, ClaimService claimService, String builds){
         String discordId = DiscordSRV.getPlugin().getAccountLinkManager().getDiscordId(player.getUniqueId());
         String discordName = DiscordActions.getDiscordName(discordId);
         PendingService pendingService = new PendingService();
@@ -98,6 +98,8 @@ public class ClaimUtils {
         pending.setisApplication(false);
         pending.setbuilds(builds);
         pendingService.addPending(pending);
+        claim.setDeadline("nulo");
+        claimService.saveClaim();
 
         DiscordActions.sendLogMessage(MessageUtils.getMessageConsole("alertadminuser")+
         " **"+discordName+"** "+MessageUtils.getMessageConsole("PendenteMsgClaim1")+"**"+claim.getClaim()+"**"+
@@ -118,6 +120,11 @@ public class ClaimUtils {
         claimService.updateClaim(claim);
         WorldGuardService worldguardService = new WorldGuardService();
         worldguardService.AddFlags(claim);
+    }
+
+    public static void renewDeadline(Claim claim, ClaimService claimService){
+        claim.setDeadline(createDeadline());
+        claimService.saveClaim();
     }
 
     public static boolean verifyClaimProperties(Claim claim,Player player,Boolean edit){

@@ -67,10 +67,16 @@ public class DeadlineService {
 
         Integer contClaim = 0;
         List<Claim> filteredClaims = claimList.stream()
-        .filter(claim -> claim.getDeadLine() != "nulo")
+        .filter(claim -> claim.getDeadLine() != null && !"nulo".equals(claim.getDeadLine()))
         .collect(Collectors.toList());
 
         for (Claim claim:filteredClaims){
+            Pending pending = pendingService.getPendingClaim(claim.getClaim());
+            if(pending != null){
+                claim.setDeadline("nulo");
+                claimService.saveClaim();
+                continue;
+            }
             if(claim.getDeadLine().contains(date)){
                 RegionUtils.deleteCopyClaim("copy"+claim.getClaim(), player);
                 claimService.removeCopyClaim(claim, player);

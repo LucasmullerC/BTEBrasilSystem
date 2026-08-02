@@ -31,6 +31,7 @@ import io.github.LucasMullerC.service.builder.BuilderService;
 import io.github.LucasMullerC.service.claim.ClaimService;
 import io.github.LucasMullerC.service.pending.PendingPromptService;
 import io.github.LucasMullerC.service.pending.PendingService;
+import io.github.LucasMullerC.util.ClaimUtils;
 import io.github.LucasMullerC.util.LocationUtil;
 import io.github.LucasMullerC.util.MessageUtils;
 import io.github.LucasMullerC.util.RegionUtils;
@@ -154,6 +155,9 @@ public class analyse implements CommandExecutor {
                     }
                 }
                 pendingService.removePending(pending);
+                if(claim.getDifficulty() > 0){
+                    ClaimUtils.renewDeadline(claim, claimService);
+                }
                 player.sendMessage(Component.text(MessageUtils.getMessage("ClaimRecusada4", player)).color(NamedTextColor.GOLD));
             } else{
                 String name = DiscordActions.getDiscordName(builder.getDiscord());

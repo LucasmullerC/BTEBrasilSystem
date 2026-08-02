@@ -85,7 +85,7 @@ public class ClaimPromptService {
 
     @Override
     public Prompt acceptInput(ConversationContext context, String input) {
-        ClaimService claimService = new ClaimService();
+        claimService = new ClaimService();
         claim = claimService.getClaim(input);
         if (ClaimUtils.verifyClaimProperties(claim, player, false) == true) {
             PendingService pendingService = new PendingService();
@@ -114,7 +114,7 @@ public class ClaimPromptService {
             if (ClaimUtils.isNumeric(input) == true) {
                 builds = input;
                 if(claim.getParticipants().equals("nulo")){
-                    ClaimUtils.finalizeClaim(player, claim, builds);
+                    ClaimUtils.finalizeClaim(player, claim, claimService, builds);
                     player.sendMessage(Component.text(MessageUtils.getMessage("ClaimCompleto", player)).color(NamedTextColor.GREEN));
                     return END_OF_CONVERSATION;
                 } else{
@@ -151,7 +151,7 @@ public class ClaimPromptService {
                         participant = Bukkit.getOfflinePlayer(UUID.fromString(participants[participantCont]));
                         return completedParticipants;
                     } else{
-                        ClaimUtils.finalizeClaim(player, claim, builds);
+                        ClaimUtils.finalizeClaim(player, claim, claimService, builds);
                         player.sendMessage(Component.text(MessageUtils.getMessage("ClaimCompleto", player)).color(NamedTextColor.GREEN));
                         return END_OF_CONVERSATION;
                     }
