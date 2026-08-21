@@ -1,11 +1,18 @@
 ---
-title: "BTE Brasil Privacy Policy"
+title: "BTE Brasil Privacy Policy / Política de Privacidade"
 permalink: /privacy/
 ---
 
-# BTE Brasil Privacy Policy
+# BTE Brasil Privacy Policy / Política de Privacidade
 
-**Last Updated: August 21, 2026**
+**Last Updated / Última atualização: August 21, 2026 / 21 de agosto de 2026**
+
+- [English](#english)
+- [Português](#português)
+
+---
+
+# English
 
 This Privacy Policy explains how the **BTE Brasil** Discord application and the **BTEBrasilSystem** Minecraft integration ("BTE Brasil", "the Application", "we", "our", or "us") access, use, store, and protect information when providing integration between the Build The Earth: Brasil Minecraft server and Discord community.
 
@@ -178,6 +185,179 @@ The resulting support channel is private and accessible only to the requesting u
 
 ---
 
+# Português
+
+Esta Política de Privacidade explica como o aplicativo do Discord **BTE Brasil** e a integração com Minecraft **BTEBrasilSystem** ("BTE Brasil", "Aplicativo", "nós" ou "nosso") acessam, utilizam, armazenam e protegem informações ao fornecer a integração entre o servidor de Minecraft do Build The Earth: Brasil e a comunidade no Discord.
+
+O aplicativo BTE Brasil oferece suporte a vinculação de contas, aplicações de jogadores, perfis, ranks, claims, conquistas, permissões, sincronização de cargos no Discord, comandos slash e comunicação entre canais compatíveis do Minecraft e do Discord.
+
+Código-fonte:
+
+https://github.com/LucasmullerC/BTEBrasilSystem
+
+## 1. Informações que acessamos e processamos
+
+Dependendo dos recursos utilizados pelo usuário, o Aplicativo pode acessar ou processar as seguintes informações.
+
+### Informações da conta do Discord
+
+Podemos processar:
+
+- ID de usuário do Discord;
+- nome de usuário do Discord quando necessário para exibir ou identificar um usuário;
+- informação sobre o usuário ser ou não membro do servidor BTE Brasil no Discord;
+- cargos do Discord atribuídos a um membro do servidor; e
+- informações necessárias para realizar verificações de permissões e sincronização de cargos.
+
+### Informações da conta do Minecraft e do BTE Brasil
+
+Podemos armazenar informações relacionadas à participação do usuário no servidor de Minecraft do BTE Brasil, incluindo:
+
+- UUID do Minecraft;
+- associação entre o UUID do Minecraft e o ID de usuário do Discord;
+- status da aplicação do jogador;
+- informações do perfil do jogador;
+- ranks e progressão;
+- pontos e construções concluídas;
+- claims;
+- conquistas e prêmios; e
+- outras informações necessárias para o funcionamento dos recursos do BTE Brasil no Minecraft.
+
+### Conteúdo de mensagens do Discord
+
+O Aplicativo utiliza o conteúdo de mensagens do Discord somente quando necessário para fornecer a integração configurada de chat entre Discord e Minecraft.
+
+Quando um usuário envia uma mensagem em um canal do Discord configurado para integração com o chat do Minecraft, a mensagem pode ser processada para que seja retransmitida ao chat correspondente no Minecraft.
+
+O conteúdo das mensagens também pode ser processado para recursos como formatação, anexos, stickers, filtros configurados, requisitos de vinculação de conta e permissões de chat baseadas em cargos.
+
+O Aplicativo não utiliza o conteúdo de mensagens para publicidade, criação de perfis comportamentais, marketing ou treinamento de modelos de inteligência artificial ou machine learning.
+
+O BTEBrasilSystem não mantém um banco de dados dedicado à criação de históricos de mensagens do Discord.
+
+Logs operacionais do Minecraft ou da integração com o Discord podem conter informações relacionadas a mensagens retransmitidas quando isso for necessário para operação do servidor, segurança, solução de problemas ou prevenção de abuso. Essas informações são mantidas apenas pelo tempo razoavelmente necessário para essas finalidades.
+
+## 2. Como utilizamos as informações
+
+As informações acessadas por meio do Discord ou geradas pelo servidor de Minecraft são utilizadas somente quando necessário para fornecer e manter as funcionalidades do BTE Brasil.
+
+Isso inclui:
+
+- vincular contas do Minecraft e do Discord;
+- verificar se um usuário vinculado pertence ao servidor BTE Brasil no Discord;
+- verificar cargos e permissões;
+- sincronizar cargos do Discord com a progressão no Minecraft ou com o status no projeto;
+- exibir perfis de jogadores, conquistas, claims, ranks e leaderboards;
+- processar aplicações de jogadores;
+- operar funcionalidades administrativas e de moderação;
+- responder a comandos slash do Discord;
+- fornecer a integração configurada de chat entre Discord e Minecraft;
+- manter a segurança e a confiabilidade do serviço; e
+- investigar problemas técnicos ou abuso.
+
+Nós **não vendemos** informações de usuários.
+
+Nós **não utilizamos** dados da API do Discord para publicidade ou marketing.
+
+Nós **não criamos** perfis publicitários ou comportamentais utilizando dados do Discord.
+
+Nós **não utilizamos** conteúdo de mensagens do Discord ou outros dados da API do Discord para treinar modelos de inteligência artificial ou machine learning.
+
+## 3. Armazenamento e retenção de dados
+
+Algumas informações precisam permanecer armazenadas por mais de 30 dias para que funcionalidades persistentes do BTE Brasil possam funcionar.
+
+Por exemplo, o ID do Discord de um usuário pode permanecer associado ao seu UUID do Minecraft enquanto sua conta do BTE Brasil e a integração Minecraft/Discord permanecerem ativas.
+
+Mantemos dados da API do Discord somente enquanto forem necessários para as funcionalidades descritas nesta Política de Privacidade.
+
+Quando uma informação não for mais necessária para o funcionamento do Aplicativo, ela poderá ser excluída.
+
+Logs operacionais são mantidos somente pelo tempo razoavelmente necessário para administração do servidor, segurança, solução de problemas e prevenção de abuso.
+
+## 4. Armazenamento e segurança dos dados
+
+Os serviços do BTE Brasil são hospedados na **Oracle Cloud Infrastructure (OCI)**.
+
+Os dados do Aplicativo armazenados no servidor são protegidos por criptografia em repouso fornecida pela infraestrutura da Oracle Cloud Infrastructure. Os Boot Volumes e Block Volumes do OCI utilizam criptografia AES-256 em repouso.
+
+O acesso administrativo ao servidor e aos sistemas de gerenciamento é restrito por contas autenticadas e limitado aos administradores autorizados do BTE Brasil.
+
+Utilizamos medidas técnicas e administrativas razoáveis destinadas a proteger os dados armazenados contra acesso, modificação, divulgação, destruição ou perda não autorizados.
+
+Nenhum sistema online pode garantir segurança absoluta, mas buscamos manter proteções adequadas às informações processadas pelo Aplicativo.
+
+## 5. Compartilhamento de informações
+
+Não vendemos dados da API do Discord ou outras informações de usuários.
+
+As informações podem ser processadas por provedores de infraestrutura ou serviços quando necessário para operar o Aplicativo, como nosso provedor de hospedagem.
+
+Nosso provedor de infraestrutura atual é a **Oracle Cloud Infrastructure (OCI)**.
+
+As informações também podem ser divulgadas quando exigido por lei aplicável, regulamento, processo legal ou solicitação governamental válida.
+
+Não compartilhamos dados da API do Discord com terceiros para publicidade, marketing ou finalidades comerciais não relacionadas ao funcionamento do Aplicativo.
+
+## 6. Exclusão de dados e solicitações dos usuários
+
+Os usuários podem solicitar acesso, correção ou exclusão das informações associadas à sua conta do Discord e à integração com o BTE Brasil.
+
+As solicitações podem ser enviadas por meio do sistema de tickets de suporte disponível no servidor oficial do BTE Brasil no Discord:
+
+https://discord.com/invite/w6GC56W445
+
+Qualquer membro da comunidade pode abrir um ticket privado por meio da seção **SUPPORT** do servidor. O canal criado para o ticket fica acessível somente ao usuário solicitante e à equipe autorizada do BTE Brasil.
+
+Ao enviar uma solicitação relacionada à privacidade ou exclusão de dados, o usuário deve informar que a solicitação diz respeito aos seus dados do aplicativo BTE Brasil e fornecer informações suficientes para identificarmos a conta relevante do Discord e/ou Minecraft.
+
+Podemos solicitar informações razoáveis para verificar se a pessoa que está fazendo a solicitação controla a conta relevante do Discord ou do Minecraft.
+
+Após a verificação, excluiremos ou modificaremos os dados aplicáveis da API do Discord quando solicitado, salvo quando a retenção for exigida por lei aplicável ou quando as informações ainda forem legitimamente necessárias para tratar uma questão ativa de segurança, abuso ou obrigação legal.
+
+A exclusão da associação entre uma conta do Discord e uma conta do Minecraft pode desativar funcionalidades que dependem da vinculação, incluindo sincronização de cargos, perfis, aplicações, conquistas, claims ou outros recursos integrados.
+
+Os tickets de suporte são encerrados após o tratamento da solicitação. As conversas de tickets encerrados não são utilizadas pelo BTE Brasil para publicidade, criação de perfis ou treinamento de IA/ML.
+
+## 7. Discord e Minecraft
+
+O BTE Brasil é um projeto independente da comunidade e não é operado, patrocinado ou endossado pela Discord Inc.
+
+O uso do Discord também está sujeito aos próprios Termos de Serviço e Política de Privacidade do Discord.
+
+Minecraft e marcas relacionadas pertencem aos seus respectivos proprietários. O BTE Brasil não é afiliado à Mojang Studios ou à Microsoft, salvo quando expressamente indicado.
+
+## 8. Privacidade de crianças e adolescentes
+
+Os usuários devem cumprir os requisitos mínimos de idade aplicáveis às plataformas e serviços utilizados, incluindo Discord e Minecraft.
+
+Não utilizamos intencionalmente dados da API do Discord para publicidade ou criação de perfis de crianças ou adolescentes.
+
+## 9. Alterações nesta Política de Privacidade
+
+Podemos atualizar esta Política de Privacidade quando as funcionalidades do Aplicativo, práticas de dados, infraestrutura ou requisitos aplicáveis forem alterados.
+
+Quando a política for atualizada, a data de **Última atualização** no início desta página também será alterada.
+
+Alterações relevantes que afetem a forma como dados da API do Discord são coletados ou utilizados serão refletidas nesta política antes ou no momento em que a funcionalidade correspondente for introduzida.
+
+## 10. Contato
+
+Para dúvidas sobre privacidade, solicitações de acesso ou correção de informações armazenadas, ou solicitações de exclusão de dados da API do Discord associados à sua conta, entre em contato com a equipe do BTE Brasil por meio do sistema de tickets de suporte no servidor oficial do Discord:
+
+https://discord.com/invite/w6GC56W445
+
+Para entrar em contato:
+
+1. Entre no servidor oficial do BTE Brasil no Discord.
+2. Abra a seção **SUPPORT**.
+3. Clique em **"Criar um Ticket" / "Create a Ticket"**.
+4. Informe que sua solicitação é relacionada à privacidade, acesso, correção ou exclusão dos seus dados do BTE Brasil.
+
+O canal de suporte criado é privado e acessível somente ao usuário solicitante e à equipe autorizada do BTE Brasil.
+
+---
+
 **BTE Brasil / BTEBrasilSystem**
 
-Source code: https://github.com/LucasmullerC/BTEBrasilSystem
+Código-fonte / Source code: https://github.com/LucasmullerC/BTEBrasilSystem
